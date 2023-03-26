@@ -1,0 +1,24 @@
+.navbar {
+  height: 50px;
+  background-color: rgba(102, 16, 83, 0.69);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-item {
+  margin-right: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.nav-link {
+  text-decoration: none;
+}
