@@ -1,15 +1,28 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/auth";
+import axios from "axios";
 import "../../styles/app.css";
 
 export default function Menu() {
   // hook
   const [auth, setAuth] = useAuth();
 
-  const logout = () => {
+  const logout = (e) => {
+    e.preventDefault();
+    // remove token from local storage
     localStorage.removeItem("auth");
     // set user to null
-    setAuth({ ...auth, user: null, logged: false, isLogout: true });
+    setAuth({ ...auth, user: null, token: "", logged: false, isLogout: true });
+    //
+    axios
+      .get("/auth/logout")
+      .then((res) => {
+        console.log(res);
+        console.log("logout");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -47,7 +60,12 @@ export default function Menu() {
               </a>
               <ul className="dropdown-menu">
                 <li>
-                  <NavLink className="nav-link" to={`/dashboard`}>
+                  <NavLink
+                    className="nav-link"
+                    to={`/dashboard/${
+                      auth?.user?.role === 1 ? "admin" : "user"
+                    }`}
+                  >
                     Dashboard
                   </NavLink>
                 </li>

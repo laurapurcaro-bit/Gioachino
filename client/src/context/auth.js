@@ -6,6 +6,7 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState({
     user: null,
+    token: "",
     logged: false,
     isLogout: false,
   });
@@ -14,12 +15,19 @@ const AuthProvider = ({ children }) => {
   axios.defaults.baseURL = process.env.REACT_APP_API;
   console.log("auth.token", process.env.REACT_APP_API);
   // axios.defaults.headers.common["Authorization"] = auth?.token;
+  axios.defaults.headers.common["Authorization"] = auth?.token;
 
   useEffect(() => {
     const data = localStorage.getItem("auth");
     if (data) {
       const parsed = JSON.parse(data);
-      setAuth({ ...auth, user: parsed.user, logged: false, isLogout: false });
+      setAuth({
+        ...auth,
+        user: parsed.user,
+        token: parsed.token,
+        logged: false,
+        isLogout: false,
+      });
     }
     // eslint-disable-next-line
   }, []);

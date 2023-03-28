@@ -1,74 +1,20 @@
 const router = require("express").Router();
-const passport = require("passport");
+// middlewares
+const { requireSignIn, isAdmin } = require("../middlewares/auth");
+// controllers
+const { register, login, secret } = require("../controllers/auth");
 
-const CLIENT_URL = "http://localhost:3000";
-
-router.get("/login/success", (req, res) => {
-  console.log(req.user);
-  if (req.user) {
-    res.status(200).json({
-      success: true,
-      message: "user has successfully authenticated",
-      user: req.user,
-      cookies: req.cookies,
-    });
-  }
+// 1: endpoint, 2: callback
+router.post("/register", register);
+router.post("/login", login);
+router.get("/auth-check", requireSignIn, (req, res) => {
+  res.json({ ok: true });
 });
-
-router.get("/login/failed", (req, res) => {
-  res.status(401).json({
-    success: false,
-    message: "user failed to authenticate.",
-  });
+router.get("/admin-check", requireSignIn, isAdmin, (req, res) => {
+  res.json({ ok: true });
 });
-
-router.get("/logout", (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect(CLIENT_URL);
-  });
-});
-
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-router.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: CLIENT_URL,
-    failureRedirect: "/login/failed",
-  })
-);
-
-router.get(
-  "/facebook",
-  passport.authorize("facebook", { scope: ["public_profile", "email"] })
-);
-
-router.get(
-  "/facebook/callback",
-  passport.authenticate("facebook", {
-    successRedirect: CLIENT_URL,
-    failureRedirect: "/login/failed",
-  })
-);
-
-router.get(
-  "/linkedin",
-  passport.authenticate("linkedin", {
-    scope: ["r_emailaddress", "r_liteprofile"],
-  })
-);
-
-router.get(
-  "/linkedin/callback",
-  passport.authenticate("linkedin", {
-    successRedirect: CLIENT_URL,
-    failureRedirect: "/login/failed",
-  })
-);
+// Protect routes so only logged in user have access to it
+// Admin middleware
+router.get("/secret", requireSignIn, isAdmin, secret);
 
 module.exports = router;

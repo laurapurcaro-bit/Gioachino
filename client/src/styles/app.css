@@ -1,6 +1,6 @@
 .navbar {
   height: 50px;
-  background-color: rgba(102, 16, 83, 0.69);
+  /* background-color: rgba(102, 16, 83, 0.69); */
   color: white;
   display: flex;
   align-items: center;
