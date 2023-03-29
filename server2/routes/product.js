@@ -15,6 +15,8 @@ const {
   remove,
   update,
   filteredProducts,
+  productsCount,
+  listProducts,
 } = require("../controllers/product");
 
 // Route where you can create category
@@ -26,5 +28,6 @@ router.get("/product/photo/:productId", photo);
 router.delete("/product/:productId", requireSignIn, isAdmin, remove);
 router.put("/product/:productId", requireSignIn, isAdmin, formidable(), update);
 router.post("/filtered-products", filteredProducts);
-
+router.get("/products-count", productsCount);
+router.get("/list-products/:pageNumber", listProducts);
 module.exports = router;

@@ -3,10 +3,10 @@ import { Badge } from "antd";
 
 export default function ProductCard({ product }) {
   function productDesc(description) {
-    if (description.length < 60) {
+    if (description?.length < 60) {
       return description;
     } else {
-      return description.substring(0, 60) + "...";
+      return description?.substring(0, 60) + "...";
     }
   }
 
@@ -26,7 +26,7 @@ export default function ProductCard({ product }) {
           <img
             className="card-img-top"
             src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-            alt={product.name}
+            alt={product?.name}
             // className="img img-responsive"
             height="300px"
             width="230px"

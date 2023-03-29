@@ -26,7 +26,7 @@ export default function Menu() {
   };
 
   return (
-    <div className="navbar">
+    <>
       {/* justify-content-between: add space between elements; shadow: put bar with shadow; mb-2: margin-bottom: 2*/}
       <ul className="nav d-flex justify-content-between shadow-sm mb-2">
         <li className="nav-item">
@@ -39,6 +39,28 @@ export default function Menu() {
             Shop
           </NavLink>
         </li>
+
+        <form className="d-flex">
+          <input
+            type="search"
+            style={{ borderRadius: "0px", height: "30px", float: "left" }}
+            className="form-control"
+            placeholder="Search"
+          />
+          <button
+            className="btn btn-outline-primary mt-2"
+            type="submit"
+            style={{
+              borderRadius: "0px",
+              height: "30px",
+              float: "left",
+              textAlign: "center",
+            }}
+          >
+            Search
+          </button>
+        </form>
+
         {/* if condition true => do login register : do logout */}
         {!auth.user ? (
           <>
@@ -84,6 +106,6 @@ export default function Menu() {
           </div>
         )}
       </ul>
-    </div>
+    </>
   );
 }

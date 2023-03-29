@@ -215,6 +215,36 @@ const filteredProducts = async (req, res) => {
   }
 };
 
+const productsCount = async (req, res) => {
+  try {
+    const total = await Product.find({}).estimatedDocumentCount().exec();
+    res.json(total);
+  } catch (error) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+const listProducts = async (req, res) => {
+  try {
+    // Get first 3 products
+    const perPage = 3;
+    const page = req.params.pageNumber ? req.params.pageNumber : 1;
+    const products = await Product.find({})
+      // don't return photo
+      .select("-photo")
+      // Skip 6 products per page
+      .skip((page - 1) * perPage)
+      .limit(perPage)
+      .sort({ createdAt: -1 });
+
+    res.json(products);
+  } catch (error) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
 module.exports = {
   create,
   list,
@@ -223,4 +253,6 @@ module.exports = {
   remove,
   update,
   filteredProducts,
+  productsCount,
+  listProducts,
 };
