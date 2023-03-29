@@ -6,7 +6,10 @@ export default function Jumbotron({
   subTitle = "Welcome to e-commerce",
 }) {
   return (
-    <div className="container-fluid jumbotron">
+    <div
+      className="container-fluid jumbotron"
+      style={{ marginTop: "-8px", height: "200px" }}
+    >
       <div className="row">
         {/* p-4: padding 4 */}
         <div className="col text-center p-4">

@@ -17,6 +17,7 @@ const {
   filteredProducts,
   productsCount,
   listProducts,
+  productSearch,
 } = require("../controllers/product");
 
 // Route where you can create category
@@ -30,4 +31,6 @@ router.put("/product/:productId", requireSignIn, isAdmin, formidable(), update);
 router.post("/filtered-products", filteredProducts);
 router.get("/products-count", productsCount);
 router.get("/list-products/:pageNumber", listProducts);
+router.get("/products/search/:search", productSearch);
+
 module.exports = router;

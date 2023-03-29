@@ -219,7 +219,7 @@ const productsCount = async (req, res) => {
   try {
     const total = await Product.find({}).estimatedDocumentCount().exec();
     res.json(total);
-  } catch (error) {
+  } catch (err) {
     console.log(err);
     return res.status(400).json(err.message);
   }
@@ -239,9 +239,27 @@ const listProducts = async (req, res) => {
       .sort({ createdAt: -1 });
 
     res.json(products);
-  } catch (error) {
+  } catch (err) {
     console.log(err);
     return res.status(400).json(err.message);
+  }
+};
+
+const productSearch = async (req, res) => {
+  try {
+    const { search } = req.params;
+    // find the product based on the search query
+    const results = await Product.find({
+      $or: [
+        // no case sensitive: $options: "i"
+        { name: { $regex: search, $options: "i" } },
+        { description: { $regex: search, $options: "i" } },
+      ],
+    }).select("-photo");
+    // return the products
+    res.json(results);
+  } catch (err) {
+    console.log(err);
   }
 };
 
@@ -255,4 +273,5 @@ module.exports = {
   filteredProducts,
   productsCount,
   listProducts,
+  productSearch,
 };

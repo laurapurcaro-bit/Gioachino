@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/auth";
+import SearchBar from "../forms/SearchBar";
 import axios from "axios";
 import "../../styles/app.css";
 
@@ -40,26 +41,7 @@ export default function Menu() {
           </NavLink>
         </li>
 
-        <form className="d-flex">
-          <input
-            type="search"
-            style={{ borderRadius: "0px", height: "30px", float: "left" }}
-            className="form-control"
-            placeholder="Search"
-          />
-          <button
-            className="btn btn-outline-primary mt-2"
-            type="submit"
-            style={{
-              borderRadius: "0px",
-              height: "30px",
-              float: "left",
-              textAlign: "center",
-            }}
-          >
-            Search
-          </button>
-        </form>
+        <SearchBar />
 
         {/* if condition true => do login register : do logout */}
         {!auth.user ? (

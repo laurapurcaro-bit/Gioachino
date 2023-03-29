@@ -1,8 +1,10 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useAuth } from "./context/auth";
 import { Toaster } from "react-hot-toast";
-// Import scripts
+// Context
+import { useAuth } from "./context/auth";
+
+// Import pages
 import Menu from "./components/nav/Menu";
 import Home from "./pages/Home";
 import Login from "./pages/auth/Login";
@@ -19,6 +21,7 @@ import AdminUpdateProduct from "./pages/admin/ProductUpdateAndDelete";
 import UserOrders from "./pages/user/Orders";
 import UserProfile from "./pages/user/Profile";
 import Shop from "./pages/Shop";
+import ResultsSearchBar from "./pages/ResultsSearchBar";
 
 const PageNotFound = () => {
   return (
@@ -49,6 +52,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/search" element={<ResultsSearchBar />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* Insert routes you want to protect */}
