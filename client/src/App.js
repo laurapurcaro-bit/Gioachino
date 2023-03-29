@@ -18,6 +18,7 @@ import AdminShowProducts from "./pages/admin/ProductShow";
 import AdminUpdateProduct from "./pages/admin/ProductUpdateAndDelete";
 import UserOrders from "./pages/user/Orders";
 import UserProfile from "./pages/user/Profile";
+import Shop from "./pages/Shop";
 
 const PageNotFound = () => {
   return (
@@ -47,6 +48,7 @@ export default function App() {
       <Toaster />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/shop" element={<Shop />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* Insert routes you want to protect */}

@@ -34,6 +34,11 @@ export default function Menu() {
             Homepage
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink className="nav-link" aria-current="page" to="/shop">
+            Shop
+          </NavLink>
+        </li>
         {/* if condition true => do login register : do logout */}
         {!auth.user ? (
           <>

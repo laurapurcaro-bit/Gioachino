@@ -189,4 +189,38 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = { create, list, read, photo, remove, update };
+const filteredProducts = async (req, res) => {
+  try {
+    // Filter products
+    const { checkedCategories, radioPrice } = req.body;
+    // Query the DB
+    let args = {};
+    // If there are checked categories
+    if (checkedCategories.length > 0) {
+      // add the checked categories to the args object
+      args.category = checkedCategories; // 21231
+    }
+    // If there is a price range
+    if (radioPrice.length) {
+      // take the lower limit of the price range and higher limit of the price range
+      args.price = { $gte: radioPrice[0], $lte: radioPrice[1] }; // [0, 1000]
+    }
+    console.log(args);
+    const products = await Product.find(args);
+    console.log(products);
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+module.exports = {
+  create,
+  list,
+  read,
+  photo,
+  remove,
+  update,
+  filteredProducts,
+};
