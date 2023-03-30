@@ -11,6 +11,7 @@ const {
   remove,
   list,
   read,
+  productsByCategory,
 } = require("../controllers/category");
 
 // Route where you can create category
@@ -20,5 +21,6 @@ router.put("/category/:categoryId", requireSignIn, isAdmin, update);
 router.delete("/category/:categoryId", requireSignIn, isAdmin, remove);
 router.get("/categories", list);
 router.get("/category/:slug", read);
+router.get("/products-by-category/:slug", productsByCategory);
 
 module.exports = router;

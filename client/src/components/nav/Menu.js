@@ -3,11 +3,16 @@ import { useAuth } from "../../context/auth";
 import SearchBar from "../forms/SearchBar";
 import axios from "axios";
 import "../../styles/app.css";
+import useCategory from "../../hooks/useCategory";
 
 export default function Menu() {
-  // hook
+  // context
   const [auth, setAuth] = useAuth();
+  // hook
   const navigate = useNavigate();
+  // custom hook
+  const categories = useCategory();
+  console.log(categories);
 
   const logout = async () => {
     // set user to null
@@ -36,7 +41,41 @@ export default function Menu() {
             Shop
           </NavLink>
         </li>
-
+        {/* Category dropdown */}
+        <div className="dropdown">
+          <li className="nav-item">
+            <a
+              className="nav-link pointer dropdown-toggle"
+              data-bs-toggle="dropdown"
+              href="/"
+            >
+              Categories
+            </a>
+            <ul
+              className="dropdown-menu"
+              style={{ height: "220px", overflow: "scroll" }}
+            >
+              <li>
+                <NavLink className="nav-link" to={`/categories`}>
+                  All categories
+                </NavLink>
+              </li>
+              {categories?.map((category) => {
+                return (
+                  <li key={category._id}>
+                    <NavLink
+                      className="nav-link"
+                      to={`/category/${category.slug}`}
+                    >
+                      {category.name}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+        </div>
+        {/* Search bar */}
         <SearchBar />
 
         {/* if condition true => do login register : do logout */}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import ProductCard from "../components/cards/ProductCard";
+import ProductCard from "../../components/cards/ProductCard";
 import { Badge } from "antd";
 import {
   FaDollarSign,

@@ -1,6 +1,7 @@
 // Description: This file contains the CRUD methods for the category model
 const slugify = require("slugify");
 const Category = require("../models/category");
+const Product = require("../models/product");
 
 const create = async (req, res) => {
   try {
@@ -72,10 +73,23 @@ const read = async (req, res) => {
   }
 };
 
+const productsByCategory = async (req, res) => {
+  try {
+    const category = await Category.findOne({ slug: req.params.slug });
+    const products = await Product.find({ category }).populate("category");
+
+    res.json({ category, products });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
 module.exports = {
   create,
   update,
   remove,
   list,
   read,
+  productsByCategory,
 };

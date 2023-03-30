@@ -22,7 +22,9 @@ import UserOrders from "./pages/user/Orders";
 import UserProfile from "./pages/user/Profile";
 import Shop from "./pages/Shop";
 import ResultsSearchBar from "./pages/ResultsSearchBar";
-import ViewProduct from "./pages/ViewProduct";
+import ViewProduct from "./pages/product/ViewProduct";
+import CategoriesList from "./pages/categories/CategoriesList";
+import CategoryView from "./pages/categories/CategoryView";
 
 const PageNotFound = () => {
   return (
@@ -56,6 +58,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/categories" element={<CategoriesList />} />
+        <Route path="/category/:slug" element={<CategoryView />} />
         <Route path="/search" element={<ResultsSearchBar />} />
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<ViewProduct />} />
