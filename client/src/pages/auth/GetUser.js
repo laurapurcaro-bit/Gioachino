@@ -21,7 +21,7 @@ export default function GetUser({ auth, setAuth }) {
       })
       .then((resJson) => {
         localStorage.setItem("auth", JSON.stringify(resJson.user));
-        localStorage.setItem("token", JSON.stringify(resJson.token));
+        // localStorage.setItem("token", JSON.stringify(resJson.token));
         // Put context
         // spread operator: ...auth
         setAuth({
@@ -44,6 +44,5 @@ export default function GetUser({ auth, setAuth }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
 
   getUser();
-  console.log("AUTH", auth);
   return null;
 }

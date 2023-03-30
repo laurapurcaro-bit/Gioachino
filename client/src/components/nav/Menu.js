@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import SearchBar from "../forms/SearchBar";
 import axios from "axios";
@@ -7,23 +7,19 @@ import "../../styles/app.css";
 export default function Menu() {
   // hook
   const [auth, setAuth] = useAuth();
+  const navigate = useNavigate();
 
-  const logout = (e) => {
-    e.preventDefault();
-    // remove token from local storage
-    localStorage.removeItem("auth");
+  const logout = async () => {
     // set user to null
     setAuth({ ...auth, user: null, token: "", logged: false, isLogout: true });
-    //
-    axios
-      .get("/auth/logout")
-      .then((res) => {
-        console.log(res);
-        console.log("logout");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // remove token from local storage
+    localStorage.removeItem("auth");
+    // remove token from axios header
+    await axios.get("/auth/logout").then((res) => {
+      console.log(res);
+      console.log("logout");
+      navigate("/login");
+    });
   };
 
   return (

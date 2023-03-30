@@ -18,6 +18,7 @@ const {
   productsCount,
   listProducts,
   productSearch,
+  relatedProducts,
 } = require("../controllers/product");
 
 // Route where you can create category
@@ -32,5 +33,6 @@ router.post("/filtered-products", filteredProducts);
 router.get("/products-count", productsCount);
 router.get("/list-products/:pageNumber", listProducts);
 router.get("/products/search/:search", productSearch);
+router.get("/products/related/:productId/:categoryId", relatedProducts);
 
 module.exports = router;

@@ -15,6 +15,7 @@ export default function Home() {
     loadProducts();
     // execute getTotal function
     getTotal();
+    // eslint-disable-next-line
   }, []);
 
   // exceute only when page changes and not on initial render
@@ -23,6 +24,7 @@ export default function Home() {
     if (page === 1) return;
     // if page is not 1, load more products
     loadMore();
+    // eslint-disable-next-line
   }, [page]);
 
   const getTotal = async () => {

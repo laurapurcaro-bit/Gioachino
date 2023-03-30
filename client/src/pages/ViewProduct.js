@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import Jumbotron from "../components/cards/Jumbotron";
+import moment from "moment";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import ProductCard from "../components/cards/ProductCard";
 import { Badge } from "antd";
 import {
   FaDollarSign,
@@ -9,7 +10,7 @@ import {
   FaRegClock,
   FaCheck,
   FaTimes,
-  FaTruckMoving,
+  // FaTruckMoving,
   FaWarehouse,
   FaRocket,
 } from "react-icons/fa";
@@ -17,6 +18,7 @@ import {
 export default function ViewProduct() {
   // state
   const [product, setProduct] = useState({});
+  const [relatedProducts, setRelatedProducts] = useState([]);
   // hook
   const params = useParams();
   console.log("PARAMS", params);
@@ -37,6 +39,19 @@ export default function ViewProduct() {
     try {
       const { data } = await axios.get(`/product/${params.slug}`);
       setProduct(data);
+      // load related products when product is loaded
+      loadRelatedProducts(data._id, data.category._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const loadRelatedProducts = async (productId, categoryId) => {
+    try {
+      const { data } = await axios.get(
+        `/products/related/${productId}/${categoryId}`
+      );
+      setRelatedProducts(data);
     } catch (error) {
       console.log(error);
     }
@@ -86,6 +101,19 @@ export default function ViewProduct() {
                   <FaProjectDiagram />
                   Category: {product?.category?.name}
                 </p>
+                <p>
+                  <FaRegClock /> Added: {moment(product.createdAt).fromNow()}
+                </p>
+                <p>
+                  {product?.quantity > 0 ? <FaCheck /> : <FaTimes />}{" "}
+                  {product?.quantity > 0 ? "In stock" : "Out Of Stock"}
+                </p>
+                <p>
+                  <FaWarehouse /> Available {product?.quantity - product?.sold}
+                </p>
+                <p>
+                  <FaRocket /> Sold {product?.sold}
+                </p>
               </div>
             </div>
 
@@ -98,7 +126,14 @@ export default function ViewProduct() {
           </div>
         </div>
         <div className="col-md-3">
-          <h2>Related products</h2>
+          <h2>
+            {relatedProducts.length < 1 ? "See also" : "Related products"}
+          </h2>
+          {/* Show only if no related products */}
+          {relatedProducts.length < 1 && <p>No related products</p>}
+          {relatedProducts.map((product) => (
+            <ProductCard product={product} key={product._id} />
+          ))}
         </div>
       </div>
     </div>

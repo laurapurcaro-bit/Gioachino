@@ -263,6 +263,22 @@ const productSearch = async (req, res) => {
   }
 };
 
+const relatedProducts = async (req, res) => {
+  try {
+    const { productId, categoryId } = req.params;
+    const related = await Product.find({
+      _id: { $ne: productId },
+      category: categoryId,
+    })
+      .limit(3)
+      .select("-photo")
+      .populate("category");
+    res.json(related);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   create,
   list,
@@ -274,4 +290,5 @@ module.exports = {
   productsCount,
   listProducts,
   productSearch,
+  relatedProducts,
 };

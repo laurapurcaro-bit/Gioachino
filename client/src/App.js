@@ -37,7 +37,10 @@ export default function App() {
   // Get user only once
   useEffect(() => {
     try {
-      GetUser({ auth, setAuth });
+      if (auth.logged === false) {
+        GetUser({ auth, setAuth });
+        return;
+      }
     } catch (error) {
       console.log(error);
     }

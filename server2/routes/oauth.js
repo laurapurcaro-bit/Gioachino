@@ -19,6 +19,7 @@ router.get("/auth/login/success", (req, res) => {
       cookies: req.cookies,
     });
   } else {
+    console.log(req.user);
     res.status(401).json({
       success: false,
       message: "user failed to authenticate.",
@@ -34,10 +35,17 @@ router.get("/auth/login/failed", (req, res) => {
 });
 
 router.get("/auth/logout", (req, res, next) => {
-  req.session.destroy(function (e) {
+  // It works!!!
+  if (req.session.passport) {
+    delete req.session.passport;
+  }
+  req.session.destroy(function (err) {
     req.logout();
+    req.logOut();
+    req.user = null;
+    res.clearCookie("connect.sid");
+    res.redirect(CLIENT_URL);
   });
-  res.redirect(CLIENT_URL);
 });
 
 router.get(
