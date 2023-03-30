@@ -1,7 +1,11 @@
 // import moment from "moment";
 import { Badge } from "antd";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductCard({ product }) {
+  // hook
+  const navigate = useNavigate();
+
   function productDesc(description) {
     if (description?.length < 60) {
       return description;
@@ -48,6 +52,7 @@ export default function ProductCard({ product }) {
         <button
           className="btn btn-primary col card-button-footer"
           style={{ borderBottomLeftRadius: "5px" }}
+          onClick={() => navigate(`/product/${product.slug}`)}
         >
           View Product
         </button>

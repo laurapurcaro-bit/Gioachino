@@ -22,6 +22,7 @@ import UserOrders from "./pages/user/Orders";
 import UserProfile from "./pages/user/Profile";
 import Shop from "./pages/Shop";
 import ResultsSearchBar from "./pages/ResultsSearchBar";
+import ViewProduct from "./pages/ViewProduct";
 
 const PageNotFound = () => {
   return (
@@ -53,6 +54,8 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/search" element={<ResultsSearchBar />} />
+        {/* Dynamic creation of route */}
+        <Route path="/product/:slug" element={<ViewProduct />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* Insert routes you want to protect */}
