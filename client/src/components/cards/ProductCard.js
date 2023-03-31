@@ -1,8 +1,12 @@
 // import moment from "moment";
 import { Badge } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../context/cart";
+import toast from "react-hot-toast";
 
 export default function ProductCard({ product }) {
+  // context
+  const [cart, setCart] = useCart();
   // hook
   const navigate = useNavigate();
 
@@ -59,6 +63,10 @@ export default function ProductCard({ product }) {
         <button
           className="btn btn-outline-primary col card-button-footer"
           style={{ borderBottomRightRadius: "5px" }}
+          onClick={() => {
+            setCart([...cart, product]);
+            toast.success(`${product.name} added to cart`);
+          }}
         >
           Add to Cart
         </button>

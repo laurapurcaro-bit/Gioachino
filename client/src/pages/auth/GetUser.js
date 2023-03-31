@@ -1,3 +1,4 @@
+import axios from "axios";
 export default function GetUser({ auth, setAuth }) {
   const getUser = () => {
     fetch("http://localhost:8000/api/auth/login/success", {
@@ -21,6 +22,7 @@ export default function GetUser({ auth, setAuth }) {
       })
       .then((resJson) => {
         localStorage.setItem("auth", JSON.stringify(resJson.user));
+        console.log("COOKIES", resJson.cookies);
         // localStorage.setItem("token", JSON.stringify(resJson.token));
         // Put context
         // spread operator: ...auth
@@ -36,13 +38,6 @@ export default function GetUser({ auth, setAuth }) {
         console.log(error);
       });
   };
-  if (auth.logged === false && auth.isLogout === false) {
-    getUser();
-  } else {
-    console.log("user is logged out");
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   getUser();
-  return null;
 }

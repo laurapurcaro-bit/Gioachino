@@ -9,10 +9,12 @@ const authRoutes = require("./routes/oauth");
 const authEmailRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
+const cookieRoutes = require("./routes/cookies");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 const port = 8000;
 
 app.use(
@@ -33,16 +35,22 @@ app.use(express.json());
 // 1.
 app.use(
   session({
-    secret: process.env.SECRET,
+    key: "userId",
+    secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 5 * 1000
+      domain: "localhost",
+      path: "/",
       secure: false,
-      maxAge: 5 * 1000,
+      httpOnly: true,
+      sameSite: "lax",
     },
   })
 );
 //  2.
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 // 3.
@@ -63,6 +71,7 @@ passport.use(OAuthFacebook);
 // LinkedIn OAuth
 passport.use(OAuthLinkedIn);
 
+app.use("/api", cookieRoutes);
 app.use("/api", authRoutes);
 app.use("/api", authEmailRoutes);
 app.use("/api", categoryRoutes);

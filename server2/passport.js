@@ -34,9 +34,9 @@ userSchemaGoogle.plugin(passportLocalMongoose);
 const UserModelGoogle = mongoose.model("Userlinkedin", userSchemaLinkedin);
 // passport.use(UserModelGoogle.createStrategy());
 // used to serialize the user for the session
-passport.serializeUser(function (user, cb) {
-  cb(null, user.id);
-});
+// passport.serializeUser(function (user, cb) {
+//   cb(null, user.id);
+// });
 
 passport.deserializeUser(function (id, cb) {
   UserModelGoogle.findById(id, function (err, user) {
@@ -50,10 +50,10 @@ userSchemaFacebook.plugin(passportLocalMongoose);
 const UserModelFacebook = mongoose.model("Userfacebook", userSchemaFacebook);
 // passport.use(UserModelFacebook.createStrategy());
 // used to serialize the user for the session
-passport.serializeUser(function (user, cb) {
-  console.log("serializeUser", user);
-  cb(null, user.id);
-});
+// passport.serializeUser(function (user, cb) {
+//   console.log("serializeUser", user);
+//   cb(null, user.id);
+// });
 
 passport.deserializeUser(function (id, done) {
   UserModelFacebook.findById(id, function (err, user) {

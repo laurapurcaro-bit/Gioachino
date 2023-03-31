@@ -17,6 +17,7 @@ router.get("/auth/login/success", (req, res) => {
       user: req.user,
       token: token,
       cookies: req.cookies,
+      logout: false,
     });
   } else {
     console.log(req.user);
@@ -34,18 +35,18 @@ router.get("/auth/login/failed", (req, res) => {
   });
 });
 
-router.get("/auth/logout", (req, res, next) => {
+router.get("/auth/logout", (req, res) => {
   // It works!!!
-  if (req.session.passport) {
-    delete req.session.passport;
-  }
-  req.session.destroy(function (err) {
-    req.logout();
-    req.logOut();
-    req.user = null;
-    res.clearCookie("connect.sid");
-    res.redirect(CLIENT_URL);
-  });
+  // console.log("LOGOUT", req.cookies);
+  req.logout();
+  req.logOut();
+
+  // delete req.user;
+  // delete req.cookies;
+  // console.log("USER", req.user);
+  // console.log("COOKIES", req.cookies);
+  // req.logout();
+  res.status(200).json({ user: req.user, cookies: req.cookies, token: "" });
 });
 
 router.get(
@@ -59,19 +60,6 @@ router.get(
     failureRedirect: "/login/failed",
   })
 );
-// router.get(
-//   "/auth/google/callback",
-//   passport.authenticate(
-//     "google",
-//     {
-//       session: false,
-//     },
-//     (req, res) => {
-//       res.set({ "Access-Control-Allow-Origin": "*" });
-//       res.send(req.user);
-//     }
-//   )
-// );
 
 router.get(
   "/auth/facebook",

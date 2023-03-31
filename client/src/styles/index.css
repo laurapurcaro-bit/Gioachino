@@ -1,6 +1,6 @@
 /* Navbar: when page is clicked, NavLink add a classNmae: "active" to current page */
 .active {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 .pointer {

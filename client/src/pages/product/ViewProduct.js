@@ -4,6 +4,8 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ProductCard from "../../components/cards/ProductCard";
 import { Badge } from "antd";
+import { useCart } from "../../context/cart";
+import toast from "react-hot-toast";
 import {
   FaDollarSign,
   FaProjectDiagram,
@@ -16,6 +18,8 @@ import {
 } from "react-icons/fa";
 
 export default function ViewProduct() {
+  // context
+  const [cart, setCart] = useCart();
   // state
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -120,6 +124,10 @@ export default function ViewProduct() {
             <button
               className="btn btn-outline-primary col card-button-footer"
               style={{ borderBottomRightRadius: "5px" }}
+              onClick={() => {
+                setCart([...cart, product]);
+                toast.success(`${product.name} added to cart`);
+              }}
             >
               Add to Cart
             </button>

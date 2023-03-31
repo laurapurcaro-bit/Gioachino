@@ -25,6 +25,7 @@ import ResultsSearchBar from "./pages/ResultsSearchBar";
 import ViewProduct from "./pages/product/ViewProduct";
 import CategoriesList from "./pages/categories/CategoriesList";
 import CategoryView from "./pages/categories/CategoryView";
+import Cart from "./pages/cart/Cart";
 
 const PageNotFound = () => {
   return (
@@ -54,12 +55,13 @@ export default function App() {
     <Router>
       <Menu />
       {/* Snack bar */}
-      <Toaster />
+      <Toaster position="top-center" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/categories" element={<CategoriesList />} />
         <Route path="/category/:slug" element={<CategoryView />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<ResultsSearchBar />} />
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<ViewProduct />} />
