@@ -36,12 +36,24 @@ export default function Cart() {
   }, [cart]);
 
   const countQuantitySingleProduct = () => {
-    const counts = {};
-    cart.forEach(function (x) {
-      counts[x._id] = (counts[x._id] || 0) + 1;
+    const countsById = {};
+
+    cart.forEach(function ({ _id }) {
+      countsById[_id] = (countsById[_id] || 0) + 1;
     });
-    setSingleCart([counts]);
-    return counts;
+    const finalArray = Object.entries(countsById)
+      .map(([_id, count]) => ({ _id, count }))
+      .sort((a, b) => b.count - a.count);
+
+    const composed = finalArray.map((d) => {
+      return {
+        ...d,
+        info: cart.filter(({ _id }) => {
+          if (d._id === _id) return _id;
+        }),
+      };
+    });
+    setSingleCart(composed);
   };
 
   const currency = "EUR";
@@ -74,7 +86,8 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      <pre>{JSON.stringify(singleCart, null, 4)}</pre>
+      {/* <pre>{JSON.stringify(singleCart, null, 4)}</pre>
+      <pre>{JSON.stringify(cart, null, 4)}</pre> */}
       {/* Product info in cart */}
       {/* display product with margin: mx-4 */}
       {cart?.length > 0 && (
@@ -82,7 +95,7 @@ export default function Cart() {
           <div className="row">
             <div className="col-md-8">
               <div className="row">
-                {cart?.map((p) => (
+                {singleCart?.map((p) => (
                   <div
                     key={p._id}
                     className="card mb-3"
@@ -92,7 +105,7 @@ export default function Cart() {
                       <div className="col-md-4">
                         <img
                           src={`${process.env.REACT_APP_API}/product/photo/${p._id}`}
-                          alt={p.name}
+                          alt={p.info[0].name}
                           style={{
                             height: "100%",
                             width: "100%",
@@ -106,25 +119,23 @@ export default function Cart() {
                       </div>
                       <div className="col-md-8">
                         <div className="card-body">
-                          <h5 className="card-title"> {p.name} </h5>
+                          <h5 className="card-title"> {p.info[0].name} </h5>
                           <p className="card-text">
-                            {p.description.length < 50
-                              ? `${p.description}`
-                              : `${p.description.substring(0, 50)}...`}
+                            {p.info[0].description.length < 50
+                              ? `${p.info[0].description}`
+                              : `${p.info[0].description.substring(0, 50)}...`}
                           </p>
                           <p className="card-text">
-                            {p?.price?.toLocaleString(localString, {
+                            {p?.info[0].price?.toLocaleString(localString, {
                               style: "currency",
                               currency: currency,
                             })}
                           </p>
-                          <p className="card-text">
-                            Quantity: {singleCart[0][p._id]}
-                          </p>
+                          <p className="card-text">Quantity: {p.count}</p>
                           <p className="card-text">{}</p>
                           <p className="card-text">
                             <small className="text-muted">
-                              Listed {moment(p.createdAt).fromNow()}
+                              Listed {moment(p.info[0].createdAt).fromNow()}
                             </small>
                           </p>
                         </div>
