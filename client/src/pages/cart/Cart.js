@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 
 export default function Cart() {
   // context
-  const [cart] = useCart();
+  const [cart, setCart] = useCart();
   const [auth] = useAuth();
   // hook
   const [singleCart, setSingleCart] = useState([]);
@@ -33,6 +33,7 @@ export default function Cart() {
 
   useEffect(() => {
     countQuantitySingleProduct();
+    // eslint-disable-next-line
   }, [cart]);
 
   const countQuantitySingleProduct = () => {
@@ -48,12 +49,41 @@ export default function Cart() {
     const composed = finalArray.map((d) => {
       return {
         ...d,
-        info: cart.filter(({ _id }) => {
-          if (d._id === _id) return _id;
-        }),
+        info: cart.filter(({ _id }) => d._id === _id),
       };
     });
     setSingleCart(composed);
+  };
+
+  const removeFromCart = (productId) => {
+    // Remove product from both singleCart and cart
+    // Make a copy of the cart
+    let mySingleCart = [...singleCart];
+    let myCart = [...cart];
+    // Find the index of the product to be removed
+    let index1 = mySingleCart.findIndex((item) => item._id === productId);
+    // Remove the product from the cart
+    mySingleCart.splice(index1, 1);
+    // Update the state
+    setSingleCart(mySingleCart);
+    // Find the index of the product to be removed
+    const removeItemAll = (arr, value) => {
+      let i = 0;
+      while (i < arr.length) {
+        // If the index of the product is found, remove it
+        if (arr[i]._id === value) {
+          arr.splice(i, 1);
+        } else {
+          ++i;
+        }
+      }
+      return arr;
+    };
+    let myCartUpdate = removeItemAll(myCart, productId);
+    // Update the state
+    setCart(myCartUpdate);
+    // Update the local storage
+    localStorage.setItem("cart", JSON.stringify(myCartUpdate));
   };
 
   const currency = "EUR";
@@ -132,13 +162,20 @@ export default function Cart() {
                             })}
                           </p>
                           <p className="card-text">Quantity: {p.count}</p>
-                          <p className="card-text">{}</p>
-                          <p className="card-text">
-                            <small className="text-muted">
-                              Listed {moment(p.info[0].createdAt).fromNow()}
-                            </small>
-                          </p>
                         </div>
+                      </div>
+                      <div className="d-flex justify-content-between">
+                        <p className="card-text">
+                          <small className="text-muted">
+                            Listed {moment(p.info[0].createdAt).fromNow()}
+                          </small>
+                        </p>
+                        <p
+                          className="text-danger mb-2 pointer"
+                          onClick={() => removeFromCart(p._id)}
+                        >
+                          Remove
+                        </p>
                       </div>
                     </div>
                   </div>
