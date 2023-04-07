@@ -6,6 +6,9 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 
 export default function Cart() {
+  // const
+  const currency = "EUR";
+  const localString = "en-US";
   // context
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
@@ -86,13 +89,33 @@ export default function Cart() {
     localStorage.setItem("cart", JSON.stringify(myCartUpdate));
   };
 
-  const currency = "EUR";
-  const localString = "en-US";
+  const cartSubTotal = (p) => {
+    let totalProduct = 0;
+    totalProduct += p.info[0].price * p.count;
+
+    return totalProduct.toLocaleString(localString, {
+      style: "currency",
+      currency: currency,
+    });
+  };
+
+  const cartTotal = () => {
+    let total = 0;
+    singleCart.forEach((p) => {
+      total += p.info[0].price * p.count;
+    });
+    return total.toLocaleString(localString, {
+      style: "currency",
+      currency: currency,
+    });
+  };
 
   return (
     <>
       <Jumbotron
-        title={`Hello ${auth?.token && auth.user?.firstName}`}
+        title={`Hello ${
+          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
+        }`}
         subTitle={subtitleText()}
       />
 
@@ -123,13 +146,13 @@ export default function Cart() {
       {cart?.length > 0 && (
         <div className="container mx-4">
           <div className="row">
-            <div className="col-md-8">
+            <div className="col-md-6">
               <div className="row">
                 {singleCart?.map((p) => (
                   <div
                     key={p._id}
                     className="card mb-3"
-                    style={{ maxWidth: 540 }}
+                    style={{ maxWidth: 600 }}
                   >
                     <div className="row g-0">
                       <div className="col-md-4">
@@ -147,7 +170,7 @@ export default function Cart() {
                           }}
                         />
                       </div>
-                      <div className="col-md-8">
+                      <div className="col-md-4">
                         <div className="card-body">
                           <h5 className="card-title"> {p.info[0].name} </h5>
                           <p className="card-text">
@@ -182,7 +205,26 @@ export default function Cart() {
                 ))}
               </div>
             </div>
-            <div className="col-md-4 text-center">Total</div>
+            <div className="col-md-2 text-center">
+              <h4>Subtotal</h4>
+              <hr />
+              <p>
+                {singleCart?.map((p) => {
+                  return (
+                    <div key={p._id}>
+                      <p>
+                        {p.info[0].name} x {p.count} = {cartSubTotal(p)}
+                      </p>
+                    </div>
+                  );
+                })}
+              </p>
+            </div>
+            <div className="col-md-4 text-center">
+              <h4>Total</h4>
+              <hr />
+              <p>Total: {cartTotal()}</p>
+            </div>
           </div>
         </div>
       )}

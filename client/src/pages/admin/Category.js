@@ -100,7 +100,9 @@ export default function AdminCategory() {
   return (
     <>
       <Jumbotron
-        title={`Hello ${auth?.user?.firstName}`}
+        title={`Hello ${
+          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
+        }`}
         subTitle="Admin Dashboard"
       />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}

@@ -112,7 +112,9 @@ export default function AdminUpdateProduct() {
   return (
     <>
       <Jumbotron
-        title={`Hello ${auth?.user?.firstName}`}
+        title={`Hello ${
+          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
+        }`}
         subTitle="Admin Dashboard"
       />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}

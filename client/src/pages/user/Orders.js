@@ -9,7 +9,9 @@ export default function UserOrders() {
   return (
     <>
       <Jumbotron
-        title={`Hello ${auth?.user?.firstName}`}
+        title={`Hello ${
+          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
+        }`}
         subTitle="Dashboard"
       />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}

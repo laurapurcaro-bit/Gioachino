@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { UserModelGoogle } = require("../schemas/userGoogle");
 const { hashPassword, comparePassword } = require("../helpers/auth");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
@@ -120,8 +121,67 @@ const secret = async (req, res) => {
   res.json({ currentUser: req.user });
 };
 
+// handle google login
+// no change password if user login with google
+const updateProfile = async (req, res) => {
+  try {
+    console.log("PROFILE UPDATE", req.user);
+    if (req.body.provider === "google") {
+      const { firstName, lastName, address } = req.body;
+      console.log("PROFILE! UPDATE", req.body);
+      const user = await UserModelGoogle.findById({ _id: req.user._id });
+      // update user
+      const updated = await UserModelGoogle.findOneAndUpdate(
+        req.user._id,
+        {
+          firstName: firstName || user.firstName,
+          lastName: lastName || user.lastName,
+          address: address || user.address,
+        },
+        // get updated data
+        { new: true }
+      );
+      // send response
+      res.json(updated);
+    } else {
+      const { firstName, lastName, password, address } = req.body;
+      console.log("PROFILE UPDATE", req.body);
+      const user = await User.findById({ _id: req.user._id });
+      // check password length
+      if (password && password.length < 6) {
+        return res.json({
+          error: "Password must be at least 6 characters long",
+        });
+      }
+      // hash password
+      const hashedPassword = password
+        ? await hashPassword(password)
+        : undefined;
+      // update user
+      const updated = await User.findOneAndUpdate(
+        req.user._id,
+        {
+          firstName: firstName || user.firstName,
+          lastName: lastName || user.lastName,
+          password: hashedPassword || user.password,
+          address: address || user.address,
+        },
+        // get updated data
+        { new: true }
+      );
+      // remove password from response
+      updated.password = undefined;
+      // send response
+      res.json(updated);
+    }
+  } catch (err) {
+    console.log("PROFILE UPDATE ERROR", err);
+  }
+};
+
 module.exports = {
   register,
   login,
   secret,
+  updateProfile,
 };

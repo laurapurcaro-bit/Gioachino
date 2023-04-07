@@ -9,7 +9,6 @@ const authRoutes = require("./routes/oauth");
 const authEmailRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
-const cookieRoutes = require("./routes/cookies");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
@@ -40,7 +39,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 5 * 1000
+      maxAge: 24 * 60 * 60 * 1000 * 1000, // 5 * 1000
       domain: "localhost",
       path: "/",
       secure: false,
@@ -71,7 +70,6 @@ passport.use(OAuthFacebook);
 // LinkedIn OAuth
 passport.use(OAuthLinkedIn);
 
-app.use("/api", cookieRoutes);
 app.use("/api", authRoutes);
 app.use("/api", authEmailRoutes);
 app.use("/api", categoryRoutes);
