@@ -36,8 +36,8 @@ app.use(
   session({
     key: "userId",
     secret: process.env.SESS_SECRET,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000 * 1000, // 5 * 1000
       domain: "localhost",

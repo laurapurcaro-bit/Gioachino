@@ -13,54 +13,35 @@ const { userSchemaGoogle } = require("./schemas/userGoogle");
 // Linkedin
 userSchemaLinkedin.plugin(passportLocalMongoose);
 userSchemaLinkedin.plugin(findOrCreate);
-// const User = mongoose.model("User", userSchema);
-// 4. Passport-local plugin
-const UserModelLinkedin = mongoose.model("Userlinkedin", userSchemaLinkedin);
-// passport.use(userModelLinkedin.createStrategy());
-// used to serialize the user for the session
-passport.serializeUser(function (user, cb) {
-  cb(null, user.id);
-});
-
-passport.deserializeUser(function (id, cb) {
-  UserModelLinkedin.findById(id, function (err, user) {
-    cb(err, user);
-  });
-});
 // Google
 userSchemaGoogle.plugin(passportLocalMongoose);
-// const User = mongoose.model("User", userSchema);
-// 4. Passport-local plugin
-const UserModelGoogle = mongoose.model("Userlinkedin", userSchemaLinkedin);
-// passport.use(UserModelGoogle.createStrategy());
-// used to serialize the user for the session
-// passport.serializeUser(function (user, cb) {
-//   cb(null, user.id);
-// });
-
-passport.deserializeUser(function (id, cb) {
-  UserModelGoogle.findById(id, function (err, user) {
-    cb(err, user);
-  });
-});
 // Facebook
 userSchemaFacebook.plugin(passportLocalMongoose);
-// const User = mongoose.model("User", userSchema);
 // 4. Passport-local plugin
+const UserModelLinkedin = mongoose.model("Userlinkedin", userSchemaLinkedin);
+const UserModelGoogle = mongoose.model("Usergoogle", userSchemaGoogle);
 const UserModelFacebook = mongoose.model("Userfacebook", userSchemaFacebook);
-// passport.use(UserModelFacebook.createStrategy());
 // used to serialize the user for the session
-// passport.serializeUser(function (user, cb) {
-//   console.log("serializeUser", user);
-//   cb(null, user.id);
-// });
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
+});
 
-passport.deserializeUser(function (id, done) {
-  UserModelFacebook.findById(id, function (err, user) {
-    console.log(user);
-    if (!err) done(null, user);
-    else done(err, null);
-  });
+passport.deserializeUser(function (user, cb) {
+  if (user.provider === "google") {
+    UserModelGoogle.findById(user._id, function (err, user) {
+      cb(err, user);
+    });
+  }
+  if (user.provider === "facebook") {
+    UserModelFacebook.findById(user._id, function (err, user) {
+      cb(err, user);
+    });
+  }
+  if (user.provider === "linkedin") {
+    UserModelLinkedin.findById(user._id, function (err, user) {
+      cb(err, user);
+    });
+  }
 });
 
 const OAuthGoogle = new GoogleStrategy(

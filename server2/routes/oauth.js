@@ -38,15 +38,14 @@ router.get("/auth/login/failed", (req, res) => {
 router.get("/auth/logout", (req, res) => {
   // It works!!!
   // console.log("LOGOUT", req.cookies);
-  req.logout();
-  req.logOut();
-
-  // delete req.user;
-  // delete req.cookies;
-  // console.log("USER", req.user);
-  // console.log("COOKIES", req.cookies);
-  // req.logout();
-  res.status(200).json({ user: req.user, cookies: req.cookies, token: "" });
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    // destroy session data
+    res.clearCookie("userId", { path: "/" });
+    res.status(200).redirect(CLIENT_URL);
+  });
 });
 
 router.get(
