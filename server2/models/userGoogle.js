@@ -10,6 +10,10 @@ const userSchemaGoogle = new mongoose.Schema({
   password: String,
   googleId: String,
   provider: String,
+  address: String,
+  CAP: String,
+  city: String,
+  country: String,
   role: { type: Number, default: 0, required: true },
 });
 const UserModelGoogle = mongoose.model("Usergoogle", userSchemaGoogle);

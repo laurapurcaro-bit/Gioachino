@@ -10,6 +10,10 @@ const userSchemaFacebook = new mongoose.Schema({
   password: String,
   facebookId: String,
   provider: String,
+  address: String,
+  CAP: String,
+  city: String,
+  country: String,
   role: { type: Number, default: 0, required: true },
 });
 const userModelFacebook = mongoose.model("Userfacebook", userSchemaFacebook);

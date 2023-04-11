@@ -10,6 +10,10 @@ const userSchemaLinkedin = new mongoose.Schema({
   password: String,
   linkedinId: String,
   provider: String,
+  address: String,
+  CAP: String,
+  city: String,
+  country: String,
   role: { type: Number, default: 0, required: true },
 });
 const UserModelLinkedin = mongoose.model("Userlinkedin", userSchemaLinkedin);

@@ -1,5 +1,5 @@
 const User = require("../models/user");
-const { UserModelGoogle } = require("../schemas/userGoogle");
+const { UserModelGoogle } = require("../models/userGoogle");
 const { hashPassword, comparePassword } = require("../helpers/auth");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
@@ -127,7 +127,7 @@ const updateProfile = async (req, res) => {
   try {
     console.log("PROFILE UPDATE", req.user);
     if (req.body.provider === "google") {
-      const { firstName, lastName, address } = req.body;
+      const { firstName, lastName, address, CAP, city, country } = req.body;
       console.log("PROFILE! UPDATE", req.body);
       const user = await UserModelGoogle.findById({ _id: req.user._id });
       // update user
@@ -137,6 +137,9 @@ const updateProfile = async (req, res) => {
           firstName: firstName || user.firstName,
           lastName: lastName || user.lastName,
           address: address || user.address,
+          CAP: CAP || user.CAP,
+          city: city || user.city,
+          country: country || user.country,
         },
         // get updated data
         { new: true }
@@ -165,6 +168,9 @@ const updateProfile = async (req, res) => {
           lastName: lastName || user.lastName,
           password: hashedPassword || user.password,
           address: address || user.address,
+          CAP: CAP || user.CAP,
+          city: city || user.city,
+          country: country || user.country,
         },
         // get updated data
         { new: true }
