@@ -1,16 +1,6 @@
 const Product = require("../models/product");
 const slugify = require("slugify");
 const fs = require("fs");
-const braintree = require("braintree");
-const dotenv = require("dotenv").config();
-
-// Braintree payment gateway
-const gateway = new braintree.BraintreeGateway({
-  environment: braintree.Environment.Sandbox,
-  merchantId: process.env.BRAINTREE_MERCHANT_ID,
-  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
-  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
-});
 
 const create = async (req, res) => {
   try {
@@ -289,45 +279,6 @@ const relatedProducts = async (req, res) => {
   }
 };
 
-const getTotken = async (req, res) => {
-  try {
-    gateway.clientToken.generate({}, function (err, response) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        // send token to client
-        res.send(response);
-      }
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
-const processPayment = async (req, res) => {
-  try {
-    // hardcode $10
-    let nonceFromTheClient = req.body.paymentMethodNonce;
-    let newTransaction = gateway.transaction.sale(
-      {
-        amount: "10.00",
-        paymentMethodNonce: nonceFromTheClient,
-        options: {
-          submitForSettlement: true,
-        },
-      },
-      function (error, result) {
-        if (result) {
-          res.send(result);
-        } else {
-          res.status(500).send(error);
-        }
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 module.exports = {
   create,
   list,
@@ -340,6 +291,4 @@ module.exports = {
   listProducts,
   productSearch,
   relatedProducts,
-  getTotken,
-  processPayment,
 };

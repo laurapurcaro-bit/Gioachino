@@ -4,6 +4,7 @@ import Jumbotron from "../../components/cards/Jumbotron";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useState, useEffect } from "react";
+import Payment from "../../components/payment/Payment";
 
 export default function Cart() {
   // const
@@ -262,6 +263,9 @@ export default function Cart() {
                   )}
                 </div>
               )}
+            </div>
+            <div className="col-md-6">
+              <Payment singleCart={singleCart} cartTotal={cartTotal} />
             </div>
           </div>
         </div>

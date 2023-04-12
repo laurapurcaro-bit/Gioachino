@@ -9,6 +9,7 @@ const authRoutes = require("./routes/oauth");
 const authEmailRoutes = require("./routes/auth");
 const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
+const paymentRoutes = require("./routes/payment");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
@@ -74,6 +75,7 @@ app.use("/api", authRoutes);
 app.use("/api", authEmailRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", paymentRoutes);
 
 app.listen(port, () => {
   console.log(`server2 is running on port ${port}`);
