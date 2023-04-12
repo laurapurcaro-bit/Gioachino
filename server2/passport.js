@@ -92,7 +92,6 @@ const OAuthFacebook = new FacebookStrategy(
   function (accessToken, refreshToken, profile, done) {
     // Find or create googleId
     UserModelFacebook.findOne({ facebookId: profile.id }, function (err, user) {
-      // console.log(profile);
       if (err) {
         return done(err);
       }
@@ -131,7 +130,6 @@ const OAuthLinkedIn = new LinkedInStrategy(
   function (token, tokenSecret, profile, done) {
     console.log(profile);
     UserModelLinkedin.findOne({ linkedinId: profile.id }, function (err, user) {
-      // console.log(profile);
       if (err) {
         return done(err);
       }

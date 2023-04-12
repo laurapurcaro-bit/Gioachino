@@ -208,7 +208,7 @@ export default function Cart() {
             <div className="col-md-2 text-center">
               <h4>Subtotal</h4>
               <hr />
-              <p>
+              <div>
                 {singleCart?.map((p) => {
                   return (
                     <div key={p._id}>
@@ -218,12 +218,50 @@ export default function Cart() {
                     </div>
                   );
                 })}
-              </p>
+              </div>
             </div>
             <div className="col-md-4 text-center">
               <h4>Total</h4>
               <hr />
               <p>Total: {cartTotal()}</p>
+              {auth?.user?.address ? (
+                <>
+                  <div className="mb-3 mt-3">
+                    <hr />
+                    <h4>Address: </h4>
+                    <p>{auth.user.address}</p>
+                    <p>
+                      {auth.user.CAP} {auth.user.city}
+                    </p>
+                    <p>{auth.user.country}</p>
+                  </div>
+                  <button
+                    className="btn btn-outline-warning"
+                    onClick={() => navigate("/dashboard/user/profile")}
+                  >
+                    Update delivery address
+                  </button>
+                </>
+              ) : (
+                <div className="mb-3">
+                  {auth?.token ? (
+                    <button
+                      className="btn btn-outline-warning"
+                      onClick={() => navigate("/dashboard/user/profile")}
+                    >
+                      Update delivery address
+                    </button>
+                  ) : (
+                    <button
+                      className="btn btn-outline-warning mt-3"
+                      // add state and use it in Login to redirect to cart after login
+                      onClick={() => navigate("/login", { state: "/cart" })}
+                    >
+                      Login to checkout
+                    </button>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -2,15 +2,14 @@ import Jumbotron from "../../components/cards/Jumbotron";
 import { useState, useEffect } from "react";
 import axios from "axios";
 // you can read the Route params
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ProductCard from "../../components/cards/ProductCard";
 
 export default function CategoryView() {
   // state
   const [products, setProducts] = useState([]);
   const [category, setCategory] = useState({});
-  // hook
-  const navigate = useNavigate();
+  // hooks
   const params = useParams();
 
   useEffect(() => {

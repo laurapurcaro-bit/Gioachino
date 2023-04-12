@@ -1,4 +1,3 @@
-import axios from "axios";
 export default function GetUser({ auth, setAuth }) {
   const getUser = () => {
     fetch("http://localhost:8000/api/auth/login/success", {

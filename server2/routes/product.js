@@ -19,6 +19,8 @@ const {
   listProducts,
   productSearch,
   relatedProducts,
+  getTotken,
+  processPayment,
 } = require("../controllers/product");
 
 // Route where you can create category
@@ -34,5 +36,8 @@ router.get("/products-count", productsCount);
 router.get("/list-products/:pageNumber", listProducts);
 router.get("/products/search/:search", productSearch);
 router.get("/products/related/:productId/:categoryId", relatedProducts);
+// Payment routes
+router.get("/braintree/token", getTotken);
+router.post("/braintree/payment", processPayment);
 
 module.exports = router;

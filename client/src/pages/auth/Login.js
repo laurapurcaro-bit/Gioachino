@@ -16,6 +16,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
+  console.log("Location", location);
 
   const handleEmailSubmit = async (e) => {
     // Prevent the default behavior of the browser to reload the page
