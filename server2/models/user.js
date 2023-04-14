@@ -10,12 +10,12 @@ const userSchema = new Schema(
     email: { type: String, trim: true, required: true, unique: true },
     photo: { type: String },
     password: { type: String, required: true, minLength: 6, maxLength: 64 },
+    provider: { type: String, default: "email" },
     address: { type: String },
     CAP: { type: String },
     city: { type: String },
     country: { type: String },
     role: { type: Number, default: 0, required: true },
-    provider: String,
   },
   { timestamps: true }
 );

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { useState, useEffect } from "react";
 import Payment from "../../components/payment/Payment";
+import toast from "react-hot-toast";
 
 export default function Cart() {
   // const
@@ -56,6 +57,8 @@ export default function Cart() {
         info: cart.filter(({ _id }) => d._id === _id),
       };
     });
+    console.log("composed", composed);
+
     setSingleCart(composed);
   };
 
@@ -109,6 +112,17 @@ export default function Cart() {
       style: "currency",
       currency: currency,
     });
+  };
+
+  const onPaymentSuccess = () => {
+    // empty the cart
+    localStorage.removeItem("cart");
+    // empty the state
+    setSingleCart([]);
+    setCart([]);
+    // redirect to dashboard
+    navigate("/dashboard/user/orders");
+    toast.success("Payment Successful");
   };
 
   return (
@@ -265,7 +279,11 @@ export default function Cart() {
               )}
             </div>
             <div className="col-md-6">
-              <Payment singleCart={singleCart} cartTotal={cartTotal} />
+              <Payment
+                singleCart={singleCart}
+                cartTotal={cartTotal}
+                onPaymentSuccess={onPaymentSuccess}
+              />
             </div>
           </div>
         </div>
