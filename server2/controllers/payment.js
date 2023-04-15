@@ -44,18 +44,24 @@ const processPayment = async (req, res) => {
         if (result) {
           // res.send(result);
           // create order
-          orderSchema.add({ buyer: { type: ObjectId, ref: provider } });
+          if (provider === "google") {
+            orderSchema.add({ buyer: { type: ObjectId, ref: "Usergoogle" } });
+          } else {
+            orderSchema.add({ buyer: { type: ObjectId, ref: "Useremail" } });
+          }
+
           const Order = mongoose.model("Order", orderSchema);
           const order = new Order({
             products: cart,
             cart: cart,
             paymentInfo: result,
-            buyer: req.user,
+            buyer: req.user, // req.user._id
           }).save((err, order) => {
             if (err) {
               console.log(err);
               return res.status(400).send("Error saving order");
             }
+
             res.send(order);
           });
         } else {

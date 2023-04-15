@@ -9,6 +9,8 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
   // state
   const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState("");
+  // loading state to disable the pay button
+  const [loading, setLoading] = useState(false);
   // hooks
   useEffect(() => {
     if (auth?.token) {
@@ -28,6 +30,7 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
 
   const handleBuy = async () => {
     try {
+      setLoading(true);
       // access the nonce
       const { nonce } = await instance.requestPaymentMethod();
       const { data } = await axios.post("/braintree/payment", {
@@ -36,16 +39,17 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
         amount: cartTotal(),
         provider: auth.user.provider,
       });
-      console.log(data);
+      setLoading(false);
       // empty the cart
       onPaymentSuccess();
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
   return (
-    <>
+    <div className="mt-3">
       <h4 className="mb-1">Payment</h4>
       {/* <div>{JSON.stringify(clientToken)}</div> */}
       {!clientToken || !singleCart.length ? (
@@ -67,12 +71,12 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
           <button
             className="btn btn-primary col-md-12"
             onClick={handleBuy}
-            disabled={!auth.user.address || !instance}
+            disabled={!auth.user.address || !instance || loading}
           >
-            Buy
+            {loading ? "Processing..." : "Pay"}
           </button>
         </>
       )}
-    </>
+    </div>
   );
 }

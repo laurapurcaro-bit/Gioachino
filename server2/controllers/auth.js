@@ -147,7 +147,8 @@ const updateProfile = async (req, res) => {
       // send response
       res.json(updated);
     } else {
-      const { firstName, lastName, password, address } = req.body;
+      const { firstName, lastName, password, address, CAP, city, country } =
+        req.body;
       console.log("PROFILE UPDATE", req.body);
       const user = await User.findById({ _id: req.user._id });
       // check password length

@@ -2,10 +2,10 @@ import { useCart } from "../../context/cart";
 import { useAuth } from "../../context/auth";
 import Jumbotron from "../../components/cards/Jumbotron";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
 import { useState, useEffect } from "react";
 import Payment from "../../components/payment/Payment";
 import toast from "react-hot-toast";
+import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
 
 export default function Cart() {
   // const
@@ -161,67 +161,25 @@ export default function Cart() {
       {cart?.length > 0 && (
         <div className="container mx-4">
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-8">
               <div className="row">
                 {singleCart?.map((p) => (
                   <div
                     key={p._id}
                     className="card mb-3"
-                    style={{ maxWidth: 600 }}
+                    style={{ maxWidth: 800 }}
                   >
-                    <div className="row g-0">
-                      <div className="col-md-4">
-                        <img
-                          src={`${process.env.REACT_APP_API}/product/photo/${p._id}`}
-                          alt={p.info[0].name}
-                          style={{
-                            height: "100%",
-                            width: "100%",
-                            // fix this!!!!!!!
-                            // objectFit: "cover",
-
-                            marginLeft: "-10%",
-                            borderBottomRightRadius: "0px",
-                          }}
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <div className="card-body">
-                          <h5 className="card-title"> {p.info[0].name} </h5>
-                          <p className="card-text">
-                            {p.info[0].description.length < 50
-                              ? `${p.info[0].description}`
-                              : `${p.info[0].description.substring(0, 50)}...`}
-                          </p>
-                          <p className="card-text">
-                            {p?.info[0].price?.toLocaleString(localString, {
-                              style: "currency",
-                              currency: currency,
-                            })}
-                          </p>
-                          <p className="card-text">Quantity: {p.count}</p>
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <p className="card-text">
-                          <small className="text-muted">
-                            Listed {moment(p.info[0].createdAt).fromNow()}
-                          </small>
-                        </p>
-                        <p
-                          className="text-danger mb-2 pointer"
-                          onClick={() => removeFromCart(p._id)}
-                        >
-                          Remove
-                        </p>
-                      </div>
-                    </div>
+                    <ProductCardHorizontal
+                      p={p}
+                      removeFromCart={removeFromCart}
+                    />
                   </div>
                 ))}
               </div>
             </div>
-            <div className="col-md-2 text-center">
-              <h4>Subtotal</h4>
+            {/* Right Section */}
+            <div className="col-md-4 text-center">
+              <h4>Total</h4>
               <hr />
               <div>
                 {singleCart?.map((p) => {
@@ -234,10 +192,7 @@ export default function Cart() {
                   );
                 })}
               </div>
-            </div>
-            <div className="col-md-4 text-center">
-              <h4>Total</h4>
-              <hr />
+
               <p>Total: {cartTotal()}</p>
               {auth?.user?.address ? (
                 <>
@@ -277,8 +232,6 @@ export default function Cart() {
                   )}
                 </div>
               )}
-            </div>
-            <div className="col-md-6">
               <Payment
                 singleCart={singleCart}
                 cartTotal={cartTotal}
