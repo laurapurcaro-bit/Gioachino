@@ -1,6 +1,7 @@
 export default function OrdersCard({ p }) {
   const currency = "EUR";
   const localString = "en-US";
+  // console.log("ORDERS CARD", p);
   return (
     <div className="card mb-3">
       <div className="row g-0">
@@ -13,7 +14,6 @@ export default function OrdersCard({ p }) {
               width: "90%",
               // fix this!!!!!!!
               // objectFit: "cover",
-
               marginLeft: "0%",
               borderBottomRightRadius: "0px",
             }}

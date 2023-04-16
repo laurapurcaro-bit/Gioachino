@@ -26,6 +26,8 @@ import ViewProduct from "./pages/product/ViewProduct";
 import CategoriesList from "./pages/categories/CategoriesList";
 import CategoryView from "./pages/categories/CategoryView";
 import Cart from "./pages/cart/Cart";
+import ManageOrdersAdmin from "./pages/admin/ManageOrders";
+import AdminResultsSearchBar from "./pages/admin/AdminResultsSearchBar";
 
 const PageNotFound = () => {
   return (
@@ -79,6 +81,8 @@ export default function App() {
           <Route path="admin/category" element={<AdminCategory />} />
           <Route path="admin/product" element={<AdminCreateProduct />} />
           <Route path="admin/products" element={<AdminShowProducts />} />
+          <Route path="admin/orders" element={<ManageOrdersAdmin />} />
+          <Route path="admin/search" element={<AdminResultsSearchBar />} />
           <Route
             path="admin/products/update/:slug"
             element={<AdminUpdateProduct />}

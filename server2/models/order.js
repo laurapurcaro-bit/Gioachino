@@ -6,6 +6,12 @@ const orderSchema = new mongoose.Schema(
     products: [{ type: ObjectId, ref: "Product" }],
     paymentInfo: {},
     cart: { type: Array, default: [] },
+    buyer: { type: ObjectId, refPath: "docModel" },
+    docModel: {
+      type: String,
+      enum: ["Useremail", "Usergoogle", "Userfacebook"],
+      required: true,
+    },
     // refers to MongoDB User model
     orderStatus: {
       type: String,
@@ -23,4 +29,5 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = { orderSchema, ObjectId };
+const Order = mongoose.model("Order", orderSchema);
+module.exports = { Order, ObjectId };

@@ -1,7 +1,7 @@
 const braintree = require("braintree");
 const dotenv = require("dotenv").config();
-const mongoose = require("mongoose");
-const { orderSchema, ObjectId } = require("../models/order");
+const { Order } = require("../models/order");
+const Product = require("../models/product");
 
 // Braintree payment gateway
 const gateway = new braintree.BraintreeGateway({
@@ -44,24 +44,27 @@ const processPayment = async (req, res) => {
         if (result) {
           // res.send(result);
           // create order
-          if (provider === "google") {
-            orderSchema.add({ buyer: { type: ObjectId, ref: "Usergoogle" } });
-          } else {
-            orderSchema.add({ buyer: { type: ObjectId, ref: "Useremail" } });
-          }
+          const model = () => {
+            if (provider === "google") {
+              return "Usergoogle";
+            } else {
+              return "Useremail";
+            }
+          };
 
-          const Order = mongoose.model("Order", orderSchema);
           const order = new Order({
             products: cart,
             cart: cart,
             paymentInfo: result,
-            buyer: req.user, // req.user._id
+            docModel: model(),
+            buyer: req.user._id, // req.user._id
           }).save((err, order) => {
             if (err) {
               console.log(err);
               return res.status(400).send("Error saving order");
             }
-
+            // decrement quantity, increment sold
+            decrementQuantity(cart);
             res.send(order);
           });
         } else {
@@ -69,6 +72,24 @@ const processPayment = async (req, res) => {
         }
       }
     );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const decrementQuantity = async (cart) => {
+  try {
+    const bulkOps = cart.map((item) => {
+      console.log("CART", item);
+      return {
+        updateOne: {
+          filter: { _id: item._id },
+          update: { $inc: { quantity: -item.count, sold: +item.count } },
+        },
+      };
+    });
+    const updated = await Product.bulkWrite(bulkOps, {});
+    console.log("PRODUCT QUANTITY-- AND SOLD++", updated);
   } catch (error) {
     console.log(error);
   }

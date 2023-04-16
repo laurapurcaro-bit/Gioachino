@@ -27,7 +27,7 @@ export default function ViewProduct() {
   const params = useParams();
   console.log("PARAMS", params);
   //   const
-  const inStock = product?.quantity - product?.sold;
+  const inStock = product?.quantity; //- product?.sold;
   const currency = "EUR";
   const localString = "en-US";
   useEffect(() => {

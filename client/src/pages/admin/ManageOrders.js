@@ -1,16 +1,27 @@
 import { useAuth } from "../../context/auth";
 import Jumbotron from "../../components/cards/Jumbotron";
-import UserMenu from "../../components/nav/UserMenu";
+import AdminMenu from "../../components/nav/AdminMenu";
 import OrdersCard from "../../components/cards/OrdersCard";
+import AdminSearchBar from "../../components/forms/AdminSearchBar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
+import { Select } from "antd";
 
-export default function UserOrders() {
+export default function ManageOrdersAdmin() {
   // context
   const [auth] = useAuth();
   // state
   const [orders, setOrders] = useState([]);
+  const [status, setStatus] = useState([
+    "Not Processed",
+    "Processing",
+    "Shipped",
+    "Delivered",
+    "Cancelled",
+    "Completed",
+  ]);
+  const [changedStatus, setChangedStatus] = useState("");
 
   useEffect(() => {
     if (auth?.token) {
@@ -22,9 +33,7 @@ export default function UserOrders() {
 
   const getOrders = async () => {
     try {
-      const { data } = await axios.post("/orders", {
-        provider: auth.user.provider,
-      });
+      const { data } = await axios.get("/admin/orders");
       console.log("ORDERS", data);
       setOrders(data);
     } catch (error) {
@@ -44,10 +53,11 @@ export default function UserOrders() {
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-3">
-            <UserMenu />
+            <AdminMenu />
           </div>
 
           <div className="col-md-9">
+            <AdminSearchBar />
             <div className="p-3 mt-2 mb-2 h4 bg-light">Orders</div>
 
             {orders?.map((order, index) => {
@@ -70,7 +80,20 @@ export default function UserOrders() {
                     <tbody>
                       <tr>
                         <td>{index + 1}</td>
-                        <td>{order?.orderStatus}</td>
+                        <td>
+                          <Select
+                            onChange={(value) => setChangedStatus(value)}
+                            bordered={true}
+                            defaultValue={order.orderStatus}
+                            style={{ width: 150 }}
+                          >
+                            {status.map((status, index) => (
+                              <Select.Option key={index} value={status}>
+                                {status}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        </td>
                         <td>{order?.buyer?.firstName}</td>
                         <td>{moment(order?.createdAt).fromNow()}</td>
                         <td>

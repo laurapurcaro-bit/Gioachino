@@ -18,7 +18,7 @@ export default function ProductCard({ product }) {
     }
   }
 
-  const inStock = product?.quantity - product?.sold;
+  const inStock = product?.quantity; // - product?.sold;
   const currency = "EUR";
   const localString = "en-US";
   return (
