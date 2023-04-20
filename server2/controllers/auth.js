@@ -108,6 +108,9 @@ const login = async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         address: user.address,
+        CAP: user.CAP,
+        city: user.city,
+        country: user.country,
         role: user.role,
       },
       token,
@@ -131,7 +134,7 @@ const updateProfile = async (req, res) => {
       console.log("PROFILE! UPDATE", req.body);
       const user = await UserModelGoogle.findById({ _id: req.user._id });
       // update user
-      const updated = await UserModelGoogle.findOneAndUpdate(
+      const updated = await UserModelGoogle.findByIdAndUpdate(
         req.user._id,
         {
           firstName: firstName || user.firstName,
@@ -162,7 +165,7 @@ const updateProfile = async (req, res) => {
         ? await hashPassword(password)
         : undefined;
       // update user
-      const updated = await User.findOneAndUpdate(
+      const updated = await User.findByIdAndUpdate(
         req.user._id,
         {
           firstName: firstName || user.firstName,

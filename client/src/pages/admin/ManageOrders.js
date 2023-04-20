@@ -41,6 +41,22 @@ export default function ManageOrdersAdmin() {
     }
   };
 
+  const handleOrderStatusChange = async (orderId, value) => {
+    setChangedStatus(value);
+    try {
+      const { data } = await axios.put(
+        `/admin/order-update-status/${orderId}`,
+        {
+          orderStatus: value,
+        }
+      );
+      console.log("ORDER STATUS UPDATE", data);
+      getOrders();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Jumbotron
@@ -82,7 +98,9 @@ export default function ManageOrdersAdmin() {
                         <td>{index + 1}</td>
                         <td>
                           <Select
-                            onChange={(value) => setChangedStatus(value)}
+                            onChange={(value) =>
+                              handleOrderStatusChange(order._id, value)
+                            }
                             bordered={true}
                             defaultValue={order.orderStatus}
                             style={{ width: 150 }}

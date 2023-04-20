@@ -2,6 +2,10 @@ const braintree = require("braintree");
 const dotenv = require("dotenv").config();
 const { Order } = require("../models/order");
 const Product = require("../models/product");
+const sgMail = require("@sendgrid/mail");
+
+// config sendgrid
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // Braintree payment gateway
 const gateway = new braintree.BraintreeGateway({
@@ -55,6 +59,7 @@ const processPayment = async (req, res) => {
           const order = new Order({
             products: cart,
             cart: cart,
+            amount: correctAmount,
             paymentInfo: result,
             docModel: model(),
             buyer: req.user._id, // req.user._id
@@ -95,4 +100,39 @@ const decrementQuantity = async (cart) => {
   }
 };
 
-module.exports = { getTotken, processPayment };
+const sendEmailAfterPayment = async (req, res) => {
+  // send email alert to admin
+  const { order } = req.body;
+
+  const findOrder = await Order.findById(order._id).populate(
+    "buyer",
+    "firstName email"
+  );
+  const emailData = {
+    from: process.env.EMAIL_FROM,
+    to: findOrder.buyer.email,
+    subject: `Your order ${findOrder._id} is recevied`,
+    html: `
+        <h1>Thank you ${findOrder.buyer.firstName} for shopping with us</h1>
+        <p>Your order is <span style="color:red;">recevied</span> and will be processed soon</p>
+        <p>Order ID: ${findOrder._id}</p>
+        <p>Order Status: ${findOrder.orderStatus}</p>
+        <p>Order Total: ${findOrder.amount}</p>
+        <p>Order Date: ${findOrder.createdAt}</p>
+        <p>Delivery Address: ${findOrder.address}</p>
+        <hr />
+        <p>Do not reply to this email</p>
+        <p>Visit our website for more information: <a href="${process.env.CLIENT_URL}/dashboard/user/orders">your dashboard</a></p>
+      `,
+  };
+  // send email
+  try {
+    await sgMail.send(emailData);
+    res.status(200).json({ message: "Email sent" });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ message: "Email could not be sent" });
+  }
+};
+
+module.exports = { getTotken, processPayment, sendEmailAfterPayment };

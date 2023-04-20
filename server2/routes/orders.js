@@ -6,6 +6,7 @@ const {
   getOrders,
   getAllOrders,
   ordersSearch,
+  updateOrderStatus,
 } = require("../controllers/orders");
 // middlewares
 const { requireSignIn, isAdmin } = require("../middlewares/auth");
@@ -19,6 +20,12 @@ router.get(
   requireSignIn,
   isAdmin,
   ordersSearch
+);
+router.put(
+  "/admin/order-update-status/:orderId",
+  requireSignIn,
+  isAdmin,
+  updateOrderStatus
 );
 
 module.exports = router;

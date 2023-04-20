@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import Payment from "../../components/payment/Payment";
 import toast from "react-hot-toast";
 import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
+import axios from "axios";
 
 export default function Cart() {
   // const
@@ -114,12 +115,16 @@ export default function Cart() {
     });
   };
 
-  const onPaymentSuccess = () => {
+  const onPaymentSuccess = async (data) => {
     // empty the cart
     localStorage.removeItem("cart");
     // empty the state
     setSingleCart([]);
     setCart([]);
+    // send email to user
+    await axios.post(`/payment-success/send-email`, {
+      order: data,
+    });
     // redirect to dashboard
     navigate("/dashboard/user/orders");
     toast.success("Payment Successful");

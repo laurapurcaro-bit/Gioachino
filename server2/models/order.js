@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema(
     products: [{ type: ObjectId, ref: "Product" }],
     paymentInfo: {},
     cart: { type: Array, default: [] },
+    amount: { type: Number },
     buyer: { type: ObjectId, refPath: "docModel" },
     docModel: {
       type: String,

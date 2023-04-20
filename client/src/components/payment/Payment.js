@@ -40,8 +40,8 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
         provider: auth.user.provider,
       });
       setLoading(false);
-      // empty the cart
-      onPaymentSuccess();
+      // empty the cart and send email and redirect to dashboard
+      onPaymentSuccess(data);
     } catch (error) {
       console.log(error);
       setLoading(false);
