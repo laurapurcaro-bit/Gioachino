@@ -6,9 +6,9 @@ const passport = require("passport");
 const mongoose = require("mongoose");
 const findOrCreate = require("mongoose-findorcreate");
 const passportLocalMongoose = require("passport-local-mongoose");
-const { userSchemaLinkedin } = require("./models/userLinkedin");
-const { userSchemaFacebook } = require("./models/userFacebook");
-const { userSchemaGoogle } = require("./models/userGoogle");
+const { userSchemaLinkedin } = require("../models/userLinkedin");
+const { userSchemaFacebook } = require("../models/userFacebook");
+const { userSchemaGoogle } = require("../models/userGoogle");
 
 // Linkedin
 userSchemaLinkedin.plugin(passportLocalMongoose);

@@ -3,7 +3,11 @@ const cookieSession = require("cookie-session");
 const session = require("express-session");
 const express = require("express");
 const bodyParser = require("body-parser");
-const { OAuthGoogle, OAuthFacebook, OAuthLinkedIn } = require("./passport");
+const {
+  OAuthGoogle,
+  OAuthFacebook,
+  OAuthLinkedIn,
+} = require("./oauth-strategy/passport");
 const passport = require("passport");
 const authRoutes = require("./routes/oauth");
 const authEmailRoutes = require("./routes/auth");
