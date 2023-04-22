@@ -11,6 +11,8 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
   const [instance, setInstance] = useState("");
   // loading state to disable the pay button
   const [loading, setLoading] = useState(false);
+  // constant
+  const amount = cartTotal();
   // hooks
   useEffect(() => {
     if (auth?.token) {
@@ -36,7 +38,7 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
       const { data } = await axios.post("/braintree/payment", {
         nonce,
         cart: singleCart,
-        amount: cartTotal(),
+        amount: amount,
         provider: auth.user.provider,
       });
       setLoading(false);
@@ -62,6 +64,32 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
                 authorization: clientToken,
                 paypal: {
                   flow: "vault",
+                },
+                googlePay: {
+                  merchantId: process.env.REACT_APP_BRAINTREE_MERCHANT_ID,
+                  transactionInfo: {
+                    totalPriceStatus: "FINAL",
+                    totalPrice: amount.split("€")[1],
+                    currencyCode: "EUR",
+                  },
+                },
+                applePay: {
+                  displayName: "Ecommerce",
+                  paymentRequest: {
+                    total: {
+                      label: "Ecommerce",
+                      amount: amount.split("€")[1],
+                      type: "final",
+                    },
+                    countryCode: "IT",
+                    currencyCode: "EUR",
+                    supportedNetworks: ["visa", "masterCard"],
+                    merchantCapabilities: [
+                      "supports3DS",
+                      "supportsCredit",
+                      "supportsDebit",
+                    ],
+                  },
                 },
               }}
               // we need to send instance to process the payment
