@@ -1,6 +1,8 @@
 name: Do Something with env files
 run-name: ${{ github.actor }} is testing out ENV GitHub Actions 🚀
 on: [push]
+env:
+  ENV: DEV
 
 jobs:
   Explore-GitHub-Actions:
@@ -8,5 +10,5 @@ jobs:
     steps:
       - name: List files in the repository
         if: ${{ env.ENV == 'DEV' }}
-        run: echo "Hello and ${{ env.ENV }}" > .env
+        run: echo "${{ secrets.LINKEDIN_CLIENT_ID }} and ${{ env.ENV }}" > .env
       - run: echo "successfully created env file"
