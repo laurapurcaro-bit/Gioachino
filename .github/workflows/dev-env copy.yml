@@ -1,8 +1,6 @@
 name: Do Something with env files
 run-name: ${{ github.actor }} is testing out ENV GitHub Actions 🚀
 on: [push]
-env:
-  ENV: DEV
 
 jobs:
   Explore-GitHub-Actions:
