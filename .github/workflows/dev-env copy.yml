@@ -10,5 +10,5 @@ jobs:
     steps:
       - name: List files in the repository
         if: ${{ env.ENV == 'DEV' }}
-        run: echo "Hello and ${{ env.ENV }}" | base64 --decode > .env
+        run: echo "Hello and ${{ env.ENV }}" > .env
       - run: echo "successfully created env file"
