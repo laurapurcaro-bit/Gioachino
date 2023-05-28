@@ -1,5 +1,4 @@
 import { useAuth } from "../../context/auth";
-import Jumbotron from "../../components/cards/Jumbotron";
 import AdminMenu from "../../components/nav/AdminMenu";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -94,9 +93,7 @@ export default function AdminUpdateProduct() {
 
   const handleDelete = async (req, res) => {
     try {
-      let answer = window.confirm(
-        "Are you sure you want to delete this product?"
-      );
+      let answer = window.confirm("Are you sure you want to delete this product?");
       // If no, block the function with return
       if (!answer) return;
       // Otherwise, delete the product
@@ -111,12 +108,6 @@ export default function AdminUpdateProduct() {
 
   return (
     <>
-      <Jumbotron
-        title={`Hello ${
-          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
-        }`}
-        subTitle="Admin Dashboard"
-      />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
       <div className="container-fluid">
         <div className="row">
@@ -129,20 +120,13 @@ export default function AdminUpdateProduct() {
 
             {photo?.size ? (
               <div className="text-center">
-                <img
-                  src={URL.createObjectURL(photo)}
-                  alt="product"
-                  className="img img-responsive"
-                  height="200px"
-                />
+                <img src={URL.createObjectURL(photo)} alt="product" className="img img-responsive" height="200px" />
               </div>
             ) : (
               <div className="text-center">
                 {/* Fetch the latest image */}
                 <img
-                  src={`${
-                    process.env.REACT_APP_API
-                  }/product/photo/${id}?${new Date().getTime()}`}
+                  src={`${process.env.REACT_APP_API}/product/photo/${id}?${new Date().getTime()}`}
                   alt="product"
                   className="img img-responsive"
                   height="200px"
@@ -152,24 +136,12 @@ export default function AdminUpdateProduct() {
             <div className="pt-2">
               <label className="btn btn-outline-secondary p-2 col-12 mb-3">
                 {photo?.length ? photo.name : "Upload Photo"}
-                <input
-                  type="file"
-                  name="photo"
-                  accept="image/*"
-                  onChange={(e) => setPhoto(e.target.files[0])}
-                  hidden
-                />
+                <input type="file" name="photo" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} hidden />
               </label>
             </div>
 
             {/* Category name */}
-            <input
-              type="text"
-              className="form-control mb-3 p-2"
-              placeholder="Write a name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <input type="text" className="form-control mb-3 p-2" placeholder="Write a name" value={name} onChange={(e) => setName(e.target.value)} />
             {/* Description */}
             <textarea
               type="text"
@@ -224,16 +196,10 @@ export default function AdminUpdateProduct() {
               <Option value="1">Yes</Option>
             </Select>
             <div className="d-flex justify-content-end">
-              <button
-                onClick={handleUpdate}
-                className="btn btn-outline-primary mb-5 m-2"
-              >
+              <button onClick={handleUpdate} className="btn btn-outline-primary mb-5 m-2">
                 Update
               </button>
-              <button
-                onClick={handleDelete}
-                className="btn btn-outline-danger mb-5 m-2"
-              >
+              <button onClick={handleDelete} className="btn btn-outline-danger mb-5 m-2">
                 Delete
               </button>
             </div>

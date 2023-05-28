@@ -6,7 +6,7 @@
 }
 
 .filterContainer {
-  padding-top: 5rem;
+  padding: 0 0 0 5rem;
 }
 
 .productContainer {
@@ -14,5 +14,5 @@
 }
 
 .cardContainer {
-  padding: 5rem;
+  padding: 0 5rem 5rem 5rem;
 }

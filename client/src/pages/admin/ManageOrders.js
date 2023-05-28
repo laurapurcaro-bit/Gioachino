@@ -1,5 +1,4 @@
 import { useAuth } from "../../context/auth";
-import Jumbotron from "../../components/cards/Jumbotron";
 import AdminMenu from "../../components/nav/AdminMenu";
 import OrdersCard from "../../components/cards/OrdersCard";
 import AdminSearchBar from "../../components/forms/AdminSearchBar";
@@ -13,14 +12,7 @@ export default function ManageOrdersAdmin() {
   const [auth] = useAuth();
   // state
   const [orders, setOrders] = useState([]);
-  const [status, setStatus] = useState([
-    "Not Processed",
-    "Processing",
-    "Shipped",
-    "Delivered",
-    "Cancelled",
-    "Completed",
-  ]);
+  const [status, setStatus] = useState(["Not Processed", "Processing", "Shipped", "Delivered", "Cancelled", "Completed"]);
   const [changedStatus, setChangedStatus] = useState("");
 
   useEffect(() => {
@@ -44,12 +36,9 @@ export default function ManageOrdersAdmin() {
   const handleOrderStatusChange = async (orderId, value) => {
     setChangedStatus(value);
     try {
-      const { data } = await axios.put(
-        `/admin/order-update-status/${orderId}`,
-        {
-          orderStatus: value,
-        }
-      );
+      const { data } = await axios.put(`/admin/order-update-status/${orderId}`, {
+        orderStatus: value,
+      });
       console.log("ORDER STATUS UPDATE", data);
       getOrders();
     } catch (error) {
@@ -59,12 +48,6 @@ export default function ManageOrdersAdmin() {
 
   return (
     <>
-      <Jumbotron
-        title={`Hello ${
-          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
-        }`}
-        subTitle="Dashboard"
-      />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
       <div className="container-fluid">
         <div className="row">
@@ -78,10 +61,7 @@ export default function ManageOrdersAdmin() {
 
             {orders?.map((order, index) => {
               return (
-                <div
-                  className="border shadow bg-light rounded-4 mb-3"
-                  key={order._id}
-                >
+                <div className="border shadow bg-light rounded-4 mb-3" key={order._id}>
                   <table className="table table-bordered">
                     <thead>
                       <tr>
@@ -98,9 +78,7 @@ export default function ManageOrdersAdmin() {
                         <td>{index + 1}</td>
                         <td>
                           <Select
-                            onChange={(value) =>
-                              handleOrderStatusChange(order._id, value)
-                            }
+                            onChange={(value) => handleOrderStatusChange(order._id, value)}
                             bordered={true}
                             defaultValue={order.orderStatus}
                             style={{ width: 150 }}
@@ -114,9 +92,7 @@ export default function ManageOrdersAdmin() {
                         </td>
                         <td>{order?.buyer?.firstName}</td>
                         <td>{moment(order?.createdAt).fromNow()}</td>
-                        <td>
-                          {order?.paymentInfo.success ? "Success" : "Failed"}
-                        </td>
+                        <td>{order?.paymentInfo.success ? "Success" : "Failed"}</td>
                         <td>{order?.products?.length}</td>
                       </tr>
                     </tbody>

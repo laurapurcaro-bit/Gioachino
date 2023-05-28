@@ -1,7 +1,6 @@
 import { useAuth } from "../../context/auth";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Jumbotron from "../../components/cards/Jumbotron";
 import UserMenu from "../../components/nav/UserMenu";
 import { toast } from "react-hot-toast"; // react-toastify
 
@@ -21,8 +20,7 @@ export default function UserProfile() {
   useEffect(() => {
     if (auth?.user) {
       console.log("AUTH USER", auth.user);
-      const { firstName, lastName, email, address, CAP, city, country } =
-        auth.user;
+      const { firstName, lastName, email, address, CAP, city, country } = auth.user;
       setFirstName(firstName);
       setLastName(lastName);
       setEmail(email);
@@ -36,11 +34,7 @@ export default function UserProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (
-        auth.user.provider === "google" ||
-        auth.user.provider === "facebook" ||
-        auth.user.provider === "apple"
-      ) {
+      if (auth.user.provider === "google" || auth.user.provider === "facebook" || auth.user.provider === "apple") {
         const { data } = await axios.put("/profile", {
           firstName,
           lastName,
@@ -99,12 +93,6 @@ export default function UserProfile() {
 
   return (
     <>
-      <Jumbotron
-        title={`Hello ${
-          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
-        }`}
-        subTitle="Dashboard"
-      />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
       <div className="container-fluid">
         <div className="row">
@@ -148,9 +136,7 @@ export default function UserProfile() {
                 disabled={true}
               />
               {/* Show password only if login with email */}
-              {auth.user.provider === "google" ||
-              auth.user.provider === "facebook" ||
-              auth.user.provider === "apple" ? null : (
+              {auth.user.provider === "google" || auth.user.provider === "facebook" || auth.user.provider === "apple" ? null : (
                 <>
                   <label className="form-label mx-3 mb-0">
                     <h5>Password</h5>
@@ -168,43 +154,20 @@ export default function UserProfile() {
               <label className="form-label mx-3 mb-0">
                 <h5>Address</h5>
               </label>
-              <input
-                className="form-control m-2 p-2"
-                placeholder="e.g Via Rossi 3"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
+              <input className="form-control m-2 p-2" placeholder="e.g Via Rossi 3" value={address} onChange={(e) => setAddress(e.target.value)} />
               <label className="form-label mx-3 mb-0">
                 <h5>CAP</h5>
               </label>
-              <input
-                className="form-control m-2 p-2"
-                placeholder="CAP"
-                value={CAP}
-                onChange={(e) => setCAP(e.target.value)}
-              />
+              <input className="form-control m-2 p-2" placeholder="CAP" value={CAP} onChange={(e) => setCAP(e.target.value)} />
               <label className="form-label mx-3 mb-0">
                 <h5>City</h5>
               </label>
-              <input
-                className="form-control m-2 p-2"
-                placeholder="e.g Milano"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
+              <input className="form-control m-2 p-2" placeholder="e.g Milano" value={city} onChange={(e) => setCity(e.target.value)} />
               <label className="form-label mx-3 mb-0">
                 <h5>Country</h5>
               </label>
-              <input
-                className="form-control m-2 p-2"
-                placeholder="e.g Italia"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
-              <button
-                className="btn btn-outline-primary mt-3 m-2 p-2"
-                type="submit"
-              >
+              <input className="form-control m-2 p-2" placeholder="e.g Italia" value={country} onChange={(e) => setCountry(e.target.value)} />
+              <button className="btn btn-outline-primary mt-3 m-2 p-2" type="submit">
                 Update
               </button>
             </form>

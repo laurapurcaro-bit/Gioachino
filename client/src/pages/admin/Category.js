@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
-import Jumbotron from "../../components/cards/Jumbotron";
 import AdminMenu from "../../components/nav/AdminMenu";
 import CategoryForm from "../../components/forms/CategoryForms";
 import axios from "axios";
@@ -99,13 +98,6 @@ export default function AdminCategory() {
 
   return (
     <>
-      <Jumbotron
-        title={`Hello ${
-          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
-        }`}
-        subTitle="Admin Dashboard"
-      />
-      {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-3">
@@ -114,12 +106,7 @@ export default function AdminCategory() {
 
           <div className="col-md-9">
             <div className="p-3 mt-2 mb-2 h4 bg-light">Manage Categories</div>
-            <CategoryForm
-              value={name}
-              setValue={setName}
-              handleSubmit={handleSubmit}
-              BtnName="Submit"
-            />
+            <CategoryForm value={name} setValue={setName} handleSubmit={handleSubmit} BtnName="Submit" />
             <hr />
             <div className="col">
               {categories?.map((category) => (
@@ -137,12 +124,7 @@ export default function AdminCategory() {
               ))}
             </div>
             {/* Ant UI */}
-            <Modal
-              open={visible}
-              onOk={() => setVisible(false)}
-              onCancel={() => setVisible(false)}
-              footer={null}
-            >
+            <Modal open={visible} onOk={() => setVisible(false)} onCancel={() => setVisible(false)} footer={null}>
               <CategoryForm
                 value={updatingName}
                 setValue={setUpdatingName}

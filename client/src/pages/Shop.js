@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Jumbotron from "../components/cards/Jumbotron";
 import CategoriesBar from "./categories/CategoriesBar";
 import axios from "axios";
 import ProductCard from "../components/cards/ProductCard";
@@ -84,10 +83,9 @@ export default function Shop() {
   return (
     <div>
       <div className={styling.gridContainer}>
-        <h1>Gioachino</h1>
+        <h1>Catalogue</h1>
       </div>
-      <CategoriesBar></CategoriesBar>
-
+      <CategoriesBar />
       <div className={`container-fluid ${styling.productContainer}`}>
         <div className="row">
           <div className={`col-md-2 ${styling.filterContainer}`}>
