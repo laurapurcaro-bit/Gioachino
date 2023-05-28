@@ -1,12 +1,12 @@
-import "../../styles/card.css";
+import styling from "./Card.module.css";
 
 export default function Card({ post }) {
   return (
-    <div className="card">
-      <span className="title">{post.title}</span>
+    <div className={styling.card}>
+      <span className={styling.title}>{post.title}</span>
       <img src={post.img} alt="" className="img" />
-      <p className="desc">{post.desc}</p>
-      <button className="cardButton">Read more</button>
+      <p className={styling.desc}>{post.desc}</p>
+      <button className={styling.cardButton}>Read more</button>
     </div>
   );
 }

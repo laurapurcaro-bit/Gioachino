@@ -1,4 +1,4 @@
-import "../../styles/login.css";
+import styling from "./Login.module.css";
 import googleIcon from "../../images/google.png";
 import facebookIcon from "../../images/facebook.png";
 import linkedinIcon from "../../images/linkedin.png";
@@ -38,10 +38,7 @@ const Login = () => {
         // spread operator: ...auth
         setAuth({ ...auth, user: data.user, token: data.token });
         toast.success("Login successful.");
-        navigate(
-          location.state ||
-            `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`
-        );
+        navigate(location.state || `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`);
       }
     } catch (error) {
       toast.error("Login failed. Please try again.");
@@ -61,42 +58,32 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
-      <h1 className="loginTitle">Choose a login method</h1>
-      <div className="wrapper">
-        <div className="left">
-          <div className="loginButton facebook" onClick={facebook}>
-            <img src={facebookIcon} alt="" className="icon" />
+    <div className={styling.login}>
+      <h1 className={styling.loginTitle}>Choose a login method</h1>
+      <div className={styling.wrapper}>
+        <div className={styling.left}>
+          <div className={`${styling.loginButton} ${styling.facebook}`} onClick={facebook}>
+            <img src={facebookIcon} alt="" className={styling.icon} />
             Facebook
           </div>
-          <div className="loginButton google" onClick={google}>
-            <img src={googleIcon} alt="" className="icon" />
+          <div className={`${styling.loginButton} ${styling.google}`} onClick={google}>
+            <img src={googleIcon} alt="" className={styling.icon} />
             Google
           </div>
-          <div className="loginButton linkedin" onClick={linkedin}>
-            <img src={linkedinIcon} alt="" className="icon" />
+          <div className={`${styling.loginButton} ${styling.linkedin}`} onClick={linkedin}>
+            <img src={linkedinIcon} alt="" className={styling.icon} />
             Linkedin
           </div>
         </div>
-        <div className="center">
-          <div className="line" />
-          <div className="or">OR</div>
+        <div className={styling.center}>
+          <div className={styling.line} />
+          <div className={styling.or}>OR</div>
         </div>
-        <div className="right">
+        <div className={styling.right}>
           <form onSubmit={handleEmailSubmit}>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button className="submit">Login</button>
+            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <button className={styling.submit}>Login</button>
           </form>
         </div>
       </div>

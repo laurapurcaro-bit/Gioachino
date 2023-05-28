@@ -1,15 +1,9 @@
-import "../../styles/jumbotron.css";
+import styling from "./Jumbotron.module.css";
 // Destructuring the props
 // You can give a default value to the props
-export default function Jumbotron({
-  title,
-  subTitle = "Welcome to e-commerce",
-}) {
+export default function Jumbotron({ title, subTitle = "Welcome to e-commerce" }) {
   return (
-    <div
-      className="container-fluid jumbotron"
-      style={{ marginTop: "-8px", height: "200px" }}
-    >
+    <div className={`container-fluid ${styling.jumbotron}`} style={{ marginTop: "-8px", height: "200px" }}>
       <div className="row">
         {/* p-4: padding 4 */}
         <div className="col text-center p-4">
