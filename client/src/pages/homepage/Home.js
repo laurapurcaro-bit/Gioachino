@@ -1,7 +1,7 @@
-import Jumbotron from "../components/cards/Jumbotron";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import ProductCard from "../components/cards/ProductCard";
+import ProductCard from "../../components/cards/ProductCard";
+import MainPartHome from "./MainPartHome";
 
 export default function Home() {
   // const [auth] = useAuth();
@@ -65,7 +65,8 @@ export default function Home() {
 
   return (
     <div>
-      <Jumbotron title="Home" subTitle="Welcome to e-commerce" />
+      {/* First part homepage */}
+      <MainPartHome />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
 
       <div className="row">
