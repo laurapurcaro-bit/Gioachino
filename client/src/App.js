@@ -5,8 +5,8 @@ import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/auth";
 
 // Import pages
-import Menu from "./components/nav/Menu";
-import Home from "./pages/Home";
+import Menu from "./components/nav/Navbar";
+import Home from "./pages/homepage/Home";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/user/Dashboard";
 import Register from "./pages/auth/Register";

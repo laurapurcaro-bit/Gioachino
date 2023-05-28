@@ -1,11 +1,19 @@
+import React, { useState } from "react";
 import axios from "axios";
 import { useSearch } from "../../context/search";
 import { useNavigate } from "react-router-dom";
+import styling from "./SearchBar.module.css";
+import stylingNavbar from "../nav/Navbar.module.css";
 
 export default function Searchbar() {
   // hook
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [values, setValues] = useSearch();
   const navigate = useNavigate();
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen);
+  };
 
   const handleSearchBar = async (e) => {
     e.preventDefault();
@@ -20,7 +28,31 @@ export default function Searchbar() {
 
   return (
     // with form you can submit with enter key
-    <form className="d-flex" onSubmit={handleSearchBar}>
+    <div className={styling.navbarLeft}>
+      <span
+        className={`${stylingNavbar.navElements} ${stylingNavbar.navbarFontLinks} ${styling.searchBarLink}`}
+        onClick={toggleSearch}
+      >
+        Search
+      </span>
+      {isSearchOpen && (
+        <form className="" onSubmit={handleSearchBar}>
+          <input
+            className={styling.searchBarInput}
+            type="search"
+            id="search-bar"
+            placeholder="Search"
+            onChange={(e) => setValues({ ...values, search: e.target.value })}
+          />
+          <button className={styling.buttonLink} type="submit"></button>
+        </form>
+      )}
+    </div>
+  );
+}
+
+{
+  /* <form className="" onSubmit={handleSearchBar}>
       <input
         type="search"
         style={{ borderRadius: "0px", height: "30px", float: "left" }}
@@ -29,18 +61,8 @@ export default function Searchbar() {
         onChange={(e) => setValues({ ...values, search: e.target.value })}
         value={values.search}
       />
-      <button
-        className="btn btn-outline-primary mt-2"
-        type="submit"
-        style={{
-          borderRadius: "0px",
-          height: "30px",
-          float: "left",
-          textAlign: "center",
-        }}
-      >
+      <button className={styling.buttonLink} type="submit">
         Search
       </button>
-    </form>
-  );
+    </form> */
 }

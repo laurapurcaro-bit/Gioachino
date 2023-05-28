@@ -1,0 +1,44 @@
+.buttonLink {
+  background: none;
+  border: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  width: 0;
+}
+
+.buttonLink:hover,
+.buttonLink:focus {
+  color: #007bff; /* Change to desired link color on hover/focus */
+  text-decoration: underline;
+}
+
+.searchBarInput {
+  border: 0.1rem solid #5e6b78;
+  border-radius: 0.6rem;
+  height: 3rem;
+  /* width: 5rem; */
+  float: left;
+}
+
+.navbarLeft {
+  display: flex;
+  align-items: center;
+}
+
+.searchBarLink {
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.searchImg {
+  width: 2rem;
+}
+/* .searchBar {
+  width: 20rem;
+  padding: 0.3rem;
+} */
