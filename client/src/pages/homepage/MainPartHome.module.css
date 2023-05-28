@@ -1,0 +1,36 @@
+.mainPartBody {
+  display: flex;
+  grid-template-columns: repeat(2, 1fr);
+  /* flex-direction: column; */
+  align-items: center;
+  width: 100%;
+  height: 50rem;
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+.mainPartLeft {
+  justify-content: left;
+}
+
+.mainPartRight {
+  padding-left: 20rem;
+}
+
+.mainPartLeft h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  margin-left: 0; /* Remove the margin-left property */
+}
+
+.mainPartLeft p {
+  font-family: "Inter", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+  margin-left: 0; /* Remove the margin-left property */
+}

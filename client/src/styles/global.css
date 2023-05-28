@@ -1,0 +1,22 @@
+:root {
+  --color-background: #ffff;
+  --color-text: black;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* this is to standardize the font size across browsers */
+  font-size: 62.5%; /* 1rem = 10px */
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.6rem;
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
