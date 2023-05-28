@@ -15,10 +15,7 @@ export default function CategoriesList() {
               <div className="col-md-6" key={category._id}>
                 <div className="card">
                   <div className="card-body text-center">
-                    <Link
-                      className="btn btn-light col-12 text-dark p-3"
-                      to={`/category/${category.slug}`}
-                    >
+                    <Link className="btn btn-light col-12 text-dark p-3" to={`/category/${category.slug}`}>
                       {category.name}
                     </Link>
                   </div>

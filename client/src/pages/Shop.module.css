@@ -1,0 +1,18 @@
+.gridContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 5rem;
+}
+
+.filterContainer {
+  padding-top: 5rem;
+}
+
+.productContainer {
+  padding: 5rem 0;
+}
+
+.cardContainer {
+  padding: 5rem;
+}

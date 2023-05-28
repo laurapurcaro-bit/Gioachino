@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import Jumbotron from "../components/cards/Jumbotron";
+import CategoriesBar from "./categories/CategoriesBar";
 import axios from "axios";
 import ProductCard from "../components/cards/ProductCard";
 import { Checkbox, Radio } from "antd";
 import { prices } from "../prices";
+import styling from "./Shop.module.css";
 
 export default function Shop() {
   const [categories, setCateories] = useState([]);
@@ -81,13 +83,15 @@ export default function Shop() {
 
   return (
     <div>
-      <Jumbotron title="Gioachino" subtitle="Welcome to the e-commerce" />
-      {/* <pre>{JSON.stringify({ checkedCategories, radioPrice }, null, 4)}</pre> */}
-      <div className="container-fluid">
+      <div className={styling.gridContainer}>
+        <h1>Gioachino</h1>
+      </div>
+      <CategoriesBar></CategoriesBar>
+
+      <div className={`container-fluid ${styling.productContainer}`}>
         <div className="row">
-          <div className="col-md-3">
-            <h2 className="p-3 mt-2 mb-2 h4 bg-light text-center">Filters</h2>
-            <h6>Filter by Categories</h6>
+          <div className={`col-md-2 ${styling.filterContainer}`}>
+            <h4>Filter by Categories</h4>
             <div className="row p-2 checkbox-custom">
               {categories?.map((category) => {
                 return (
@@ -102,7 +106,7 @@ export default function Shop() {
                 );
               })}
             </div>
-            <h6>Filter by Prices</h6>
+            <h4>Filter by Prices</h4>
             <div className="row p-2">
               <Radio.Group onChange={(e) => handlePriceFilter(e)}>
                 {prices.map((price) => {
@@ -116,26 +120,21 @@ export default function Shop() {
             </div>
             {/* Reset filter */}
             <div className="p-3 pt-3">
-              <button
-                className="btn btn-outline-secondary col-12"
-                onClick={() => window.location.reload()}
-              >
-                Reset filter
+              <button className="btn btn-outline-secondary col-6" onClick={() => window.location.reload()}>
+                Reset
               </button>
             </div>
           </div>
           <div className="col-md-9">
-            <h2 className="p-3 mt-2 mb-2 h4 bg-light text-center">
-              {products?.length} Products
-            </h2>
+            {/* <h2 className="p-3 mt-2 mb-2 h4 bg-light text-center">{products?.length} Products</h2> */}
             <div
-              className="row"
+              className={"row"}
               //   vh is for lenth of displayed product
               style={{ height: "100vh", overflow: "scroll" }}
             >
               {products?.map((product) => {
                 return (
-                  <div className="col-md-4" key={product._id}>
+                  <div className={`col-md-4 ${styling.cardContainer}`} key={product._id}>
                     <ProductCard product={product} />
                   </div>
                 );

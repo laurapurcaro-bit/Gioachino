@@ -1,0 +1,25 @@
+.gridContainer {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 1rem;
+  padding-top: 5rem;
+}
+
+.btnContainer {
+  text-align: center !important;
+}
+
+.btn {
+  font-size: 2rem;
+  width: 15rem;
+}
+
+.btn:hover {
+  border-color: #ededed;
+}
+
+.btn:focus {
+  box-shadow: #ededed;
+}
