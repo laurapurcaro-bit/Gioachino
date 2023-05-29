@@ -1,5 +1,4 @@
 import { useAuth } from "../../context/auth";
-import Jumbotron from "../../components/cards/Jumbotron";
 import AdminMenu from "../../components/nav/AdminMenu";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -35,12 +34,6 @@ export default function AdminShowProducts() {
 
   return (
     <>
-      <Jumbotron
-        title={`Hello ${
-          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
-        }`}
-        subTitle="Admin Dashboard"
-      />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
       <div className="container-fluid">
         <div className="row">
@@ -71,31 +64,15 @@ export default function AdminShowProducts() {
                     <div className="col-md-8">
                       <div className="card-body">
                         <h5 className="card-title">{p?.name}</h5>
+                        <p className="card-text">{p?.description.length < 60 ? p?.description : `${p?.description.substring(0, 60)}...`}</p>
                         <p className="card-text">
-                          {p?.description.length < 60
-                            ? p?.description
-                            : `${p?.description.substring(0, 60)}...`}
-                        </p>
-                        <p className="card-text">
-                          <small className="text-muted">
-                            {moment(p.createdAt).format(
-                              "MMMM Do YYYY, h:mm:ss a"
-                            )}
-                          </small>
+                          <small className="text-muted">{moment(p.createdAt).format("MMMM Do YYYY, h:mm:ss a")}</small>
                         </p>
                         <div>
-                          <button
-                            className="btn btn-primary btn-sm m-2"
-                            onClick={(e) => handleButtons(p.slug)}
-                            value={slug_param}
-                          >
+                          <button className="btn btn-primary btn-sm m-2" onClick={(e) => handleButtons(p.slug)} value={slug_param}>
                             Update
                           </button>
-                          <button
-                            className="btn btn-danger btn-sm m-2"
-                            onClick={(e) => handleButtons(p.slug)}
-                            value={slug_param}
-                          >
+                          <button className="btn btn-danger btn-sm m-2" onClick={(e) => handleButtons(p.slug)} value={slug_param}>
                             Delete
                           </button>
                         </div>

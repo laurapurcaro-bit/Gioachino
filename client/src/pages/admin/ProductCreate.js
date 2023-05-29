@@ -1,5 +1,4 @@
 import { useAuth } from "../../context/auth";
-import Jumbotron from "../../components/cards/Jumbotron";
 import AdminMenu from "../../components/nav/AdminMenu";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -67,12 +66,6 @@ export default function AdminCreateProduct() {
 
   return (
     <>
-      <Jumbotron
-        title={`Hello ${
-          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
-        }`}
-        subTitle="Admin Dashboard"
-      />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
       <div className="container-fluid">
         <div className="row">
@@ -84,34 +77,17 @@ export default function AdminCreateProduct() {
             <div className="p-3 mt-2 mb-2 h4 bg-light">Create Products</div>
             {photo?.size && (
               <div className="text-center">
-                <img
-                  src={URL.createObjectURL(photo)}
-                  alt="product"
-                  className="img img-responsive"
-                  height="200px"
-                />
+                <img src={URL.createObjectURL(photo)} alt="product" className="img img-responsive" height="200px" />
               </div>
             )}
             <div className="pt-2">
               <label className="btn btn-outline-secondary p-2 col-12 mb-3">
                 {photo?.length ? photo.name : "Upload Photo"}
-                <input
-                  type="file"
-                  name="photo"
-                  accept="image/*"
-                  onChange={(e) => setPhoto(e.target.files[0])}
-                  hidden
-                />
+                <input type="file" name="photo" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} hidden />
               </label>
             </div>
             {/* Category name */}
-            <input
-              type="text"
-              className="form-control mb-3 p-2"
-              placeholder="Write a name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+            <input type="text" className="form-control mb-3 p-2" placeholder="Write a name" value={name} onChange={(e) => setName(e.target.value)} />
             {/* Description */}
             <textarea
               type="text"
@@ -163,10 +139,7 @@ export default function AdminCreateProduct() {
               <Option value="0">No</Option>
               <Option value="1">Yes</Option>
             </Select>
-            <button
-              onClick={handleSubmit}
-              className="btn btn-outline-primary mb-5"
-            >
+            <button onClick={handleSubmit} className="btn btn-outline-primary mb-5">
               Save
             </button>
           </div>

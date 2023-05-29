@@ -1,0 +1,31 @@
+.card {
+  border-color: transparent;
+  --bs-card-inner-border-radius: none;
+}
+
+.btn {
+  width: 8rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  border-radius: 0;
+}
+
+.view {
+  border-color: black;
+}
+
+.add {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+.add:hover {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+.view:hover {
+  border-color: black;
+}

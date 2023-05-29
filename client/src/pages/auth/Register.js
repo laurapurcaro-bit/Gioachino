@@ -1,4 +1,3 @@
-import Jumbotron from "../../components/cards/Jumbotron";
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -44,7 +43,6 @@ export default function Register() {
 
   return (
     <div>
-      <Jumbotron title="Register" />
       {/* mt-5: margin-top 5 */}
       <div className="container mt-5">
         <div className="row">

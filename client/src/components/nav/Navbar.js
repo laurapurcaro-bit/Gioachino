@@ -4,7 +4,6 @@ import SearchBar from "../forms/SearchBar";
 import axios from "axios";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
-import { Badge } from "antd";
 import styling from "./Navbar.module.css";
 
 export default function Menu() {
@@ -49,19 +48,11 @@ export default function Menu() {
       </div>
       {/* Center elemnts */}
       <div className={`${styling.centerElements}`}>
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          aria-current="page"
-          to="/"
-        >
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/">
           Home
         </NavLink>
         {/* Shop */}
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          aria-current="page"
-          to="/shop"
-        >
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/shop">
           Catalogue
         </NavLink>
         {/* Search bar */}
@@ -72,10 +63,7 @@ export default function Menu() {
         {/* if condition true => do login register : do logout */}
         {!auth.user ? (
           <>
-            <NavLink
-              className={`${styling.navElements} ${styling.navbarFontLinks}`}
-              to="/login"
-            >
+            <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} to="/login">
               Login
             </NavLink>
 
@@ -87,28 +75,17 @@ export default function Menu() {
           </>
         ) : (
           <div className="dropdown">
-            <a
-              className={`${styling.navElements} ${styling.navbarFontLinks} pointer dropdown-toggle`}
-              data-bs-toggle="dropdown"
-              href="/"
-            >
+            <a className={`${styling.navElements} ${styling.navbarFontLinks} pointer dropdown-toggle`} data-bs-toggle="dropdown" href="/">
               {auth.user?.firstName.toUpperCase()}
             </a>
             <ul className="dropdown-menu">
               <li>
-                <NavLink
-                  className={`${styling.navbarFontLinks}`}
-                  to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
-                >
+                <NavLink className={`${styling.navbarFontLinks}`} to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}>
                   Dashboard
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  className={`${styling.navbarFontLinks} pointer`}
-                  onClick={logout}
-                  to="/"
-                >
+                <NavLink className={`${styling.navbarFontLinks} pointer`} onClick={logout} to="/">
                   Logout
                 </NavLink>
               </li>
@@ -117,18 +94,11 @@ export default function Menu() {
         )}
         {/* Wishlist */}
 
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          to="/saved-items"
-        >
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} to="/saved-items">
           Likes
         </NavLink>
         {/* Cart */}
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          aria-current="page"
-          to="/cart"
-        >
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/cart">
           {`Cart (${cart?.length || 0})`}
         </NavLink>
       </div>

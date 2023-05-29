@@ -1,4 +1,3 @@
-import Jumbotron from "../../components/cards/Jumbotron";
 import { useState, useEffect } from "react";
 import axios from "axios";
 // you can read the Route params
@@ -29,10 +28,6 @@ export default function CategoryView() {
 
   return (
     <>
-      <Jumbotron
-        title={category?.name}
-        subTitle={`${products?.length} products found in "${category?.name}"`}
-      />
       <div className="container-fluid">
         <div className="row mt-3">
           {products?.map((product) => {

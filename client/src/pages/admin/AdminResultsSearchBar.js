@@ -1,5 +1,4 @@
 import { useSearch } from "../../context/search";
-import Jumbotron from "../../components/cards/Jumbotron";
 import AdminMenu from "../../components/nav/AdminMenu";
 import AdminSearchBar from "../../components/forms/AdminSearchBar";
 import OrdersCard from "../../components/cards/OrdersCard";
@@ -10,14 +9,6 @@ export default function AdminResultsSearchBar() {
 
   return (
     <>
-      <Jumbotron
-        title="Search results"
-        subtitle={
-          values?.results?.length < 1
-            ? "No products found"
-            : `found ${values?.results?.length} products`
-        }
-      />
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
       <div className="container-fluid">
         <div className="row">
@@ -32,10 +23,7 @@ export default function AdminResultsSearchBar() {
             {values?.results?.length < 1 &&
               values?.results?.map((order, index) => {
                 return (
-                  <div
-                    className="border shadow bg-light rounded-4 mb-3"
-                    key={order._id}
-                  >
+                  <div className="border shadow bg-light rounded-4 mb-3" key={order._id}>
                     <table className="table table-bordered">
                       <thead>
                         <tr>
@@ -53,9 +41,7 @@ export default function AdminResultsSearchBar() {
                           <td>{order?.orderStatus}</td>
                           {/* <td>{order?.buyer?.firstName}</td> */}
                           <td>{moment(order?.createdAt).fromNow()}</td>
-                          <td>
-                            {order?.paymentInfo.success ? "Success" : "Failed"}
-                          </td>
+                          <td>{order?.paymentInfo.success ? "Success" : "Failed"}</td>
                           <td>{order?.products?.length}</td>
                         </tr>
                       </tbody>

@@ -1,6 +1,5 @@
 import { useCart } from "../../context/cart";
 import { useAuth } from "../../context/auth";
-import Jumbotron from "../../components/cards/Jumbotron";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Payment from "../../components/payment/Payment";
@@ -132,13 +131,6 @@ export default function Cart() {
 
   return (
     <>
-      <Jumbotron
-        title={`Hello ${
-          auth?.user?.firstName !== undefined ? auth.user.firstName : ""
-        }`}
-        subTitle={subtitleText()}
-      />
-
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-12">
@@ -147,10 +139,7 @@ export default function Cart() {
                 "My cart"
               ) : (
                 <div className="text-center">
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => navigate("/")}
-                  >
+                  <button className="btn btn-primary" onClick={() => navigate("/")}>
                     Continue Shopping
                   </button>
                 </div>
@@ -169,15 +158,8 @@ export default function Cart() {
             <div className="col-md-8">
               <div className="row">
                 {singleCart?.map((p) => (
-                  <div
-                    key={p._id}
-                    className="card mb-3"
-                    style={{ maxWidth: 800 }}
-                  >
-                    <ProductCardHorizontal
-                      p={p}
-                      removeFromCart={removeFromCart}
-                    />
+                  <div key={p._id} className="card mb-3" style={{ maxWidth: 800 }}>
+                    <ProductCardHorizontal p={p} removeFromCart={removeFromCart} />
                   </div>
                 ))}
               </div>
@@ -210,20 +192,14 @@ export default function Cart() {
                     </p>
                     <p>{auth.user.country}</p>
                   </div>
-                  <button
-                    className="btn btn-outline-warning"
-                    onClick={() => navigate("/dashboard/user/profile")}
-                  >
+                  <button className="btn btn-outline-warning" onClick={() => navigate("/dashboard/user/profile")}>
                     Update delivery address
                   </button>
                 </>
               ) : (
                 <div className="mb-3">
                   {auth?.token ? (
-                    <button
-                      className="btn btn-outline-warning"
-                      onClick={() => navigate("/dashboard/user/profile")}
-                    >
+                    <button className="btn btn-outline-warning" onClick={() => navigate("/dashboard/user/profile")}>
                       Update delivery address
                     </button>
                   ) : (
@@ -237,11 +213,7 @@ export default function Cart() {
                   )}
                 </div>
               )}
-              <Payment
-                singleCart={singleCart}
-                cartTotal={cartTotal}
-                onPaymentSuccess={onPaymentSuccess}
-              />
+              <Payment singleCart={singleCart} cartTotal={cartTotal} onPaymentSuccess={onPaymentSuccess} />
             </div>
           </div>
         </div>

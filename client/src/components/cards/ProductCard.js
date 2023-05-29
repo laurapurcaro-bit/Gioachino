@@ -3,6 +3,7 @@ import { Badge } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
+import styling from "./ProductCard.module.css";
 
 export default function ProductCard({ product }) {
   // context
@@ -22,58 +23,48 @@ export default function ProductCard({ product }) {
   const currency = "EUR";
   const localString = "en-US";
   return (
-    <div className="card mb-3 hoverable">
-      <Badge.Ribbon text={`${product?.sold} sold`} color="red">
-        <Badge.Ribbon
-          text={`${
-            product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"
-          }`}
-          placement="start"
-          color={`${product?.quantity >= 1 ? "green" : "red"}`}
-        >
-          <img
-            className="card-img-top"
-            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-            alt={product?.name}
-            // className="img img-responsive"
-            height="300px"
-            width="230px"
-            style={{ objectFit: "cover" }}
-          />
-        </Badge.Ribbon>
+    <div className={`card ${styling.card}`}>
+      <Badge.Ribbon
+        text={`${product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"}`}
+        placement="start"
+        color={`${product?.quantity >= 1 ? "green" : "red"}`}
+      >
+        <img
+          className="card-img-top"
+          src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+          alt={product?.name}
+          // className="img img-responsive"
+          height="300px"
+          width="230px"
+          style={{ objectFit: "cover" }}
+        />
       </Badge.Ribbon>
+
       <div className="card-body">
-        <h5>{product?.name}</h5>
-        <h4 className="fw-bold">
+        <h3>{product?.name}</h3>
+        <h2 className="fw-bold">
           {product?.price?.toLocaleString(localString, {
             style: "currency",
             currency: currency,
           })}
-        </h4>
-        <p className="card-text">{productDesc(product?.description)}</p>
+        </h2>
+        {/* <p className="card-text">{productDesc(product?.description)}</p> */}
       </div>
-      <div className="d-flex justify-content-between">
+      <div className="d-flex">
         <button
-          className="btn btn-primary col card-button-footer"
-          style={{ borderBottomLeftRadius: "5px" }}
-          onClick={() => navigate(`/product/${product.slug}`)}
-        >
-          View Product
-        </button>
-        <button
-          className="btn btn-outline-primary col card-button-footer"
-          style={{ borderBottomRightRadius: "5px" }}
+          className={`btn ${styling.btn} ${styling.add}`}
           onClick={() => {
             setCart([...cart, product]);
             localStorage.setItem("cart", JSON.stringify([...cart, product]));
             toast.success(`${product.name} added to cart`);
           }}
         >
-          Add to Cart
+          ADD
+        </button>
+        <button className={`btn ${styling.btn} ${styling.view}`} onClick={() => navigate(`/product/${product.slug}`)}>
+          VIEW
         </button>
       </div>
-      {/* <p>{moment(product?.createdAt).fromNow()}</p>
-      <p>{product?.sold} sold</p> */}
     </div>
   );
 }
