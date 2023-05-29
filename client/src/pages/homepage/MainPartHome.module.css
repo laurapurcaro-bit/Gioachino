@@ -11,15 +11,18 @@
 
 .mainPartLeft {
   justify-content: left;
+  padding-left: 5rem;
+  padding-right: 15rem;
 }
 
-.mainPartRight {
-  padding-left: 20rem;
+.mainPartRight img {
+  width: 100%;
+  padding-top: 5rem;
 }
 
 .mainPartLeft h2 {
   font-family: "Playfair Display", serif;
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: 400;
   color: #000;
   text-decoration: none;

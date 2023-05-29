@@ -2,10 +2,12 @@
 const slugify = require("slugify");
 const Category = require("../models/category");
 const Product = require("../models/product");
+const fs = require("fs");
 
 const create = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name } = req.fields;
+    const { photo } = req.files;
     // Check if name is provided
     if (!name.trim()) {
       return res.json({ error: "Name is required" });
@@ -15,8 +17,20 @@ const create = async (req, res) => {
     if (existingCategory) {
       return res.json({ error: "Already exists" });
     }
+    // Check if photo is provided
+    if (!photo) {
+      return res.json({ error: "Photo is required" });
+    }
 
-    const category = await new Category({ name, slug: slugify(name) }).save();
+    const category = new Category({ name, slug: slugify(name) });
+    // Add photo to category const
+    if (photo) {
+      console.log("Provided photo for category");
+      category.photo.data = fs.readFileSync(photo.path);
+      category.photo.contentType = photo.type;
+    }
+    // Save product to DB
+    await category.save();
     res.json(category);
   } catch (err) {
     console.log(err);
@@ -26,16 +40,25 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
   try {
+    const { name } = req.fields;
+    const { photo } = req.files;
     // We need the id because we use it to find the category
     const category = await Category.findByIdAndUpdate(
       req.params.categoryId,
       {
-        name: req.body.name,
-        slug: slugify(req.body.name),
+        name: name,
+        slug: slugify(name),
       },
       // new: true will return the updated category
       { new: true }
     );
+    // Add photo to product const
+    if (photo) {
+      category.photo.data = fs.readFileSync(photo.path);
+      category.photo.contentType = photo.type;
+    }
+    // Save product to DB
+    await category.save();
     res.json(category);
   } catch (err) {
     console.log(err);
@@ -85,6 +108,28 @@ const productsByCategory = async (req, res) => {
   }
 };
 
+const photo = async (req, res) => {
+  try {
+    // Get product by slug
+    const category = await Category.findById(req.params.categoryId).select(
+      "photo"
+    );
+    // If product exists
+    if (category) {
+      // If photo exists
+      if (category.photo.data) {
+        // Set content type
+        res.set("Content-Type", category.photo.contentType);
+        // Send photo data
+        return res.send(category.photo.data);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
 module.exports = {
   create,
   update,
@@ -92,4 +137,5 @@ module.exports = {
   list,
   read,
   productsByCategory,
+  photo,
 };

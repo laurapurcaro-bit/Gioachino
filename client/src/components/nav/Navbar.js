@@ -105,3 +105,38 @@ export default function Menu() {
     </div>
   );
 }
+
+{/* Category dropdown */}
+{/* <div className="dropdown">
+  <li className="nav-item">
+    <a
+      className="nav-link pointer dropdown-toggle"
+      data-bs-toggle="dropdown"
+      href="/"
+    >
+      Categories
+    </a>
+    <ul
+      className="dropdown-menu"
+      style={{ height: "220px", overflow: "scroll" }}
+    >
+      <li>
+        <NavLink className="nav-link" to={`/categories`}>
+          All categories
+        </NavLink>
+      </li>
+      {categories?.map((category) => {
+        return (
+          <li key={category._id}>
+            <NavLink
+              className="nav-link"
+              to={`/category/${category.slug}`}
+            >
+              {category.name}
+            </NavLink>
+          </li>
+        );
+      })}
+    </ul>
+  </li>
+</div> */}
