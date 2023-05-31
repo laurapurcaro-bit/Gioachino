@@ -15,14 +15,15 @@ export default function AdminCreateProduct() {
   // state
   // Categories in the database
   const [categories, setCategories] = useState([]);
-  const [photo, setPhoto] = useState([]);
+  const [photo, setPhoto] = useState(null);
+  const [additionalPhotos, setAdditionalPhotos] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   // Product
   const [category, setCategory] = useState("");
-  const [shipping, setShipping] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [shipping, setShipping] = useState(false);
+  const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
     loadCategories();
@@ -40,16 +41,31 @@ export default function AdminCreateProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
       const formData = new FormData();
-      formData.append("photo", photo);
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price);
       formData.append("category", category);
       formData.append("shipping", shipping);
       formData.append("quantity", quantity);
+      if (photo) {
+        formData.append("photo", photo);
+      }
 
-      const { data } = await axios.post("/product", formData);
+      if (additionalPhotos) {
+        for (let i = 0; i < additionalPhotos.length; i++) {
+          formData.append("additionalPhotos", additionalPhotos[i]);
+        }
+      }
+
+      console.log("FORM DATA", [...formData]);
+
+      const { data } = await axios.post("/product", formData, config);
 
       if (data?.error) {
         toast.error(data.error);
@@ -72,77 +88,136 @@ export default function AdminCreateProduct() {
           <div className="col-md-3">
             <AdminMenu />
           </div>
-
-          <div className="col-md-9">
-            <div className="p-3 mt-2 mb-2 h4 bg-light">Create Products</div>
-            {photo?.size && (
-              <div className="text-center">
-                <img src={URL.createObjectURL(photo)} alt="product" className="img img-responsive" height="200px" />
+          <form encType="multipart/form-data">
+            <div className="col-md-9">
+              <div className="p-3 mt-2 mb-2 h4 bg-light">Create Products</div>
+              {/* Additional photos */}
+              <input
+                type="file"
+                name="additionalPhotos"
+                accept="image/*"
+                multiple
+                onChange={(e) => setAdditionalPhotos(e.target.files)}
+                hidden
+              />
+              {additionalPhotos?.length > 0 && (
+                <div className="text-center">
+                  {Array.from(additionalPhotos).map((file, index) => (
+                    <img
+                      key={index}
+                      src={URL.createObjectURL(file)}
+                      alt="product"
+                      className="img img-responsive"
+                      height="200px"
+                    />
+                  ))}
+                </div>
+              )}
+              <div className="pt-2">
+                <label className="btn btn-outline-secondary p-2 col-12 mb-3">
+                  {additionalPhotos?.length > 0
+                    ? `${additionalPhotos?.length} Additional Photos Selected`
+                    : "Upload Additional Photos"}
+                  <input
+                    type="file"
+                    name="additionalPhotos"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => setAdditionalPhotos(e.target.files)}
+                    hidden
+                  />
+                </label>
               </div>
-            )}
-            <div className="pt-2">
-              <label className="btn btn-outline-secondary p-2 col-12 mb-3">
-                {photo?.length ? photo.name : "Upload Photo"}
-                <input type="file" name="photo" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} hidden />
-              </label>
+              {/* Photo */}
+              {photo?.size && (
+                <div className="text-center">
+                  <img
+                    src={URL.createObjectURL(photo)}
+                    alt="product"
+                    className="img img-responsive"
+                    height="200px"
+                  />
+                </div>
+              )}
+              <div className="pt-2">
+                <label className="btn btn-outline-secondary p-2 col-12 mb-3">
+                  {photo?.length ? photo.name : "Upload Photo"}
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                    hidden
+                  />
+                </label>
+              </div>
+              {/* Category name */}
+              <input
+                type="text"
+                className="form-control mb-3 p-2"
+                placeholder="Write a name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              {/* Description */}
+              <textarea
+                type="text"
+                className="form-control mb-3 p-2"
+                placeholder="Write a description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              {/* PRICE */}
+              <input
+                type="number"
+                className="form-control mb-3 p-2"
+                placeholder="Enter price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+              {/* Categories */}
+              <Select
+                // showSearch
+                bordered={false}
+                size="large"
+                className="form-select mb-3"
+                placeholder="Choose a category"
+                onChange={(category) => setCategory(category)}
+              >
+                {categories?.map((category) => (
+                  <Option key={category._id} value={category._id}>
+                    {category.name}
+                  </Option>
+                ))}
+              </Select>
+              {/* Quantity */}
+              <input
+                type="number"
+                min="1"
+                className="form-control mb-3 p-2"
+                placeholder="Enter quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+              {/* Shipping */}
+              <Select
+                bordered={false}
+                size="large"
+                className="form-select mb-3"
+                placeholder="Choose shipping"
+                onChange={(shipping) => setShipping(shipping)}
+              >
+                <Option value="0">No</Option>
+                <Option value="1">Yes</Option>
+              </Select>
+              <button
+                onClick={handleSubmit}
+                className="btn btn-outline-primary mb-5"
+              >
+                Save
+              </button>
             </div>
-            {/* Category name */}
-            <input type="text" className="form-control mb-3 p-2" placeholder="Write a name" value={name} onChange={(e) => setName(e.target.value)} />
-            {/* Description */}
-            <textarea
-              type="text"
-              className="form-control mb-3 p-2"
-              placeholder="Write a description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {/* PRICE */}
-            <input
-              type="number"
-              className="form-control mb-3 p-2"
-              placeholder="Enter price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            {/* Categories */}
-            <Select
-              // showSearch
-              bordered={false}
-              size="large"
-              className="form-select mb-3"
-              placeholder="Choose a category"
-              onChange={(category) => setCategory(category)}
-            >
-              {categories?.map((category) => (
-                <Option key={category._id} value={category._id}>
-                  {category.name}
-                </Option>
-              ))}
-            </Select>
-            {/* Quantity */}
-            <input
-              type="number"
-              min="1"
-              className="form-control mb-3 p-2"
-              placeholder="Enter quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-            {/* Shipping */}
-            <Select
-              bordered={false}
-              size="large"
-              className="form-select mb-3"
-              placeholder="Choose shipping"
-              onChange={(shipping) => setShipping(shipping)}
-            >
-              <Option value="0">No</Option>
-              <Option value="1">Yes</Option>
-            </Select>
-            <button onClick={handleSubmit} className="btn btn-outline-primary mb-5">
-              Save
-            </button>
-          </div>
+          </form>
         </div>
       </div>
     </>

@@ -32,6 +32,7 @@ import ManageOrdersAdmin from "./pages/admin/ManageOrders";
 import AdminResultsSearchBar from "./pages/admin/AdminResultsSearchBar";
 import Popup from "./components/popup/Popup";
 import Footer from "./components/footer/Footer";
+import SingleProductPage from "./pages/product/SingleProductPage";
 
 const PageNotFound = () => {
   return (
@@ -99,7 +100,7 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<ResultsSearchBar />} />
         {/* Dynamic creation of route */}
-        <Route path="/product/:slug" element={<ViewProduct />} />
+        <Route path="/product/:slug" element={<SingleProductPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* Insert routes you want to protect */}

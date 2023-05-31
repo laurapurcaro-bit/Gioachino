@@ -17,6 +17,7 @@ import {
   FaRocket,
 } from "react-icons/fa";
 
+// Single product page
 export default function ViewProduct() {
   // context
   const [cart, setCart] = useCart();

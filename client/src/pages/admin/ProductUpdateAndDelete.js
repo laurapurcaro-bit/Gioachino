@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import { useAuth } from "../../context/auth";
 import AdminMenu from "../../components/nav/AdminMenu";
 import { useState, useEffect } from "react";
@@ -5,7 +6,6 @@ import axios from "axios";
 import { Select } from "antd";
 import { toast } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-
 const { Option } = Select;
 
 export default function AdminUpdateProduct() {
@@ -16,25 +16,32 @@ export default function AdminUpdateProduct() {
   // state
   // Categories in the database
   const [categories, setCategories] = useState([]);
-  const [photo, setPhoto] = useState([]);
+  const [photo, setPhoto] = useState(null);
+  const [additionalPhotos, setAdditionalPhotos] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState(0);
   // Product
   const [category, setCategory] = useState("");
-  const [shipping, setShipping] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [shipping, setShipping] = useState(false);
+  const [quantity, setQuantity] = useState(0);
   // Id
   const [id, setId] = useState("");
 
   useEffect(() => {
     loadProduct();
+    loadCategories();
+    loadAdditionalPhotos();
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
+  // useEffect(() => {
+
+  // }, []);
+
+  // useEffect(() => {
+
+  // }, []);
 
   const loadCategories = async () => {
     try {
@@ -61,20 +68,48 @@ export default function AdminUpdateProduct() {
     }
   };
 
+  const loadAdditionalPhotos = async () => {
+    try {
+      const { data } = await axios.get(`/product/additionalPhotos/${slug}`);
+      console.log("DATA", data);
+      setAdditionalPhotos(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
       const formData = new FormData();
       // Check if photo in the state
-      photo && formData.append("photo", photo);
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price);
       formData.append("category", category);
       formData.append("shipping", shipping);
       formData.append("quantity", quantity);
+      if (photo) {
+        formData.append("photo", photo);
+      }
 
-      const { data } = await axios.put(`/product/${id}`, formData);
+      if (additionalPhotos) {
+        for (let i = 0; i < additionalPhotos.length; i++) {
+          formData.append("additionalPhotos", additionalPhotos[i]);
+        }
+      }
+
+      const { data } = await axios.put(
+        `/product/update/${id}`,
+        formData,
+        config
+      );
 
       if (data?.error) {
         toast.error(data.error);
@@ -93,7 +128,9 @@ export default function AdminUpdateProduct() {
 
   const handleDelete = async (req, res) => {
     try {
-      let answer = window.confirm("Are you sure you want to delete this product?");
+      let answer = window.confirm(
+        "Are you sure you want to delete this product?"
+      );
       // If no, block the function with return
       if (!answer) return;
       // Otherwise, delete the product
@@ -114,96 +151,161 @@ export default function AdminUpdateProduct() {
           <div className="col-md-3">
             <AdminMenu />
           </div>
-
-          <div className="col-md-9">
-            <div className="p-3 mt-2 mb-2 h4 bg-light">Update Product</div>
-
-            {photo?.size ? (
-              <div className="text-center">
-                <img src={URL.createObjectURL(photo)} alt="product" className="img img-responsive" height="200px" />
+          <form encType="multipart/form-data">
+            <div className="col-md-9">
+              <div className="p-3 mt-2 mb-2 h4 bg-light">Update Product</div>
+              {/* Photo */}
+              {photo?.size ? (
+                <div className="text-center">
+                  <img
+                    src={URL.createObjectURL(photo)}
+                    alt="product"
+                    className="img img-responsive"
+                    height="200px"
+                  />
+                </div>
+              ) : (
+                <div className="text-center">
+                  {/* Fetch the latest image */}
+                  <img
+                    src={`${
+                      process.env.REACT_APP_API
+                    }/product/photo/${id}?${new Date().getTime()}`}
+                    alt="product"
+                    className="img img-responsive"
+                    height="200px"
+                  />
+                </div>
+              )}
+              <div className="pt-2">
+                <label className="btn btn-outline-secondary p-2 col-12 mb-3">
+                  {photo?.length ? photo.name : "Upload Photo"}
+                  <input
+                    type="file"
+                    name="photo"
+                    accept="image/*"
+                    onChange={(e) => setPhoto(e.target.files[0])}
+                    hidden
+                  />
+                </label>
               </div>
-            ) : (
-              <div className="text-center">
-                {/* Fetch the latest image */}
-                <img
-                  src={`${process.env.REACT_APP_API}/product/photo/${id}?${new Date().getTime()}`}
-                  alt="product"
-                  className="img img-responsive"
-                  height="200px"
-                />
+              {/* Additional photos */}
+              {/* Additional photos */}
+              <input
+                type="file"
+                name="additionalPhotos"
+                accept="image/*"
+                multiple
+                onChange={(e) => setAdditionalPhotos(e.target.files)}
+                hidden
+              />
+              {additionalPhotos?.length > 0 && (
+                <div className="text-center">
+                  {Array.from(additionalPhotos)?.map((file, index) => (
+                    <img
+                      key={index}
+                      src={`data:image/png;base64,${Buffer.from(
+                        file.data
+                      ).toString("base64")}`}
+                      alt="product"
+                      className="img img-responsive"
+                      height="200px"
+                    />
+                  ))}
+                </div>
+              )}
+              <div className="pt-2">
+                <label className="btn btn-outline-secondary p-2 col-12 mb-3">
+                  {additionalPhotos?.length > 0
+                    ? `${additionalPhotos?.length} Additional Photos Selected`
+                    : "Upload Additional Photos"}
+                  <input
+                    type="file"
+                    name="additionalPhotos"
+                    accept="image/*"
+                    multiple
+                    onChange={(e) => setAdditionalPhotos(e.target.files)}
+                    hidden
+                  />
+                </label>
               </div>
-            )}
-            <div className="pt-2">
-              <label className="btn btn-outline-secondary p-2 col-12 mb-3">
-                {photo?.length ? photo.name : "Upload Photo"}
-                <input type="file" name="photo" accept="image/*" onChange={(e) => setPhoto(e.target.files[0])} hidden />
-              </label>
+              {/* Category name */}
+              <input
+                type="text"
+                className="form-control mb-3 p-2"
+                placeholder="Write a name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+              {/* Description */}
+              <textarea
+                type="text"
+                className="form-control mb-3 p-2"
+                placeholder="Write a description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+              {/* PRICE */}
+              <input
+                type="number"
+                className="form-control mb-3 p-2"
+                placeholder="Enter price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+              {/* Categories */}
+              <Select
+                // showSearch
+                bordered={false}
+                size="large"
+                className="form-select mb-3"
+                placeholder="Choose a category"
+                value={category}
+                onChange={(category) => setCategory(category)}
+              >
+                {categories?.map((category) => (
+                  <Option key={category._id} value={category._id}>
+                    {category.name}
+                  </Option>
+                ))}
+              </Select>
+              {/* Quantity */}
+              <input
+                type="number"
+                min="1"
+                className="form-control mb-3 p-2"
+                placeholder="Enter quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              />
+              {/* Shipping */}
+              <Select
+                bordered={false}
+                size="large"
+                className="form-select mb-3"
+                placeholder="Choose shipping"
+                value={shipping ? "1" : "0"}
+                onChange={(shipping) => setShipping(shipping)}
+              >
+                <Option value="0">No</Option>
+                <Option value="1">Yes</Option>
+              </Select>
+              <div className="d-flex justify-content-end">
+                <button
+                  onClick={handleUpdate}
+                  className="btn btn-outline-primary mb-5 m-2"
+                >
+                  Update
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="btn btn-outline-danger mb-5 m-2"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
-
-            {/* Category name */}
-            <input type="text" className="form-control mb-3 p-2" placeholder="Write a name" value={name} onChange={(e) => setName(e.target.value)} />
-            {/* Description */}
-            <textarea
-              type="text"
-              className="form-control mb-3 p-2"
-              placeholder="Write a description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {/* PRICE */}
-            <input
-              type="number"
-              className="form-control mb-3 p-2"
-              placeholder="Enter price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            {/* Categories */}
-            <Select
-              // showSearch
-              bordered={false}
-              size="large"
-              className="form-select mb-3"
-              placeholder="Choose a category"
-              value={category}
-              onChange={(category) => setCategory(category)}
-            >
-              {categories?.map((category) => (
-                <Option key={category._id} value={category._id}>
-                  {category.name}
-                </Option>
-              ))}
-            </Select>
-            {/* Quantity */}
-            <input
-              type="number"
-              min="1"
-              className="form-control mb-3 p-2"
-              placeholder="Enter quantity"
-              value={quantity}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-            {/* Shipping */}
-            <Select
-              bordered={false}
-              size="large"
-              className="form-select mb-3"
-              placeholder="Choose shipping"
-              value={shipping ? "1" : "0"}
-              onChange={(shipping) => setShipping(shipping)}
-            >
-              <Option value="0">No</Option>
-              <Option value="1">Yes</Option>
-            </Select>
-            <div className="d-flex justify-content-end">
-              <button onClick={handleUpdate} className="btn btn-outline-primary mb-5 m-2">
-                Update
-              </button>
-              <button onClick={handleDelete} className="btn btn-outline-danger mb-5 m-2">
-                Delete
-              </button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </>
