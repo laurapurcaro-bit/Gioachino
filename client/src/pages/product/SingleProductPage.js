@@ -37,6 +37,7 @@ export default function SingleProductPage() {
       setProduct(data);
       // load related products when product is loaded
       loadRelatedProducts(data._id, data.category._id);
+      console.log("PRODUCT!", data);
     } catch (error) {
       console.log(error);
     }
@@ -54,11 +55,18 @@ export default function SingleProductPage() {
   };
   const handleIncreaseQuantity = () => {
     setQuantity(quantity + 1);
+    product.quantity = product.quantity + 1;
+    // USE CART CONTEXT
+    setProduct((prev) => ({ ...prev, product }));
+    console.log("PRODUCT +", product);
   };
 
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
+      product.quantity = product.quantity - 1;
+      setProduct((prev) => ({ ...prev, product }));
+      console.log("PRODUCT -", product);
     }
   };
 

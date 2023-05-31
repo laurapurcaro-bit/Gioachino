@@ -5,7 +5,7 @@ const fs = require("fs"); // Specify the directory to store the uploaded images
 const create = async (req, res) => {
   try {
     // // Handle form data
-    const { name, price, description, category, quantity, shipping } = req.body;
+    const { name, price, description, category, stock, shipping } = req.body;
     const { photo, additionalPhotos } = req.files;
     // Extract the file paths of the uploaded photos
     const photoPath = photo[0].path;
@@ -24,7 +24,7 @@ const create = async (req, res) => {
       case !category.trim():
         res.json({ error: "Category is required" });
         break;
-      case !quantity:
+      case !stock:
         res.json({ error: "Quantity is required" });
         break;
       case !shipping:
@@ -117,7 +117,7 @@ const update = async (req, res) => {
     // // Handle image
     // console.log(req.files);
     // Make sure that required fields are sent
-    const { name, price, description, category, quantity, shipping } = req.body;
+    const { name, price, description, category, stock, shipping } = req.body;
     const { photo, additionalPhotos } = req.files;
     // validation
     switch (true) {
@@ -133,7 +133,7 @@ const update = async (req, res) => {
       case !category.trim():
         res.json({ error: "Category is required" });
         break;
-      case !quantity:
+      case !stock:
         res.json({ error: "Quantity is required" });
         break;
       case !shipping:

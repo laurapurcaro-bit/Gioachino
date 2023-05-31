@@ -23,7 +23,7 @@ export default function AdminCreateProduct() {
   // Product
   const [category, setCategory] = useState("");
   const [shipping, setShipping] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [stock, setStock] = useState(0);
 
   useEffect(() => {
     loadCategories();
@@ -52,7 +52,7 @@ export default function AdminCreateProduct() {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("shipping", shipping);
-      formData.append("quantity", quantity);
+      formData.append("stock", stock);
       if (photo) {
         formData.append("photo", photo);
       }
@@ -190,14 +190,14 @@ export default function AdminCreateProduct() {
                   </Option>
                 ))}
               </Select>
-              {/* Quantity */}
+              {/* Stock */}
               <input
                 type="number"
                 min="1"
                 className="form-control mb-3 p-2"
-                placeholder="Enter quantity"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                placeholder="Enter stock"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
               />
               {/* Shipping */}
               <Select

@@ -24,7 +24,7 @@ export default function AdminUpdateProduct() {
   // Product
   const [category, setCategory] = useState("");
   const [shipping, setShipping] = useState(false);
-  const [quantity, setQuantity] = useState(0);
+  const [stock, setStock] = useState(0);
   // Id
   const [id, setId] = useState("");
 
@@ -62,7 +62,7 @@ export default function AdminUpdateProduct() {
       setId(data._id);
       setCategory(data.category._id);
       setShipping(data.shipping);
-      setQuantity(data.quantity);
+      setStock(data.stock);
     } catch (err) {
       console.log(err);
     }
@@ -94,7 +94,7 @@ export default function AdminUpdateProduct() {
       formData.append("price", price);
       formData.append("category", category);
       formData.append("shipping", shipping);
-      formData.append("quantity", quantity);
+      formData.append("stock", stock);
       if (photo) {
         formData.append("photo", photo);
       }
@@ -190,7 +190,6 @@ export default function AdminUpdateProduct() {
                 </label>
               </div>
               {/* Additional photos */}
-              {/* Additional photos */}
               <input
                 type="file"
                 name="additionalPhotos"
@@ -274,9 +273,9 @@ export default function AdminUpdateProduct() {
                 type="number"
                 min="1"
                 className="form-control mb-3 p-2"
-                placeholder="Enter quantity"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
+                placeholder="Enter stock"
+                value={stock}
+                onChange={(e) => setStock(e.target.value)}
               />
               {/* Shipping */}
               <Select

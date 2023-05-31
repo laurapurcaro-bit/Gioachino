@@ -44,7 +44,7 @@ export default function Cart() {
   const countQuantitySingleProduct = () => {
     const countsById = {};
 
-    cart.forEach(function ({ _id }) {
+    cart.forEach(function ({ _id, quantity }) {
       countsById[_id] = (countsById[_id] || 0) + 1;
     });
     const finalArray = Object.entries(countsById)
@@ -57,6 +57,7 @@ export default function Cart() {
         info: cart.filter(({ _id }) => d._id === _id),
       };
     });
+
     console.log("composed", composed);
 
     setSingleCart(composed);
@@ -106,7 +107,7 @@ export default function Cart() {
   const cartTotal = () => {
     let total = 0;
     singleCart.forEach((p) => {
-      total += p.info[0].price * p.count;
+      total += p.info[0].price * p.count + p.info[0].quantity;
     });
     return total.toLocaleString(localString, {
       style: "currency",
