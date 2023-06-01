@@ -70,37 +70,6 @@ export default function SingleProductPage() {
     }
   };
 
-  // const addToCart = (product) => {
-  //   // Check if the product already exists in the cart
-  //   const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
-  //   const existingProduct = cartLs.find((item) => {
-  //     return item._id === product._id
-  //   });
-
-  //   if (existingProduct) {
-  //     console.log("PROD EX");
-  //     console.log("EXISTING PRODUCT", cartLs);
-  //     // If the product exists, update the quantity
-  //     const updatedCart = cartLs.map((item) => {
-  //       if (item._id === product._id) {
-  //         return {
-  //           ...item,
-  //           quantity: item.quantity + product.quantity,
-  //         };
-  //       }
-  //       return item;
-  //     });
-  //     console.log("UPDATED CART", updatedCart);
-  //     localStorage.setItem("cart", JSON.stringify(updatedCart));
-  //     setCart(updatedCart);
-  //   } else {
-  //     console.log("PROD NEW");
-  //     // If the product does not exist, add it to the cart
-  //     const updatedCart = [...cart, product];
-  //     setCart(updatedCart);
-  //     localStorage.setItem("cart", JSON.stringify(updatedCart));
-  //   }
-  // };
   const addToCart = (product) => {
     // Check if the product already exists in the cart
     const cartLs = JSON.parse(localStorage.getItem("cart")) || [];

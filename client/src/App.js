@@ -24,7 +24,6 @@ import UserOrders from "./pages/user/Orders";
 import UserProfile from "./pages/user/Profile";
 import Shop from "./pages/Shop";
 import ResultsSearchBar from "./pages/ResultsSearchBar";
-import ViewProduct from "./pages/product/ViewProduct";
 import CategoriesList from "./pages/categories/CategoriesList";
 import CategoryView from "./pages/categories/CategoryView";
 import Cart from "./pages/cart/Cart";
@@ -33,6 +32,7 @@ import AdminResultsSearchBar from "./pages/admin/AdminResultsSearchBar";
 import Popup from "./components/popup/Popup";
 import Footer from "./components/footer/Footer";
 import SingleProductPage from "./pages/product/SingleProductPage";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
 
 const PageNotFound = () => {
   return (
@@ -103,6 +103,7 @@ export default function App() {
         <Route path="/product/:slug" element={<SingleProductPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         {/* Insert routes you want to protect */}
         <Route path="/dashboard" element={<PrivateRoute />}>
           {/* No need of / before "secret" because of path="" before */}
