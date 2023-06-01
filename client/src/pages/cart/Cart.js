@@ -35,7 +35,7 @@ export default function Cart() {
       return "Cart is empty";
     }
   };
-
+  console.log("cart", cart);
   useEffect(() => {
     countQuantitySingleProduct();
     // eslint-disable-next-line

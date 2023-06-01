@@ -36,7 +36,7 @@ export default function ProductCartHorizontal({ p, removeFromCart }) {
             })}
           </p>
           {/* <p className="card-text">Quantity: {p.count}</p> */}
-          <p className="card-text">Quantity: {p.info[0].quantity + p.count}</p>
+          <p className="card-text">Quantity: {p.info[0].quantity}</p>
         </div>
       </div>
 

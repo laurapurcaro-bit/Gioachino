@@ -15,7 +15,7 @@ export default function SingleProductPage() {
   // state
   const [product, setProduct] = useState({});
   const [relatedProducts, setRelatedProducts] = useState([]);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(0);
   // hook
   const params = useParams();
   //   const
@@ -70,8 +70,61 @@ export default function SingleProductPage() {
     }
   };
 
-  const handleBuy = () => {
-    // Logic for handling the buy button click
+  // const addToCart = (product) => {
+  //   // Check if the product already exists in the cart
+  //   const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+  //   const existingProduct = cartLs.find((item) => {
+  //     return item._id === product._id
+  //   });
+
+  //   if (existingProduct) {
+  //     console.log("PROD EX");
+  //     console.log("EXISTING PRODUCT", cartLs);
+  //     // If the product exists, update the quantity
+  //     const updatedCart = cartLs.map((item) => {
+  //       if (item._id === product._id) {
+  //         return {
+  //           ...item,
+  //           quantity: item.quantity + product.quantity,
+  //         };
+  //       }
+  //       return item;
+  //     });
+  //     console.log("UPDATED CART", updatedCart);
+  //     localStorage.setItem("cart", JSON.stringify(updatedCart));
+  //     setCart(updatedCart);
+  //   } else {
+  //     console.log("PROD NEW");
+  //     // If the product does not exist, add it to the cart
+  //     const updatedCart = [...cart, product];
+  //     setCart(updatedCart);
+  //     localStorage.setItem("cart", JSON.stringify(updatedCart));
+  //   }
+  // };
+  const addToCart = (product) => {
+    // Check if the product already exists in the cart
+    const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingProductIndex = cartLs.findIndex(
+      (item) => item._id === product._id
+    );
+    // If no element is found, it returns -1
+    if (existingProductIndex !== -1) {
+      console.log("PROD EX");
+      console.log("EXISTING PRODUCT", cartLs);
+      // If the product exists, update the quantity
+      const updatedCart = [...cartLs];
+      updatedCart[existingProductIndex].quantity += product.quantity;
+
+      console.log("UPDATED CART", updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      setCart(updatedCart);
+    } else {
+      console.log("PROD NEW");
+      // If the product does not exist, add it to the cart
+      const updatedCart = [...cart, product];
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
   };
 
   return (
@@ -109,7 +162,8 @@ export default function SingleProductPage() {
           className="btn btn-outline-primary col card-button-footer"
           style={{ borderBottomRightRadius: "5px" }}
           onClick={() => {
-            setCart([...cart, product]);
+            // setCart([...cart, product]);
+            addToCart(product);
             toast.success(`${product.name} added to cart`);
           }}
         >
