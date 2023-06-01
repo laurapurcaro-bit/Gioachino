@@ -1,22 +1,15 @@
 const Product = require("../models/product");
 const slugify = require("slugify");
-const fs = require("fs");
+const fs = require("fs"); // Specify the directory to store the uploaded images
 
 const create = async (req, res) => {
   try {
     // // Handle form data
-    // console.log(req.fields);
-    // // Handle image
-    // console.log(req.files);
-    // Make sure that required fields are sent
-    const { name, price, description, category, quantity, shipping } =
-      req.fields;
-    const { photo } = req.files;
-    // if (!name.trim() || !price || !description || !category || !quantity || !shipping) {
-    //   return res.status(400).json({
-    //     error: "All fields are required",
-    //   });
-    // }
+    const { name, price, description, category, stock, shipping } = req.body;
+    const { photo, additionalPhotos } = req.files;
+    // Extract the file paths of the uploaded photos
+    const photoPath = photo[0].path;
+
     // validation
     switch (true) {
       case !name.trim():
@@ -25,16 +18,16 @@ const create = async (req, res) => {
       case !description.trim():
         res.json({ error: "Description is required" });
         break;
-      case !price.trim():
+      case !price:
         res.json({ error: "Price is required" });
         break;
       case !category.trim():
         res.json({ error: "Category is required" });
         break;
-      case !quantity.trim():
+      case !stock:
         res.json({ error: "Quantity is required" });
         break;
-      case !shipping.trim():
+      case !shipping:
         res.json({ error: "Shipping is required" });
         break;
       // No bigger than 1MB
@@ -42,21 +35,30 @@ const create = async (req, res) => {
         res.json({ error: "Photo needs to be less then 1Mb" });
         break;
     }
-    // Create product
-    // ...: spread operator, copy all the properties of req.fields
-    const product = new Product({ ...req.fields, slug: slugify(name) });
+    // Update product
+    const product = new Product({ ...req.body, slug: slugify(name) });
+    // Add photo to product const
+    if (additionalPhotos) {
+      product.additionalPhotos.data = additionalPhotos.map((file) =>
+        fs.readFileSync(file.path)
+      );
+      product.additionalPhotos.contentType = additionalPhotos.map(
+        (file) => file.type
+      );
+    }
     // Add photo to product const
     if (photo) {
-      product.photo.data = fs.readFileSync(photo.path);
-      product.photo.contentType = photo.type;
+      product.photo.data = fs.readFileSync(photoPath);
+      product.photo.contentType = photo[0].type;
     }
-    // Save product to DB
+
+    // Save the product to the database
     await product.save();
-    res.json(product);
-    // Catch error
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json(err.message);
+
+    res.status(201).json({ message: "Product created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Failed to create product" });
   }
 };
 
@@ -94,27 +96,7 @@ const read = async (req, res) => {
   }
 };
 
-const photo = async (req, res) => {
-  try {
-    // Get product by slug
-    const product = await Product.findById(req.params.productId).select(
-      "photo"
-    );
-    // If product exists
-    if (product) {
-      // If photo exists
-      if (product.photo.data) {
-        // Set content type
-        res.set("Content-Type", product.photo.contentType);
-        // Send photo data
-        return res.send(product.photo.data);
-      }
-    }
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json(err.message);
-  }
-};
+
 
 const remove = async (req, res) => {
   try {
@@ -135,9 +117,8 @@ const update = async (req, res) => {
     // // Handle image
     // console.log(req.files);
     // Make sure that required fields are sent
-    const { name, price, description, category, quantity, shipping } =
-      req.fields;
-    const { photo } = req.files;
+    const { name, price, description, category, stock, shipping } = req.body;
+    const { photo, additionalPhotos } = req.files;
     // validation
     switch (true) {
       case !name.trim():
@@ -146,16 +127,16 @@ const update = async (req, res) => {
       case !description.trim():
         res.json({ error: "Description is required" });
         break;
-      case !price.trim():
+      case !price:
         res.json({ error: "Price is required" });
         break;
       case !category.trim():
         res.json({ error: "Category is required" });
         break;
-      case !quantity.trim():
+      case !stock:
         res.json({ error: "Quantity is required" });
         break;
-      case !shipping.trim():
+      case !shipping:
         res.json({ error: "Shipping is required" });
         break;
       // No bigger than 1MB
@@ -168,7 +149,7 @@ const update = async (req, res) => {
     const product = await Product.findByIdAndUpdate(
       req.params.productId,
       {
-        ...req.fields,
+        ...req.body,
         slug: slugify(name),
       },
       // new: true: return the updated product
@@ -177,8 +158,17 @@ const update = async (req, res) => {
     // Add photo to product const
     if (photo) {
       product.photo.data = fs.readFileSync(photo.path);
-      product.photo.contentType = photo.type;
+      product.photo.contentType = photo[0].type;
     }
+    if (additionalPhotos) {
+      product.additionalPhotos.data = additionalPhotos.map((file) =>
+        fs.readFileSync(file.path)
+      );
+      product.additionalPhotos.contentType = additionalPhotos.map(
+        (file) => file.type
+      );
+    }
+
     // Save product to DB
     await product.save();
     res.json(product);
@@ -279,6 +269,55 @@ const relatedProducts = async (req, res) => {
   }
 };
 
+// GET /additionalPhotos
+const additionalPhotos = async (req, res) => {
+  try {
+    // Get product by slug
+    const product = await Product.findOne({ slug: req.params.slug }).select(
+      "additionalPhotos"
+    );
+
+    // If product exists
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    // Retrieve the additionalPhotos from the product
+    if (product) {
+      // If photo exists
+      if (product.additionalPhotos.data) {
+        // Set content type
+        res.set("Content-Type", "image/png");
+        res.send(product.additionalPhotos.data);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+const photo = async (req, res) => {
+  try {
+    // Get product by slug
+    const product = await Product.findById(req.params.productId).select(
+      "photo"
+    );
+    // If product exists
+    if (product) {
+      // If photo exists
+      if (product.photo.data) {
+        // Set content type
+        res.set("Content-Type", product.photo.contentType);
+        // Send photo data
+        return res.send(product.photo.data);
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
 module.exports = {
   create,
   list,
@@ -291,4 +330,5 @@ module.exports = {
   listProducts,
   productSearch,
   relatedProducts,
+  additionalPhotos,
 };

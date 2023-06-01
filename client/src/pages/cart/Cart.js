@@ -1,11 +1,7 @@
 import { useCart } from "../../context/cart";
 import { useAuth } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Payment from "../../components/payment/Payment";
-import toast from "react-hot-toast";
 import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
-import axios from "axios";
 
 export default function Cart() {
   // const
@@ -15,64 +11,36 @@ export default function Cart() {
   const [cart, setCart] = useCart();
   const [auth] = useAuth();
   // hook
-  const [singleCart, setSingleCart] = useState([]);
   const navigate = useNavigate();
 
-  const subtitleText = () => {
-    if (cart?.length > 1) {
-      if (auth.token) {
-        return `You have ${cart?.length} items in the cart.`;
-      } else {
-        return `Please login to checkout`;
-      }
-    } else if (cart?.length === 1) {
-      if (auth.token) {
-        return `You have ${cart?.length} item in the cart.`;
-      } else {
-        return `Please login to checkout`;
-      }
-    } else {
-      return "Cart is empty";
-    }
-  };
+  // const subtitleText = () => {
+  //   if (cart?.length > 1) {
+  //     if (auth.token) {
+  //       return `You have ${cart?.length} items in the cart.`;
+  //     } else {
+  //       return `Please login to checkout`;
+  //     }
+  //   } else if (cart?.length === 1) {
+  //     if (auth.token) {
+  //       return `You have ${cart?.length} item in the cart.`;
+  //     } else {
+  //       return `Please login to checkout`;
+  //     }
+  //   } else {
+  //     return "Cart is empty";
+  //   }
+  // };
 
-  useEffect(() => {
-    countQuantitySingleProduct();
-    // eslint-disable-next-line
-  }, [cart]);
-
-  const countQuantitySingleProduct = () => {
-    const countsById = {};
-
-    cart.forEach(function ({ _id }) {
-      countsById[_id] = (countsById[_id] || 0) + 1;
-    });
-    const finalArray = Object.entries(countsById)
-      .map(([_id, count]) => ({ _id, count }))
-      .sort((a, b) => b.count - a.count);
-
-    const composed = finalArray.map((d) => {
-      return {
-        ...d,
-        info: cart.filter(({ _id }) => d._id === _id),
-      };
-    });
-    console.log("composed", composed);
-
-    setSingleCart(composed);
-  };
-
-  const removeFromCart = (productId) => {
+  const removeFromCart = (product) => {
     // Remove product from both singleCart and cart
     // Make a copy of the cart
-    let mySingleCart = [...singleCart];
     let myCart = [...cart];
     // Find the index of the product to be removed
-    let index1 = mySingleCart.findIndex((item) => item._id === productId);
+    let index1 = myCart.findIndex((item) => item._id === product._id);
     // Remove the product from the cart
-    mySingleCart.splice(index1, 1);
+    myCart.splice(index1, 1);
     // Update the state
-    setSingleCart(mySingleCart);
+    setCart(myCart);
     // Find the index of the product to be removed
     const removeItemAll = (arr, value) => {
       let i = 0;
@@ -86,7 +54,7 @@ export default function Cart() {
       }
       return arr;
     };
-    let myCartUpdate = removeItemAll(myCart, productId);
+    let myCartUpdate = removeItemAll(myCart, product._id);
     // Update the state
     setCart(myCartUpdate);
     // Update the local storage
@@ -95,7 +63,7 @@ export default function Cart() {
 
   const cartSubTotal = (p) => {
     let totalProduct = 0;
-    totalProduct += p.info[0].price * p.count;
+    totalProduct += p.price * p.quantity;
 
     return totalProduct.toLocaleString(localString, {
       style: "currency",
@@ -105,28 +73,13 @@ export default function Cart() {
 
   const cartTotal = () => {
     let total = 0;
-    singleCart.forEach((p) => {
-      total += p.info[0].price * p.count;
+    cart.forEach((p) => {
+      total += p.price * p.quantity;
     });
     return total.toLocaleString(localString, {
       style: "currency",
       currency: currency,
     });
-  };
-
-  const onPaymentSuccess = async (data) => {
-    // empty the cart
-    localStorage.removeItem("cart");
-    // empty the state
-    setSingleCart([]);
-    setCart([]);
-    // send email to user
-    await axios.post(`/payment-success/send-email`, {
-      order: data,
-    });
-    // redirect to dashboard
-    navigate("/dashboard/user/orders");
-    toast.success("Payment Successful");
   };
 
   return (
@@ -157,7 +110,7 @@ export default function Cart() {
           <div className="row">
             <div className="col-md-8">
               <div className="row">
-                {singleCart?.map((p) => (
+                {cart?.map((p) => (
                   <div key={p._id} className="card mb-3" style={{ maxWidth: 800 }}>
                     <ProductCardHorizontal p={p} removeFromCart={removeFromCart} />
                   </div>
@@ -169,11 +122,11 @@ export default function Cart() {
               <h4>Total</h4>
               <hr />
               <div>
-                {singleCart?.map((p) => {
+                {cart?.map((p) => {
                   return (
                     <div key={p._id}>
                       <p>
-                        {p.info[0].name} x {p.count} = {cartSubTotal(p)}
+                        {p.name} x {p.quantity} = {cartSubTotal(p)}
                       </p>
                     </div>
                   );
@@ -181,39 +134,8 @@ export default function Cart() {
               </div>
 
               <p>Total: {cartTotal()}</p>
-              {auth?.user?.address ? (
-                <>
-                  <div className="mb-3 mt-3">
-                    <hr />
-                    <h4>Address: </h4>
-                    <p>{auth.user.address}</p>
-                    <p>
-                      {auth.user.CAP} {auth.user.city}
-                    </p>
-                    <p>{auth.user.country}</p>
-                  </div>
-                  <button className="btn btn-outline-warning" onClick={() => navigate("/dashboard/user/profile")}>
-                    Update delivery address
-                  </button>
-                </>
-              ) : (
-                <div className="mb-3">
-                  {auth?.token ? (
-                    <button className="btn btn-outline-warning" onClick={() => navigate("/dashboard/user/profile")}>
-                      Update delivery address
-                    </button>
-                  ) : (
-                    <button
-                      className="btn btn-outline-warning mt-3"
-                      // add state and use it in Login to redirect to cart after login
-                      onClick={() => navigate("/login", { state: "/cart" })}
-                    >
-                      Login to checkout
-                    </button>
-                  )}
-                </div>
-              )}
-              <Payment singleCart={singleCart} cartTotal={cartTotal} onPaymentSuccess={onPaymentSuccess} />
+              
+              <button className="btn btn-primary" onClick={() => navigate("/checkout")}>Checkout</button>
             </div>
           </div>
         </div>

@@ -38,6 +38,7 @@ export function CategoryForm(props) {
 }
 
 export function CategoryFormUpdate(props) {
+
   return (
     <div className="p-3">
       <form onSubmit={props.handleSubmit}>

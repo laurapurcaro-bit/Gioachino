@@ -28,9 +28,14 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
-    // Keeping track of the quantity of the product
+    // for the cart
     quantity: {
       type: Number,
+      default: 1,
+    },
+    stock: {
+      type: Number,
+      default: 0,
     },
     sold: {
       type: Number,
@@ -39,6 +44,11 @@ const productSchema = new mongoose.Schema(
     photo: {
       data: Buffer,
       contentType: String,
+    },
+    additionalPhotos: {
+      data: [Buffer],
+      contentType: String,
+      default: [],
     },
     shipping: {
       type: Boolean,

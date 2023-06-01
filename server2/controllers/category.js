@@ -21,7 +21,10 @@ const create = async (req, res) => {
     if (!photo) {
       return res.json({ error: "Photo is required" });
     }
-
+    if (photo && photo.size > 1000000) {
+      return res.json({ error: "Photo needs to be less then 1Mb" });
+    }
+    // Create category
     const category = new Category({ name, slug: slugify(name) });
     // Add photo to category const
     if (photo) {
@@ -52,6 +55,9 @@ const update = async (req, res) => {
       // new: true will return the updated category
       { new: true }
     );
+    if (photo && photo.size > 1000000) {
+      return res.json({ error: "Photo needs to be less then 1Mb" });
+    }
     // Add photo to product const
     if (photo) {
       category.photo.data = fs.readFileSync(photo.path);

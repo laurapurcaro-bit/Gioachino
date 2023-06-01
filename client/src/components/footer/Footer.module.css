@@ -1,0 +1,55 @@
+.footerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Align items to the top */
+  margin: 15rem 5rem;
+}
+
+.leftSection,
+.rightSection {
+  display: flex;
+  align-items: flex-start; /* Align items to the top */
+}
+
+.rightSection {
+  font-size: 1rem;
+  justify-content: space-between;
+}
+
+.centerSection {
+  display: flex;
+  font-size: 1rem;
+}
+
+.footerColumn {
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+}
+
+.footerColumn ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dropdown {
+  margin-top: 10px; /* Add margin above dropdowns */
+}
+
+.footerFontLogo {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  font-weight: 400;
+  color: #000;
+  text-decoration: none;
+}
+
+.footerParagraph {
+  font-family: "Inter", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: #848484;
+  text-align: center;
+  margin: 0 10rem;
+}

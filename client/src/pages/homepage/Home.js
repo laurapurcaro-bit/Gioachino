@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ProductCard from "../../components/cards/ProductCard";
 import MainPartHome from "./MainPartHome";
 import SecondPartHome from "./SecondPartHome";
+import ThirdPartHome from "./ThirdPartHome";
 
 export default function Home() {
   // const [auth] = useAuth();
@@ -70,7 +71,8 @@ export default function Home() {
       <MainPartHome />
       {/* Second part homepage */}
       <SecondPartHome />
-      
+      {/* Third part homepage */}
+      <ThirdPartHome />
     </div>
   );
 }

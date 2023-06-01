@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 // Context
 import { useAuth } from "./context/auth";
+// styles
+import styling from "./App.module.css";
 
 // Import pages
-import Menu from "./components/nav/Navbar";
+import Navbar from "./components/nav/Navbar";
 import Home from "./pages/homepage/Home";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/user/Dashboard";
@@ -22,12 +24,15 @@ import UserOrders from "./pages/user/Orders";
 import UserProfile from "./pages/user/Profile";
 import Shop from "./pages/Shop";
 import ResultsSearchBar from "./pages/ResultsSearchBar";
-import ViewProduct from "./pages/product/ViewProduct";
 import CategoriesList from "./pages/categories/CategoriesList";
 import CategoryView from "./pages/categories/CategoryView";
 import Cart from "./pages/cart/Cart";
 import ManageOrdersAdmin from "./pages/admin/ManageOrders";
 import AdminResultsSearchBar from "./pages/admin/AdminResultsSearchBar";
+import Popup from "./components/popup/Popup";
+import Footer from "./components/footer/Footer";
+import SingleProductPage from "./pages/product/SingleProductPage";
+import CheckoutPage from "./pages/checkout/CheckoutPage";
 
 const PageNotFound = () => {
   return (
@@ -39,6 +44,7 @@ const PageNotFound = () => {
 
 export default function App() {
   const [auth, setAuth] = useAuth();
+  const [showPopup, setShowPopup] = useState(false);
   // Get user only once
   useEffect(() => {
     try {
@@ -53,11 +59,39 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   console.log("AUTH", auth);
+
+  useEffect(() => {
+    const hasShownPopup = localStorage.getItem("hasShownPopup");
+
+    if (!hasShownPopup) {
+      const timer = setTimeout(() => {
+        setShowPopup(true);
+        localStorage.setItem("hasShownPopup", true);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowPopup(false);
+    }
+  }, []);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <Router>
-      <Menu />
+      {/* Navbar */}
+      <Navbar />
       {/* Snack bar */}
       <Toaster position="top-center" />
+      {/* Signin to newsletter popup */}
+      {showPopup && (
+        <>
+          <div className={styling.overlay} />
+          <Popup onClose={handleClosePopup} />
+        </>
+      )}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/shop" element={<Shop />} />
@@ -66,9 +100,10 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<ResultsSearchBar />} />
         {/* Dynamic creation of route */}
-        <Route path="/product/:slug" element={<ViewProduct />} />
+        <Route path="/product/:slug" element={<SingleProductPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
         {/* Insert routes you want to protect */}
         <Route path="/dashboard" element={<PrivateRoute />}>
           {/* No need of / before "secret" because of path="" before */}
@@ -91,6 +126,8 @@ export default function App() {
         {/* <Route path="/register" element={<Register />} /> */}
         <Route path="*" element={<PageNotFound />} replace />
       </Routes>
+      {/* Footer */}
+      <Footer />
     </Router>
   );
 }

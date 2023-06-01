@@ -19,6 +19,42 @@ export default function ProductCard({ product }) {
     }
   }
 
+  const addToCart = (product) => {
+    // Check if the product already exists in the cart
+    const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    const existingProduct = cartLs.find((item) => {
+      return item._id === product._id
+    });
+
+    if (existingProduct) {
+      console.log("PROD EX");
+      console.log("EXISTING PRODUCT", cartLs);
+      // If the product exists, update the quantity
+      const updatedCart = cartLs.map((item) => {
+        console.log("ITEM", item);
+        if (item._id === product._id) {
+          return {
+            ...item,
+            quantity: item.quantity + 1,
+          };
+        }
+        return item;
+      });
+      console.log("UPDATED CART", updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      setCart(updatedCart);
+    } else {
+      console.log("PROD NEW");
+      // If the product does not exist, quantity is 0, so we add 1
+      const newProduct = { ...product, quantity: 1 };
+      const updatedCart = [...cart, newProduct];
+      // If the product does not exist, add it to the cart
+      // const updatedCart = [...cart, product];
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    }
+  };
+
   const inStock = product?.quantity; // - product?.sold;
   const currency = "EUR";
   const localString = "en-US";
@@ -54,8 +90,7 @@ export default function ProductCard({ product }) {
         <button
           className={`btn ${styling.btn} ${styling.add}`}
           onClick={() => {
-            setCart([...cart, product]);
-            localStorage.setItem("cart", JSON.stringify([...cart, product]));
+            addToCart(product);
             toast.success(`${product.name} added to cart`);
           }}
         >

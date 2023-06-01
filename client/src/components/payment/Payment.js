@@ -3,7 +3,7 @@ import { useAuth } from "../../context/auth";
 import axios from "axios";
 import DropIn from "braintree-web-drop-in-react";
 
-export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
+export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
   // context
   const [auth] = useAuth();
   // state
@@ -37,7 +37,7 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
       const { nonce } = await instance.requestPaymentMethod();
       const { data } = await axios.post("/braintree/payment", {
         nonce,
-        cart: singleCart,
+        cart: cart,
         amount: amount,
         provider: auth.user.provider,
       });
@@ -54,7 +54,7 @@ export default function Payment({ singleCart, cartTotal, onPaymentSuccess }) {
     <div className="mt-3">
       <h4 className="mb-1">Payment</h4>
       {/* <div>{JSON.stringify(clientToken)}</div> */}
-      {!clientToken || !singleCart.length ? (
+      {!clientToken || !cart.length ? (
         <div>Loading...</div>
       ) : (
         <>

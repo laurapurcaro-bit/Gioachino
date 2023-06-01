@@ -1,0 +1,22 @@
+.container {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.radio {
+  margin-right: 10px;
+}
+
+.previousButton {
+  margin-top: 10px;
+}
+
+.nextButton {
+  position: absolute;
+  /* 0 pixel on the right */
+  right: 0;
+}
