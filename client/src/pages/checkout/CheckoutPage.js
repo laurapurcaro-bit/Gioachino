@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import AddressStep from './AddressStep';
-import ShippingMethodStep from './ShippingMethodStep';
-import PaymentMethodStep from './PaymentMethodStep';
-import styling from './CheckoutPage.module.css';
+import React, { useState } from "react";
+import AddressStep from "./AddressStep";
+import ShippingMethodStep from "./ShippingMethodStep";
+import PaymentMethodStep from "./PaymentMethodStep";
+import styling from "./CheckoutPage.module.css";
 
 export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [address, setAddress] = useState('');
-  const [shippingMethod, setShippingMethod] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
+  const [address, setAddress] = useState({
+    street: "",
+    city: "",
+    zip: "",
+    state: "",
+  });
+  const [shippingMethod, setShippingMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -18,8 +23,8 @@ export default function CheckoutPage() {
     setCurrentStep(currentStep - 1);
   };
 
-  const handleAddressChange = (value) => {
-    setAddress(value);
+  const handleAddressChange = (updatedAddress) => {
+    setAddress(updatedAddress);
   };
 
   const handleShippingMethodChange = (value) => {
@@ -65,13 +70,25 @@ export default function CheckoutPage() {
   const renderProgressBar = () => {
     return (
       <div>
-        <div className={`${styling.step} ${currentStep === 1 ? styling.active : ''}`}>
+        <div
+          className={`${styling.step} ${
+            currentStep === 1 ? styling.active : ""
+          }`}
+        >
           Step 1
         </div>
-        <div className={`${styling.step} ${currentStep === 2 ? styling.active : ''}`}>
+        <div
+          className={`${styling.step} ${
+            currentStep === 2 ? styling.active : ""
+          }`}
+        >
           Step 2
         </div>
-        <div className={`${styling.step} ${currentStep === 3 ? styling.active : ''}`}>
+        <div
+          className={`${styling.step} ${
+            currentStep === 3 ? styling.active : ""
+          }`}
+        >
           Step 3
         </div>
       </div>
@@ -85,5 +102,4 @@ export default function CheckoutPage() {
       {renderStep()}
     </div>
   );
-};
-
+}

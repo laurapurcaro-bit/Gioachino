@@ -17,10 +17,6 @@ const PaymentMethodStep = ({
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
   // function
-  const handlePaymentMethodChange = (e) => {
-    onPaymentMethodChange(e.target.value);
-  };
-
   const cartTotal = () => {
     let total = 0;
     cart.forEach((p) => {
@@ -41,8 +37,9 @@ const PaymentMethodStep = ({
     await axios.post(`/payment-success/send-email`, {
       order: data,
     });
+    localStorage.setItem("order", JSON.stringify(data));
     // redirect to dashboard
-    navigate("/dashboard/user/orders");
+    navigate("/order-confirmation");
     toast.success("Payment Successful");
   };
 

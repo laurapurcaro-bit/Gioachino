@@ -17,6 +17,8 @@ export default function Home() {
     loadProducts();
     // execute getTotal function
     getTotal();
+    // remove order when in homepage
+    localStorage.removeItem("order");
     // eslint-disable-next-line
   }, []);
 

@@ -6,6 +6,7 @@ const orderSchema = new mongoose.Schema(
     products: [{ type: ObjectId, ref: "Product" }],
     paymentInfo: {},
     cart: { type: Array, default: [] },
+    orderId: { type: String },
     amount: { type: Number },
     buyer: { type: ObjectId, refPath: "docModel" },
     docModel: {
@@ -13,6 +14,7 @@ const orderSchema = new mongoose.Schema(
       enum: ["Useremail", "Usergoogle", "Userfacebook"],
       required: true,
     },
+    orderDate: { type: Date },
     // refers to MongoDB User model
     orderStatus: {
       type: String,

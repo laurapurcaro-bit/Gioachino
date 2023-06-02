@@ -33,6 +33,7 @@ import Popup from "./components/popup/Popup";
 import Footer from "./components/footer/Footer";
 import SingleProductPage from "./pages/product/SingleProductPage";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
+import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
 
 const PageNotFound = () => {
   return (
@@ -62,7 +63,6 @@ export default function App() {
 
   useEffect(() => {
     const hasShownPopup = localStorage.getItem("hasShownPopup");
-
     if (!hasShownPopup) {
       const timer = setTimeout(() => {
         setShowPopup(true);
@@ -104,6 +104,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
         {/* Insert routes you want to protect */}
         <Route path="/dashboard" element={<PrivateRoute />}>
           {/* No need of / before "secret" because of path="" before */}
