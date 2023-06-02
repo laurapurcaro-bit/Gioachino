@@ -50,21 +50,6 @@ const PaymentMethodStep = ({
     <div>
       <h2>Step 3: Select payment method</h2>
       <div>
-        <input
-          type="radio"
-          value="creditCard"
-          checked={paymentMethod === "creditCard"}
-          onChange={handlePaymentMethodChange}
-        />
-        <label>Credit Card</label>
-      </div>
-      <div>
-        <input
-          type="radio"
-          value="paypal"
-          checked={paymentMethod === "paypal"}
-          onChange={handlePaymentMethodChange}
-        />
         <Payment
           cart={cart}
           cartTotal={cartTotal}
