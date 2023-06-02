@@ -4,6 +4,8 @@ import ShippingMethodStep from "./ShippingMethodStep";
 import PaymentMethodStep from "./PaymentMethodStep";
 import styling from "./CheckoutPage.module.css";
 
+const steps = ["Address", "Shipping Method", "Payment Method"];
+
 export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [address, setAddress] = useState({
@@ -60,6 +62,8 @@ export default function CheckoutPage() {
             paymentMethod={paymentMethod}
             onPrevious={handlePreviousStep}
             onPaymentMethodChange={handlePaymentMethodChange}
+            address={address}
+            shippingMethod={shippingMethod}
           />
         );
       default:
@@ -67,39 +71,22 @@ export default function CheckoutPage() {
     }
   };
 
-  const renderProgressBar = () => {
-    return (
-      <div>
-        <div
-          className={`${styling.step} ${
-            currentStep === 1 ? styling.active : ""
-          }`}
-        >
-          Step 1
-        </div>
-        <div
-          className={`${styling.step} ${
-            currentStep === 2 ? styling.active : ""
-          }`}
-        >
-          Step 2
-        </div>
-        <div
-          className={`${styling.step} ${
-            currentStep === 3 ? styling.active : ""
-          }`}
-        >
-          Step 3
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <div>
-      <h1>Payment Page</h1>
-      {renderProgressBar()}
-      {renderStep()}
+    <div className={styling.container}>
+      <div className={styling.stepBar}>
+        {steps.map((step, index) => (
+          <div
+            key={index}
+            className={`${styling.step} ${
+              index < currentStep ? styling.active : ""
+            }`}
+          >
+            <span className={styling.stepNumber}>{index + 1}</span>
+          </div>
+        ))}
+      </div>
+      {/* Render the steps components */}
+      <div className={styling.stepContent}>{renderStep()}</div>
     </div>
   );
 }
