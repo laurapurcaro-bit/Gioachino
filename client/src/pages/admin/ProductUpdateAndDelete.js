@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer';
+import { Buffer } from "buffer";
 import { useAuth } from "../../context/auth";
 import AdminMenu from "../../components/nav/AdminMenu";
 import { useState, useEffect } from "react";
@@ -17,7 +17,9 @@ export default function AdminUpdateProduct() {
   // Categories in the database
   const [categories, setCategories] = useState([]);
   const [photo, setPhoto] = useState(null);
+  const [photoUpdate, setPhotoUpdate] = useState(null);
   const [additionalPhotos, setAdditionalPhotos] = useState(null);
+  const [additionalPhotosUpdate, setAdditionalPhotosUpdate] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -34,14 +36,6 @@ export default function AdminUpdateProduct() {
     loadAdditionalPhotos();
     // eslint-disable-next-line
   }, []);
-
-  // useEffect(() => {
-
-  // }, []);
-
-  // useEffect(() => {
-
-  // }, []);
 
   const loadCategories = async () => {
     try {
@@ -71,7 +65,6 @@ export default function AdminUpdateProduct() {
   const loadAdditionalPhotos = async () => {
     try {
       const { data } = await axios.get(`/product/additionalPhotos/${slug}`);
-      console.log("DATA", data);
       setAdditionalPhotos(data);
     } catch (err) {
       console.log(err);
@@ -95,13 +88,13 @@ export default function AdminUpdateProduct() {
       formData.append("category", category);
       formData.append("shipping", shipping);
       formData.append("stock", stock);
-      if (photo) {
+      if (photoUpdate) {
         formData.append("photo", photo);
       }
-
-      if (additionalPhotos) {
-        for (let i = 0; i < additionalPhotos.length; i++) {
-          formData.append("additionalPhotos", additionalPhotos[i]);
+      if (additionalPhotosUpdate) {
+        for (const element of additionalPhotosUpdate) {
+          console.log("additionalPhotosUpdate", element);
+          formData.append("additionalPhotos", element);
         }
       }
 
@@ -141,6 +134,50 @@ export default function AdminUpdateProduct() {
       console.log(err);
       toast.error("Delete product failed. Try again.");
     }
+  };
+
+  const convertFiletoBuffer = (uploadedPhotos) => {
+    const reader = new FileReader();
+    const convertedPhotos = []; // Array to store the converted photos
+    
+    const convertPhoto = (file) => {
+      
+      return new Promise((resolve, reject) => {
+        reader.onload = () => {
+          const photoData = new Uint8Array(reader.result); // Get the photo data as Uint8Array
+          const photoBuffer = {
+            type: "Buffer",
+            data: Array.from(photoData),
+            name: file.name,
+            photosInfo: [
+              {
+                name: file.name,
+                type: file.type,
+                path: "uploads/" + file.name,
+                size: file.size,
+              },
+            ],
+          };
+
+          resolve(photoBuffer);
+        };
+        reader.onerror = reject;
+
+        reader.readAsArrayBuffer(file);
+      });
+    };
+
+    const convertPhotos = async () => {
+      for (const element of uploadedPhotos) {
+        const convertedPhoto = await convertPhoto(element);
+        convertedPhotos.push(convertedPhoto);
+      }
+      // Use the convertedPhotos array as needed
+      console.log("converted", convertedPhotos);
+
+      setAdditionalPhotos(convertedPhotos); // Set the converted photos in state
+    };
+    convertPhotos();
   };
 
   return (
@@ -195,10 +232,13 @@ export default function AdminUpdateProduct() {
                 name="additionalPhotos"
                 accept="image/*"
                 multiple
-                onChange={(e) => setAdditionalPhotos(e.target.files)}
+                onChange={(e) => {
+                  setAdditionalPhotos(e.target.files)
+                  setAdditionalPhotosUpdate(e.target.files);
+                  }}
                 hidden
               />
-              {additionalPhotos?.length > 0 && (
+              {additionalPhotos?.length > 0 ? (
                 <div className="text-center">
                   {Array.from(additionalPhotos)?.map((file, index) => (
                     <img
@@ -212,6 +252,8 @@ export default function AdminUpdateProduct() {
                     />
                   ))}
                 </div>
+              ) : (
+                <div>New image</div>
               )}
               <div className="pt-2">
                 <label className="btn btn-outline-secondary p-2 col-12 mb-3">
@@ -223,7 +265,13 @@ export default function AdminUpdateProduct() {
                     name="additionalPhotos"
                     accept="image/*"
                     multiple
-                    onChange={(e) => setAdditionalPhotos(e.target.files)}
+                    onChange={(e) => {
+                      // Show the photos
+                      convertFiletoBuffer(e.target.files);
+                      // Send the photos to FileList type
+                      setAdditionalPhotosUpdate(e.target.files);
+
+                    }}
                     hidden
                   />
                 </label>

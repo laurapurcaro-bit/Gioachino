@@ -44,10 +44,14 @@ const productSchema = new mongoose.Schema(
     photo: {
       data: Buffer,
       contentType: String,
+      name: String,
+      photosInfo: {},
     },
     additionalPhotos: {
       data: [Buffer],
-      contentType: String,
+      contentType: [String],
+      name: [String],
+      photosInfo: [{}],
       default: [],
     },
     shipping: {

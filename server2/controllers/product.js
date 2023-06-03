@@ -7,6 +7,7 @@ const create = async (req, res) => {
     // // Handle form data
     const { name, price, description, category, stock, shipping } = req.body;
     const { photo, additionalPhotos } = req.files;
+    console.log(req.files);
     // Extract the file paths of the uploaded photos
     const photoPath = photo[0].path;
 
@@ -31,7 +32,7 @@ const create = async (req, res) => {
         res.json({ error: "Shipping is required" });
         break;
       // No bigger than 1MB
-      case photo && photo.size > 1000000:
+      case photo && photo[0].size > 1000000:
         res.json({ error: "Photo needs to be less then 1Mb" });
         break;
     }
@@ -43,13 +44,23 @@ const create = async (req, res) => {
         fs.readFileSync(file.path)
       );
       product.additionalPhotos.contentType = additionalPhotos.map(
-        (file) => file.type
+        (file) => file.mimetype
       );
+      product.additionalPhotos.name = additionalPhotos.map((file) => file.originalname);
+      product.additionalPhotos.photosInfo = additionalPhotos.map((file) => ({name: file.filename, path: file.destination, size: file.size, type: file.mimetype}));
+      // check if the file size is less than 1MB
+      additionalPhotos.map((file) => {
+        if (file.size > 1000000) {
+          res.json({ error: "Photo needs to be less then 1Mb" });
+        }
+      });
     }
     // Add photo to product const
     if (photo) {
       product.photo.data = fs.readFileSync(photoPath);
       product.photo.contentType = photo[0].type;
+      product.photo.name = photo[0].originalname;
+      product.photo.photoInfo = {name: photo[0].filename, path: photo[0].destination, size: photo[0].size, type: photo[0].mimetype};
     }
 
     // Save the product to the database
@@ -59,54 +70,6 @@ const create = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to create product" });
-  }
-};
-
-const list = async (req, res) => {
-  try {
-    // Get all products
-    // select(): Select everything except photo data
-    // limit(): Limit the number of products to 12
-    // sort(): Sort by createdAt in descending order, the most recent product will be at the top: -1
-    const products = await Product.find({})
-      // Populate is for getting the category object
-      .populate("category")
-      .select("-photo")
-      .limit(12)
-      .sort({ createdAt: -1 });
-
-    res.json(products);
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json(err.message);
-  }
-};
-
-const read = async (req, res) => {
-  try {
-    // Get product by slug
-    // select(): Select everything except photo data
-    const product = await Product.findOne({ slug: req.params.slug })
-      .select("-photo -additionalPhotos")
-      .populate("category");
-    res.json(product);
-  } catch (error) {
-    console.log(err);
-    return res.status(400).json(err.message);
-  }
-};
-
-
-
-const remove = async (req, res) => {
-  try {
-    const product = await Product.findByIdAndDelete(
-      req.params.productId
-    ).select("-photo");
-    res.json(product);
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json(err.message);
   }
 };
 
@@ -156,23 +119,77 @@ const update = async (req, res) => {
       { new: true }
     );
     // Add photo to product const
-    if (photo) {
-      product.photo.data = fs.readFileSync(photo.path);
-      product.photo.contentType = photo[0].type;
-    }
     if (additionalPhotos) {
       product.additionalPhotos.data = additionalPhotos.map((file) =>
         fs.readFileSync(file.path)
       );
       product.additionalPhotos.contentType = additionalPhotos.map(
-        (file) => file.type
+        (file) => file.mimetype || file.type
       );
+      product.additionalPhotos.name = additionalPhotos.map((file) => file.originalname || file.name);
+      product.additionalPhotos.photosInfo = additionalPhotos.map((file) => ({filename: file.filename || file.name, path: file.destination || file.path, size: file.size, mimetype: file.mimetype || file.type}));
+      // check if the file size is less than 1MB
+    }
+    // Add photo to product const
+    if (photo) {
+      product.photo.data = fs.readFileSync(photoPath);
+      product.photo.contentType = photo[0].type;
+      product.photo.name = photo[0].originalname;
+      product.photo.photoInfo = {filename: photo[0].filename, path: photo[0].destination, size: photo[0].size, mimetype: photo[0].mimetype};
     }
 
     // Save product to DB
     await product.save();
     res.json(product);
     // Catch error
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+const list = async (req, res) => {
+  try {
+    // Get all products
+    // select(): Select everything except photo data
+    // limit(): Limit the number of products to 12
+    // sort(): Sort by createdAt in descending order, the most recent product will be at the top: -1
+    const products = await Product.find({})
+      // Populate is for getting the category object
+      .populate("category")
+      .select("-photo")
+      .limit(12)
+      .sort({ createdAt: -1 });
+
+    res.json(products);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+const read = async (req, res) => {
+  try {
+    // Get product by slug
+    // select(): Select everything except photo data
+    const product = await Product.findOne({ slug: req.params.slug })
+      .select("-photo -additionalPhotos")
+      .populate("category");
+    res.json(product);
+  } catch (error) {
+    console.log(err);
+    return res.status(400).json(err.message);
+  }
+};
+
+
+
+const remove = async (req, res) => {
+  try {
+    const product = await Product.findByIdAndDelete(
+      req.params.productId
+    ).select("-photo");
+    res.json(product);
   } catch (err) {
     console.log(err);
     return res.status(400).json(err.message);
