@@ -2,9 +2,10 @@
   display: grid;
   align-items: center;
   justify-content: center;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   grid-gap: 1rem;
-  padding: 5rem 15rem 0 15rem;
+  padding: 0 15rem;
+  height: 30rem;
 }
 
 .btnContainer {
@@ -16,10 +17,19 @@
   width: 15rem;
 }
 
-.btn:hover {
-  border-color: #ededed;
-}
-
 .btn:focus {
   box-shadow: #ededed;
+}
+
+.cardImg {
+  padding: 0.5rem;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 20%;
+  z-index: 1;
+}
+
+.cardImg:hover {
+  width: 12rem;
+  height: 12rem;
 }

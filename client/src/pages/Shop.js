@@ -120,27 +120,17 @@ export default function Shop() {
             </div>
             {/* Reset filter */}
             <div className="p-3 pt-3">
-              <button
-                className="btn btn-outline-secondary col-6"
-                onClick={() => window.location.reload()}
-              >
+              <button className="btn btn-outline-secondary col-6" onClick={() => window.location.reload()}>
                 Reset
               </button>
             </div>
           </div>
           <div className="col-md-9">
             {/* <h2 className="p-3 mt-2 mb-2 h4 bg-light text-center">{products?.length} Products</h2> */}
-            <div
-              className={"row"}
-              //   vh is for lenth of displayed product
-              style={{ height: "100vh", overflow: "scroll" }}
-            >
+            <div className={"row"}>
               {products?.map((product) => {
                 return (
-                  <div
-                    className={`col-md-4 ${styling.cardContainer}`}
-                    key={product._id}
-                  >
+                  <div className={`col-md-4 ${styling.cardContainer}`} key={product._id}>
                     <ProductCard product={product} />
                   </div>
                 );

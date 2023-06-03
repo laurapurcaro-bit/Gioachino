@@ -36,11 +36,7 @@ import CheckoutPage from "./pages/checkout/CheckoutPage";
 import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
 
 const PageNotFound = () => {
-  return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      404 - Page not found
-    </div>
-  );
+  return <div className="d-flex justify-content-center align-items-center vh-100">404 - Page not found</div>;
 };
 
 export default function App() {
@@ -119,16 +115,13 @@ export default function App() {
           <Route path="admin/products" element={<AdminShowProducts />} />
           <Route path="admin/orders" element={<ManageOrdersAdmin />} />
           <Route path="admin/search" element={<AdminResultsSearchBar />} />
-          <Route
-            path="admin/products/update/:slug"
-            element={<AdminUpdateProduct />}
-          />
+          <Route path="admin/products/update/:slug" element={<AdminUpdateProduct />} />
         </Route>
         {/* <Route path="/register" element={<Register />} /> */}
         <Route path="*" element={<PageNotFound />} replace />
       </Routes>
       {/* Footer */}
-      <Footer />
+      <Footer className="footer" />
     </Router>
   );
 }
