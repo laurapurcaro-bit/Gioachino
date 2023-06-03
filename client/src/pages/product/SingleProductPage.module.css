@@ -1,38 +1,91 @@
+button {
+  background: none;
+  color: inherit;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
 .productPage {
   display: flex;
+  gap: 2rem;
+  padding: var(--spacing);
 }
 
 .imageSection {
-  flex: 1;
+  display: flex;
+  gap: 2rem;
 }
 
 .mainImage {
+  flex: 1;
   width: 100%;
   height: auto;
 }
 
-.additionalImages {
+.mainImage img {
+  height: 62rem;
+}
+
+.imgRepo {
   display: flex;
   flex-direction: column;
 }
 
-.additionalImage {
-  width: 50px;
-  height: auto;
-  margin-bottom: 10px;
+.imgRepo img {
+  height: 20rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
 }
 
 .productDetails {
   flex: 1;
-  padding: 0 20px;
+  flex-direction: column;
+}
+
+.inStock {
+  display: none;
+}
+
+.esaurito {
+  background-color: black;
+  padding: 1rem;
+  color: white;
+  font-size: 1.5rem;
+}
+.productDetails div {
+  margin-bottom: 10rem;
+  margin-left: 10rem;
 }
 
 .quantitySection {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: left;
   margin-bottom: 10px;
 }
 
-button {
-  margin: 0 5px;
+.quantitySpan {
+  display: flex;
+  gap: 1rem;
+  width: 85%;
+}
+
+.quantitySpan span {
+  right: 0;
+  border: 0.1rem solid black;
+  justify-content: space-between;
+  display: flex;
+  width: 35rem;
+  margin-left: 5rem;
+  padding: 0 2rem;
+}
+
+.quantityBtn {
+  width: 77%;
+  height: 5rem;
+  margin-top: 5rem;
+  background-color: black;
+  color: white;
 }
