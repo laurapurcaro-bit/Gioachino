@@ -157,7 +157,7 @@ const list = async (req, res) => {
     const products = await Product.find({})
       // Populate is for getting the category object
       .populate("category")
-      .select("-photo")
+      .select("-photo -additionalPhotos")
       .limit(12)
       .sort({ createdAt: -1 });
 
@@ -188,7 +188,7 @@ const remove = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(
       req.params.productId
-    ).select("-photo");
+    ).select("-photo -additionalPhotos");
     res.json(product);
   } catch (err) {
     console.log(err);
@@ -239,7 +239,7 @@ const listProducts = async (req, res) => {
     const page = req.params.pageNumber ? req.params.pageNumber : 1;
     const products = await Product.find({})
       // don't return photo
-      .select("-photo")
+      .select("-photo -additionalPhotos")
       // Skip 6 products per page
       .skip((page - 1) * perPage)
       .limit(perPage)
@@ -262,7 +262,7 @@ const productSearch = async (req, res) => {
         { name: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } },
       ],
-    }).select("-photo");
+    }).select("-photo -additionalPhotos");
     // return the products
     res.json(results);
   } catch (err) {
@@ -278,7 +278,7 @@ const relatedProducts = async (req, res) => {
       category: categoryId,
     })
       .limit(3)
-      .select("-photo")
+      .select("-photo -additionalPhotos")
       .populate("category");
     res.json(related);
   } catch (err) {

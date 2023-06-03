@@ -54,7 +54,8 @@ const update = async (req, res) => {
       },
       // new: true will return the updated category
       { new: true }
-    );
+    ).select("-photo");
+
     if (photo && photo.size > 1000000) {
       return res.json({ error: "Photo needs to be less then 1Mb" });
     }
@@ -74,7 +75,9 @@ const update = async (req, res) => {
 
 const remove = async (req, res) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.categoryId);
+    const category = await Category.findByIdAndDelete(
+      req.params.categoryId
+    ).select("-photo");
     res.json(category);
   } catch (err) {
     console.log(err);
@@ -94,7 +97,9 @@ const list = async (req, res) => {
 
 const read = async (req, res) => {
   try {
-    const category = await Category.findOne({ slug: req.params.slug });
+    const category = await Category.findOne({ slug: req.params.slug }).select(
+      "-photo"
+    );
     res.json(category);
   } catch (err) {
     console.log(err);
@@ -104,8 +109,12 @@ const read = async (req, res) => {
 
 const productsByCategory = async (req, res) => {
   try {
-    const category = await Category.findOne({ slug: req.params.slug });
-    const products = await Product.find({ category }).populate("category");
+    const category = await Category.findOne({ slug: req.params.slug }).select(
+      "-photo"
+    );
+    const products = await Product.find({ category })
+      .select("-photo -additionalPhotos")
+      .populate("category");
 
     res.json({ category, products });
   } catch (err) {
