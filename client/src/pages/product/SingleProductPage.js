@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import moment from "moment";
+import { Badge } from "antd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import ProductCard from "../../components/cards/ProductCard";
-import { Badge } from "antd";
 import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./SingleProductPage.module.css";
@@ -14,14 +12,12 @@ export default function SingleProductPage() {
   const [cart, setCart] = useCart();
   // state
   const [product, setProduct] = useState({});
-  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [productPhotos, setProductPhotos] = useState([]);
+  // const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantity, setQuantity] = useState(0);
   // hook
   const params = useParams();
   //   const
-  const inStock = product?.quantity; //- product?.sold;
-  const currency = "EUR";
-  const localString = "en-US";
   useEffect(() => {
     // const slug = window.location.pathname.split("/")[2];
     if (params?.slug) {
@@ -45,10 +41,8 @@ export default function SingleProductPage() {
 
   const loadRelatedProducts = async (productId, categoryId) => {
     try {
-      const { data } = await axios.get(
-        `/products/related/${productId}/${categoryId}`
-      );
-      setRelatedProducts(data);
+      // const { data } = await axios.get(`/products/related/${productId}/${categoryId}`);
+      // setRelatedProducts(data);
     } catch (error) {
       console.log(error);
     }
@@ -96,48 +90,68 @@ export default function SingleProductPage() {
     }
   };
 
+  // function changeImage(imagePath) {
+  //   let mainImage = document.querySelector(".mainImage img");
+  //   mainImage.src = imagePath;
+  // }
+
   return (
     <div className={styling.productPage}>
       <div className={styling.imageSection}>
-        <img
-          className={styling.mainImage}
-          src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-          alt={product?.name}
-          // className="img img-responsive"
-          height="300px"
-          width="230px"
-          style={{ height: "600px", width: "100%" }}
-        />
-        <div className={styling.additionalImages}>
-          {/* {product.additionalImages.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={product.name}
-              className="additional-image"
-            />
-          ))} */}
+        <div className={styling.imgRepo}>
+          <img
+            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            alt={product?.name}
+            // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
+          />
+          <img
+            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            alt={product?.name}
+            // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
+          />
+          <img
+            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            alt={product?.name}
+            // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
+          />
+        </div>
+        <div className={styling.mainImage}>
+          <img
+            // className={styling.mainImage}
+            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            alt={product?.name}
+          />
         </div>
       </div>
       <div className={styling.productDetails}>
-        <h1>{product.name}</h1>
-        <p>{product.description}</p>
-        <div className={styling.quantitySection}>
-          <button onClick={handleDecreaseQuantity}>-</button>
-          <span>{quantity}</span>
-          <button onClick={handleIncreaseQuantity}>+</button>
+        {product?.stock < 1 && (
+          <div>
+            <span className={styling.esaurito}>ESAURITO</span>
+          </div>
+        )}
+        <div>
+          <h1>{product.name}</h1>
+          <p>{product.description}</p>
         </div>
-        <button
-          className="btn btn-outline-primary col card-button-footer"
-          style={{ borderBottomRightRadius: "5px" }}
-          onClick={() => {
-            // setCart([...cart, product]);
-            addToCart(product);
-            toast.success(`${product.name} added to cart`);
-          }}
-        >
-          Add to Cart
-        </button>
+        <div className={styling.quantitySection}>
+          <span className={styling.quantitySpan}>
+            <p>Quantita</p>
+            <span>
+              <button onClick={handleDecreaseQuantity}>-</button>
+              <p>{quantity}</p>
+              <button onClick={handleIncreaseQuantity}>+</button>
+            </span>
+          </span>
+          <button
+            className={styling.quantityBtn}
+            onClick={() => {
+              addToCart(product);
+              toast.success(`${product.name} added to cart`);
+            }}
+          >
+            AGGIUNGI AL CARRELLO
+          </button>
+        </div>
       </div>
     </div>
   );

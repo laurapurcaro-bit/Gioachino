@@ -1,6 +1,8 @@
 :root {
   --color-background: #ffff;
   --color-text: black;
+
+  --spacing: 4rem;
 }
 
 * {
@@ -20,4 +22,8 @@ body {
   font-weight: 400;
   color: var(--color-text);
   background-color: var(--color-background);
+}
+
+.footer {
+  flex-shrink: 0;
 }

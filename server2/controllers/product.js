@@ -173,7 +173,7 @@ const read = async (req, res) => {
     // Get product by slug
     // select(): Select everything except photo data
     const product = await Product.findOne({ slug: req.params.slug })
-      .select("-photo")
+      .select("-photo -additionalPhotos")
       .populate("category");
     res.json(product);
   } catch (error) {

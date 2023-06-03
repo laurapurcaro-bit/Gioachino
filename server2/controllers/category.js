@@ -84,7 +84,7 @@ const remove = async (req, res) => {
 
 const list = async (req, res) => {
   try {
-    const categories = await Category.find({});
+    const categories = await Category.find({}).select("-photo");
     res.json(categories);
   } catch (err) {
     console.log(err);
