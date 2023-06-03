@@ -1,5 +1,8 @@
 .container {
+  position: relative;
+  width: 100%;
   margin-bottom: 20px;
+  left: 0;
 }
 
 .label {
@@ -8,11 +11,26 @@
 }
 
 .radio {
-  margin-right: 10px;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  width: 2rem;
+  border: 1px solid #ccc;
+}
+
+
+.shipping {
+  position: relative;
+  margin-top: 3rem;
+}
+
+.buttons {
+  margin-top: 3rem;
 }
 
 .previousButton {
-  margin-top: 10px;
+  position: absolute;
+  left: 0;
 }
 
 .nextButton {

@@ -30,6 +30,8 @@ export default function Shop() {
 
   useEffect(() => {
     loadCategories();
+    // remove order when in shop
+    localStorage.removeItem("order");
   }, []);
 
   const loadCategories = async () => {
@@ -118,7 +120,10 @@ export default function Shop() {
             </div>
             {/* Reset filter */}
             <div className="p-3 pt-3">
-              <button className="btn btn-outline-secondary col-6" onClick={() => window.location.reload()}>
+              <button
+                className="btn btn-outline-secondary col-6"
+                onClick={() => window.location.reload()}
+              >
                 Reset
               </button>
             </div>
@@ -132,7 +137,10 @@ export default function Shop() {
             >
               {products?.map((product) => {
                 return (
-                  <div className={`col-md-4 ${styling.cardContainer}`} key={product._id}>
+                  <div
+                    className={`col-md-4 ${styling.cardContainer}`}
+                    key={product._id}
+                  >
                     <ProductCard product={product} />
                   </div>
                 );

@@ -1,0 +1,32 @@
+.address {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.5;
+}
+
+.shipping {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.5;
+}
+
+.cart {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.5;
+}
+
+.cartProducts {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.5;
+    margin-left: 3rem;
+}

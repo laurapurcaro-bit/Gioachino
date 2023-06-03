@@ -29,10 +29,17 @@ const getTotken = async (req, res) => {
     console.log(error);
   }
 };
+
+function generateOrderId() {
+  const timestamp = Date.now().toString();
+  const randomNumber = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  return timestamp + randomNumber;
+}
+
 const processPayment = async (req, res) => {
   try {
     // hardcode $10
-    console.log("PAYMENT", req.body);
+    // console.log("PAYMENT", req.body);
     const { nonce, cart, amount, provider } = req.body;
     const correctAmount = amount.split("€")[1];
     console.log("CORRECT AMOUNT", correctAmount);
@@ -46,6 +53,12 @@ const processPayment = async (req, res) => {
       },
       function (error, result) {
         if (result) {
+          console.log(
+            "RESULT",
+            result.transaction.id,
+            result.transaction.createdAt,
+            result.transaction.paymentInstrumentType
+          );
           // res.send(result);
           // create order
           const model = () => {
@@ -56,13 +69,21 @@ const processPayment = async (req, res) => {
             }
           };
 
+          const orderId = generateOrderId();
+
           const order = new Order({
             products: cart,
             cart: cart,
+            orderId: orderId,
             amount: correctAmount,
-            paymentInfo: result,
+            paymentInfo: {
+              transactionId: result.transaction.id,
+              transactionMethod: result.transaction.paymentInstrumentType,
+              orderDate: result.transaction.createdAt,
+            },
+            buyer: req.user._id,
             docModel: model(),
-            buyer: req.user._id, // req.user._id
+            orderDate: result.transaction.createdAt,
           }).save((err, order) => {
             if (err) {
               console.log(err);
@@ -85,16 +106,16 @@ const processPayment = async (req, res) => {
 const decrementQuantity = async (cart) => {
   try {
     const bulkOps = cart.map((item) => {
-      console.log("CART", item);
+      // console.log("CART", item);
       return {
         updateOne: {
           filter: { _id: item._id },
-          update: { $inc: { quantity: -item.count, sold: +item.count } },
+          update: { $inc: { stock: -item.quantity } },
         },
       };
     });
     const updated = await Product.bulkWrite(bulkOps, {});
-    console.log("PRODUCT QUANTITY-- AND SOLD++", updated);
+    // console.log("PRODUCT STOCK-- AND SOLD++", updated);
   } catch (error) {
     console.log(error);
   }
