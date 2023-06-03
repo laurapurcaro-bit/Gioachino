@@ -12,6 +12,7 @@ export default function SingleProductPage() {
   const [cart, setCart] = useCart();
   // state
   const [product, setProduct] = useState({});
+  const [productPhotos, setProductPhotos] = useState([]);
   // const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantity, setQuantity] = useState(0);
   // hook
@@ -66,7 +67,9 @@ export default function SingleProductPage() {
   const addToCart = (product) => {
     // Check if the product already exists in the cart
     const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingProductIndex = cartLs.findIndex((item) => item._id === product._id);
+    const existingProductIndex = cartLs.findIndex(
+      (item) => item._id === product._id
+    );
     // If no element is found, it returns -1
     if (existingProductIndex !== -1) {
       console.log("PROD EX");
@@ -91,7 +94,6 @@ export default function SingleProductPage() {
   //   let mainImage = document.querySelector(".mainImage img");
   //   mainImage.src = imagePath;
   // }
-  const inStock = product?.quantity;
 
   return (
     <div className={styling.productPage}>
@@ -122,9 +124,11 @@ export default function SingleProductPage() {
         </div>
       </div>
       <div className={styling.productDetails}>
-        <div className={product?.quantity >= 1 ? styling.inStock : ""}>
-          <span className={styling.esaurito}>ESAURITO</span>
-        </div>
+        {product?.stock < 1 && (
+          <div>
+            <span className={styling.esaurito}>ESAURITO</span>
+          </div>
+        )}
         <div>
           <h1>{product.name}</h1>
           <p>{product.description}</p>

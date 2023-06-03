@@ -44,10 +44,6 @@ button {
   flex-direction: column;
 }
 
-.inStock {
-  display: none;
-}
-
 .esaurito {
   background-color: black;
   padding: 1rem;
