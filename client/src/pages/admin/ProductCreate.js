@@ -63,7 +63,7 @@ export default function AdminCreateProduct() {
         }
       }
 
-      console.log("FORM DATA", [...formData]);
+      console.log([...formData]);
 
       const { data } = await axios.post("/product", formData, config);
 

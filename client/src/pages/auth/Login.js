@@ -32,7 +32,7 @@ const Login = () => {
         toast.error(data.error);
       } else {
         // Save user and token to local storage
-        console.log("DATA", data);
+        
         localStorage.setItem("auth", JSON.stringify(data));
         // Put context
         // spread operator: ...auth
