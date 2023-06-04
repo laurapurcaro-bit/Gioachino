@@ -40,7 +40,7 @@ export default function Navbar({setShowLoginPopup}) {
   };
 
   return (
-    <div className={`${styling.navbar} nav d-flex mb-2 sticky-top`}>
+    <div className={`${styling.navbar} nav d-flex sticky-top`}>
       {/* justify-content-between: add space between elements; shadow: put bar with shadow; mb-2: margin-bottom: 2*/}
       {/* Homepage */}
       <div>
@@ -106,8 +106,11 @@ export default function Navbar({setShowLoginPopup}) {
   );
 }
 
-{/* Category dropdown */}
-{/* <div className="dropdown">
+{
+  /* Category dropdown */
+}
+{
+  /* <div className="dropdown">
   <li className="nav-item">
     <a
       className="nav-link pointer dropdown-toggle"
@@ -139,4 +142,5 @@ export default function Navbar({setShowLoginPopup}) {
       })}
     </ul>
   </li>
-</div> */}
+</div> */
+}

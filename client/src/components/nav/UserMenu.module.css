@@ -1,0 +1,19 @@
+.dashboardLeft {
+  margin-left: var(--spacing);
+  padding: 2rem 3rem;
+  background-color: #f2f2f2;
+}
+
+.dashboardLeft ul {
+  margin-top: 2rem;
+}
+
+.dashboardLeft ul li {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.dashboardSection {
+  text-decoration: none;
+  color: black;
+}
