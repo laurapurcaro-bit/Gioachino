@@ -28,10 +28,6 @@ export default function UserDashboard() {
                 </NavLink>
               </button>
             </div>
-            {/* <ul className="list-group">
-              <li className="list-group-item">{auth.user?.firstName}</li>
-              <li className="list-group-item">{auth.user?.email}</li>
-            </ul> */}
           </div>
         </div>
       </div>
