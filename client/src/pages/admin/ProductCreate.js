@@ -50,6 +50,11 @@ export default function AdminCreateProduct() {
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price);
+      for (const element of categories) {
+        if (element._id === category) {
+          formData.append("categoryName", element.name);
+        }
+      }
       formData.append("category", category);
       formData.append("shipping", shipping);
       formData.append("stock", stock);
@@ -58,8 +63,8 @@ export default function AdminCreateProduct() {
       }
 
       if (additionalPhotos) {
-        for (let i = 0; i < additionalPhotos.length; i++) {
-          formData.append("additionalPhotos", additionalPhotos[i]);
+        for (const element of additionalPhotos) {
+          formData.append("additionalPhotos", element);
         }
       }
 
@@ -72,7 +77,7 @@ export default function AdminCreateProduct() {
       } else {
         // Show the newly created category
         toast.success(`Product ${data.name} created`);
-        navigate("/dashboard/admin/products");
+        // navigate("/dashboard/admin/products");
       }
     } catch (err) {
       console.log(err);
@@ -100,9 +105,10 @@ export default function AdminCreateProduct() {
                 onChange={(e) => setAdditionalPhotos(e.target.files)}
                 hidden
               />
+              {/* Read from S3 */}
               {additionalPhotos?.length > 0 && (
                 <div className="text-center">
-                  {Array.from(additionalPhotos).map((file, index) => (
+                  {/* {Array.from(additionalPhotos).map((file, index) => (
                     <img
                       key={index}
                       src={URL.createObjectURL(file)}
@@ -110,7 +116,7 @@ export default function AdminCreateProduct() {
                       className="img img-responsive"
                       height="200px"
                     />
-                  ))}
+                  ))} */}
                 </div>
               )}
               <div className="pt-2">
@@ -123,13 +129,18 @@ export default function AdminCreateProduct() {
                     name="additionalPhotos"
                     accept="image/*"
                     multiple
-                    onChange={(e) => setAdditionalPhotos(e.target.files)}
+                    onChange={(e) => {
+                      setAdditionalPhotos(e.target.files);
+
+                      console.log("ADDITIONAL PHOTOS", additionalPhotos);
+                    }}
                     hidden
                   />
                 </label>
               </div>
               {/* Photo */}
-              {photo?.size && (
+              {/* Read From S3 */}
+              {/* {photo?.size && (
                 <div className="text-center">
                   <img
                     src={URL.createObjectURL(photo)}
@@ -138,7 +149,7 @@ export default function AdminCreateProduct() {
                     height="200px"
                   />
                 </div>
-              )}
+              )} */}
               <div className="pt-2">
                 <label className="btn btn-outline-secondary p-2 col-12 mb-3">
                   {photo?.length ? photo.name : "Upload Photo"}
@@ -146,7 +157,9 @@ export default function AdminCreateProduct() {
                     type="file"
                     name="photo"
                     accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
+                    onChange={(e) => {
+                      setPhoto(e.target.files[0]);
+                    }}
                     hidden
                   />
                 </label>

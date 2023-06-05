@@ -15,6 +15,7 @@ export default function CategoriesBar() {
     try {
       const { data } = await axios.get("/categories");
       setCategories(data);
+      console.log("CATEGORIES",categories);
     } catch (err) {
       console.log(err);
     }
@@ -27,7 +28,7 @@ export default function CategoriesBar() {
           return (
             <div key={category._id} className={styling.btnContainer}>
               <Link className={`btn ${styling.btn}`} to={`/category/${category.slug}`}>
-                <img src={`${process.env.REACT_APP_API}/category/photo/${category._id}`} alt="category" className={styling.cardImg} />
+                <img src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/categories/${category.slug}/${category._id}.png`} alt="category" className={styling.cardImg} />
                 {category.name}
               </Link>
             </div>
