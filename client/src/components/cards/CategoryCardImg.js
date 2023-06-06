@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Trans } from "react-i18next";
 
 export default function CategoryCardImg({ category }) {
   return (
@@ -19,7 +20,7 @@ export default function CategoryCardImg({ category }) {
             className="btn btn-light col-4 text-dark p-3"
             to={`/category/${category.slug}`}
           >
-            {category.name}
+            <Trans>{category.name}</Trans>
           </Link>
         </div>
       </div>
