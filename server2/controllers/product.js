@@ -18,11 +18,11 @@ const AWSuploadProductsToS3 = async (filePath, productId, i, categoryName) => {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
       },
-      region: "eu-central-1",
+      region: `${process.env.AWS_REGION_DEV}`,
     }),
     params: {
       ACL: "public-read",
-      Bucket: `gioachino-dev`,
+      Bucket: `${process.env.AWS_BUCKET_NAME_DEV}`,
       Key: `products/${category}/${productId}-${i}.png`,
       Body: fileStream,
       ContentType: "image/png",
