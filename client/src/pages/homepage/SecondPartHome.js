@@ -25,7 +25,7 @@ export default function SecondPartHome() {
         <h1>Categories</h1>
       </div>
       <div className={`${styling.secondPartImages}`}>
-        <div className={`row`}>
+        <div className={styling.row}>
           {categories?.map((category) => {
             return <CategoryCardImg key={category._id} category={category} />;
           })}
