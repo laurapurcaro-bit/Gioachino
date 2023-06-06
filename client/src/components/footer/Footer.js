@@ -1,12 +1,11 @@
 import React, {useState} from "react";
 import styling from "./Footer.module.css";
 
-export default function Footer({changeLanguage}) {
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
-
+export default function Footer({currentLanguage, setCurrentLanguage}) {
+  
   const handleLanguageChange = (event) => {
-    setSelectedLanguage(event.target.value);
-    changeLanguage(event.target.value);
+    localStorage.setItem("i18nextLng", event.target.value);
+    setCurrentLanguage(event.target.value);
   };
 
   return (
@@ -52,7 +51,7 @@ export default function Footer({changeLanguage}) {
           </div>
           <div className={styling.dropdown}>
             <label htmlFor="language">Language:</label>
-            <select id="language" value={selectedLanguage} onChange={handleLanguageChange}>
+            <select id="language" value={currentLanguage} onChange={handleLanguageChange}>
               <option value="en">English</option>
               <option value="it">Italian</option>
             </select>

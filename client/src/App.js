@@ -51,11 +51,20 @@ export default function App() {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   // Translate
   const { t, i18n } = useTranslation();
+  const [currentLanguage, setCurrentLanguage] = useState("en");
 
-  const changeLanguage = lng => {
-    console.log("lng", lng);
-    i18n.changeLanguage(lng);
+  const changeLanguage = () => {
+    const language = localStorage.getItem("i18nextLng")
+    i18n.changeLanguage(language);
+    setCurrentLanguage(language);
   };
+
+  useEffect(() => {
+    // store in local storage the language
+    changeLanguage();
+    console.log("LANNG", localStorage.getItem("i18nextLng"));
+  }, [currentLanguage]);
+  
   // Get user only once
   useEffect(() => {
     try {
@@ -147,7 +156,7 @@ export default function App() {
         <Route path="*" element={<PageNotFound />} replace />
       </Routes>
       {/* Footer */}
-      <Footer changeLanguage={changeLanguage} />
+      <Footer currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} />
     </Router>
   );
 }
