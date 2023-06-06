@@ -2,7 +2,7 @@
   --color-background: #ffff;
   --color-text: black;
 
-  --spacing: 4rem;
+  --spacing: 3rem;
 }
 
 * {
@@ -17,11 +17,19 @@ html {
 }
 
 body {
-  font-family: "Playfair Display", serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 2rem;
   font-weight: 400;
   color: var(--color-text);
   background-color: var(--color-background);
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+p {
+  font-size: 1.5rem;
 }
 
 .footer {
