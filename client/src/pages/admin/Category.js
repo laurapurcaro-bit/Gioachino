@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
 import AdminMenu from "../../components/nav/AdminMenu";
-import {CategoryForm, CategoryFormUpdate} from "../../components/forms/CategoryForms";
+import {
+  CategoryForm,
+  CategoryFormUpdate,
+} from "../../components/forms/CategoryForms";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Modal } from "antd";
@@ -123,24 +126,30 @@ export default function AdminCategory() {
               photo={photo}
               setPhoto={setPhoto}
               BtnName="Submit"
+              id={id}
             />
             <hr />
             <div className="col">
-              {categories?.map((category) => (
-                <button
-                  key={category._id}
-                  className="btn btn-outline-primary m-3"
-                  onClick={() => {
-                    setVisible(true);
-                    setSelected(category);
-                    setUpdatingName(category.name);
-                    setUpdatingPhoto(category.photo);
-                    setId(category._id);
-                  }}
-                >
-                  {category.name}
-                </button>
-              ))}
+              {categories?.map(
+                (category) => (
+                  console.log("CAT", category),
+                  (
+                    <button
+                      key={category._id}
+                      className="btn btn-outline-primary m-3"
+                      onClick={() => {
+                        setVisible(true);
+                        setSelected(category);
+                        setUpdatingName(category.name);
+                        setUpdatingPhoto(category.photo);
+                        setId(category._id);
+                      }}
+                    >
+                      {category.name}
+                    </button>
+                  )
+                )
+              )}
             </div>
             {/* Ant UI - popup category*/}
             <Modal
@@ -154,8 +163,8 @@ export default function AdminCategory() {
                 setValue={setUpdatingName}
                 handleSubmit={handleUpdate}
                 handleDelete={handleDelete}
-                photo={updatingPhoto}
-                setPhoto={setUpdatingPhoto}
+                updatingPhoto={updatingPhoto}
+                setUpdatingPhoto={setUpdatingPhoto}
                 id={id}
                 BtnName="Update"
               />

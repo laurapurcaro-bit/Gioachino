@@ -55,9 +55,7 @@ const processPayment = async (req, res) => {
         if (result) {
           console.log(
             "RESULT",
-            result.transaction.id,
-            result.transaction.createdAt,
-            result.transaction.paymentInstrumentType
+            result
           );
           // res.send(result);
           // create order
@@ -80,6 +78,7 @@ const processPayment = async (req, res) => {
               transactionId: result.transaction.id,
               transactionMethod: result.transaction.paymentInstrumentType,
               orderDate: result.transaction.createdAt,
+              success: result.success,
             },
             buyer: req.user._id,
             docModel: model(),

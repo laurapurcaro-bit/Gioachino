@@ -68,7 +68,7 @@ export default function ProductCard({ product }) {
         <img
           className="card-img-top"
           // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-          src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/divani/647b1e01f5b9831bc5c6771f.png`}
+          src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product.categorySlug.toLowerCase()}/${product._id}-main.png`}
           alt={product?.name}
           // className="img img-responsive"
           height="300px"

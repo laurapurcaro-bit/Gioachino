@@ -76,7 +76,7 @@ export default function AdminCreateProduct() {
         toast.error(data.error);
       } else {
         // Show the newly created category
-        toast.success(`Product ${data.name} created`);
+        toast.success(`Product ${name} created`);
         // navigate("/dashboard/admin/products");
       }
     } catch (err) {
@@ -105,10 +105,11 @@ export default function AdminCreateProduct() {
                 onChange={(e) => setAdditionalPhotos(e.target.files)}
                 hidden
               />
-              {/* Read from S3 */}
+              {/* Create additional photos */}
+              {/* Show new photos */}
               {additionalPhotos?.length > 0 && (
                 <div className="text-center">
-                  {/* {Array.from(additionalPhotos).map((file, index) => (
+                  {Array.from(additionalPhotos).map((file, index) => (
                     <img
                       key={index}
                       src={URL.createObjectURL(file)}
@@ -116,7 +117,7 @@ export default function AdminCreateProduct() {
                       className="img img-responsive"
                       height="200px"
                     />
-                  ))} */}
+                  ))}
                 </div>
               )}
               <div className="pt-2">
@@ -140,7 +141,7 @@ export default function AdminCreateProduct() {
               </div>
               {/* Photo */}
               {/* Read From S3 */}
-              {/* {photo?.size && (
+              {photo?.size && (
                 <div className="text-center">
                   <img
                     src={URL.createObjectURL(photo)}
@@ -149,7 +150,7 @@ export default function AdminCreateProduct() {
                     height="200px"
                   />
                 </div>
-              )} */}
+              )}
               <div className="pt-2">
                 <label className="btn btn-outline-secondary p-2 col-12 mb-3">
                   {photo?.length ? photo.name : "Upload Photo"}

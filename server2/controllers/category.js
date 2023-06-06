@@ -8,18 +8,24 @@ const AWS = require("aws-sdk");
 const AWSuploadCategoriesToS3 = async (filePath, categoryId, categoryName) => {
   // Configure AWS credentials and region
   AWS.config.update({ region: "eu-central-1" });
-  const category = categoryName.toLowerCase();
+  const category = slugify(categoryName.toLowerCase());
   const s3 = new AWS.S3({
     apiVersion: "2006-03-01",
     region: "eu-central-1",
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    }
+    },
   });
   // call S3 to retrieve upload file to specified bucket
 
-  let uploadParams = { Bucket: `gioachino-dev/categories/${category}`, Key: "", Body: "", ACL: "public-read", ContentType: "image/png"};
+  let uploadParams = {
+    Bucket: `gioachino-dev/categories/${category}`,
+    Key: "",
+    Body: "",
+    ACL: "public-read",
+    ContentType: "image/png",
+  };
 
   // Configure the file stream and obtain the upload parameters
   let fileStream = fs.createReadStream(filePath);
@@ -65,7 +71,8 @@ const create = async (req, res) => {
     const category = new Category({ name, slug: slugify(name) });
     // Add photo to category const
     if (photo) {
-      AWSuploadCategoriesToS3(photo[0].path, category._id, category.name)
+      AWSuploadCategoriesToS3(photo[0].path, category._id, category.name);
+      category.photo.name = category._id + ".png";
     }
     // Save product to DB
     await category.save();
@@ -98,7 +105,8 @@ const update = async (req, res) => {
     }
     // Add photo to product const
     if (photo) {
-      AWSuploadCategoriesToS3(photo[0].path, category._id, category.name)
+      AWSuploadCategoriesToS3(photo[0].path, category._id, category.name);
+      category.photo.name = category._id + ".png";
     }
     // Save product to DB
     await category.save();
@@ -124,7 +132,7 @@ const remove = async (req, res) => {
 
 const list = async (req, res) => {
   try {
-    const categories = await Category.find({}).select("-photo");
+    const categories = await Category.find({});
     res.json(categories);
   } catch (err) {
     console.log(err);
@@ -134,9 +142,7 @@ const list = async (req, res) => {
 
 const read = async (req, res) => {
   try {
-    const category = await Category.findOne({ slug: req.params.slug }).select(
-      "-photo"
-    );
+    const category = await Category.findOne({ slug: req.params.slug });
     res.json(category);
   } catch (err) {
     console.log(err);
@@ -146,9 +152,7 @@ const read = async (req, res) => {
 
 const productsByCategory = async (req, res) => {
   try {
-    const category = await Category.findOne({ slug: req.params.slug }).select(
-      "-photo"
-    );
+    const category = await Category.findOne({ slug: req.params.slug });
     const products = await Product.find({ category })
       .select("-photo -additionalPhotos")
       .populate("category");

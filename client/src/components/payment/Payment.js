@@ -54,7 +54,7 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
     <div className="mt-3">
       <h4 className="mb-1">Payment</h4>
       {/* <div>{JSON.stringify(clientToken)}</div> */}
-      {!clientToken || !cart.length ? (
+      {!clientToken || !cart?.length ? (
         <div>Loading...</div>
       ) : (
         <>

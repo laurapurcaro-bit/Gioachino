@@ -161,7 +161,7 @@ const create = async (req, res) => {
         break;
     }
     // Update product
-    const product = new Product({ ...req.body, categoryName: slugify(categoryName), slug: slugify(name) });
+    const product = new Product({ ...req.body, categorySlug: slugify(categoryName), slug: slugify(name) });
     
     if (additionalPhotos) {
       // Add photos to S3
@@ -229,7 +229,7 @@ const update = async (req, res) => {
       req.params.productId,
       {
         ...req.body,
-        categoryName: slugify(categoryName),
+        categorySlug: slugify(categoryName),
         slug: slugify(name),
       },
       // new: true: return the updated product
@@ -271,7 +271,6 @@ const list = async (req, res) => {
     const products = await Product.find({})
       // Populate is for getting the category object
       .populate("category")
-      .select("-photo -additionalPhotos")
       .limit(12)
       .sort({ createdAt: -1 });
 
@@ -287,7 +286,6 @@ const read = async (req, res) => {
     // Get product by slug
     // select(): Select everything except photo data
     const product = await Product.findOne({ slug: req.params.slug })
-      .select("-photo -additionalPhotos")
       .populate("category");
     res.json(product);
   } catch (error) {
@@ -351,7 +349,7 @@ const listProducts = async (req, res) => {
     const page = req.params.pageNumber ? req.params.pageNumber : 1;
     const products = await Product.find({})
       // don't return photo
-      .select("-photo -additionalPhotos")
+      // .select("-photo -additionalPhotos")
       // Skip 6 products per page
       .skip((page - 1) * perPage)
       .limit(perPage)
@@ -374,7 +372,7 @@ const productSearch = async (req, res) => {
         { name: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } },
       ],
-    }).select("-photo -additionalPhotos");
+    })
     // return the products
     res.json(results);
   } catch (err) {
@@ -413,10 +411,10 @@ const additionalPhotos = async (req, res) => {
     // Retrieve the additionalPhotos from the product
     if (product) {
       // If photo exists
-      if (product.additionalPhotos.data) {
+      if (product.additionalPhotos.name) {
         // Set content type
-        res.set("Content-Type", "image/png");
-        res.send(product.additionalPhotos.data);
+        // res.set("Content-Type", "image/png");
+        res.send(product.additionalPhotos);
       }
     }
   } catch (err) {
@@ -434,11 +432,11 @@ const photo = async (req, res) => {
     // If product exists
     if (product) {
       // If photo exists
-      if (product.photo.data) {
+      if (product.photo.name) {
         // Set content type
-        res.set("Content-Type", product.photo.contentType);
+        // res.set("Content-Type", product.photo.contentType);
         // Send photo data
-        return res.send(product.photo.data);
+        return res.send(product.photo.name);
       }
     }
   } catch (err) {

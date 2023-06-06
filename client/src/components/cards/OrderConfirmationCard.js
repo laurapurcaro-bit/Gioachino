@@ -7,7 +7,7 @@ export default function OrdersCard({ p }) {
       <div className="row g-0">
         <div className="col-md-4">
           <img
-            src={`${process.env.REACT_APP_API}/product/photo/${p._id}`}
+            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${p?.categorySlug?.toLowerCase()}/${p._id}-main.png`}
             alt={p.name}
             style={{
               height: "100%",

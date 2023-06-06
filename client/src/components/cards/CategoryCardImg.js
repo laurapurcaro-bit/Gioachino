@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 
 export default function CategoryCardImg({ category }) {
-
   return (
     <div className="col-md-3">
       <div className="card">
         <div className="text-center">
           <img
-            src={`${process.env.REACT_APP_API}/category/photo/${category._id}`}
+            src={`${
+              process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+            }/categories/${category.slug.toLowerCase()}/${category._id}.png`}
             alt="category"
             className="img img-responsive"
             height="200px"
