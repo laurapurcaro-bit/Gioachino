@@ -1,9 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import styling from "./Footer.module.css";
 
-export default function Footer() {
+export default function Footer({currentLanguage, setCurrentLanguage}) {
+  
+  const handleLanguageChange = (event) => {
+    localStorage.setItem("i18nextLng", event.target.value);
+    setCurrentLanguage(event.target.value);
+  };
+
   return (
-    <footer>
+    <footer className="footer">
       <div className={styling.footerContainer}>
         <div className={styling.leftSection}>
           <h2 className={`${styling.footerFontLogo}`}>Gioachino</h2>
@@ -45,10 +51,9 @@ export default function Footer() {
           </div>
           <div className={styling.dropdown}>
             <label htmlFor="language">Language:</label>
-            <select id="language">
+            <select id="language" value={currentLanguage} onChange={handleLanguageChange}>
               <option value="en">English</option>
-              <option value="es">Spanish</option>
-              <option value="fr">French</option>
+              <option value="it">Italian</option>
             </select>
           </div>
         </div>

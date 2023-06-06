@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styling from "./CategoryCardImg.module.css";
+import { Trans } from "react-i18next";
 
 export default function CategoryCardImg({ category }) {
   return (
@@ -15,7 +16,7 @@ export default function CategoryCardImg({ category }) {
         </div>
         <div className="card-body text-center">
           <Link className={`btn ${styling.name}`} to={`/category/${category.slug}`}>
-            {category.name}
+            <Trans>{category.name}</Trans>
           </Link>
         </div>
       </div>
