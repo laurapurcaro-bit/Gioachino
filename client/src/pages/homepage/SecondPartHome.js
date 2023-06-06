@@ -18,7 +18,7 @@ export default function SecondPartHome() {
       console.log(err);
     }
   };
-  console.log("CATEGORIES", categories);
+
   return (
     <div className={`container-fluid ${styling.secondPartBody}`}>
       <div className={`${styling.secondPartCategories}`}>
