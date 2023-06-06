@@ -130,26 +130,21 @@ export default function AdminCategory() {
             />
             <hr />
             <div className="col">
-              {categories?.map(
-                (category) => (
-                  console.log("CAT", category),
-                  (
-                    <button
-                      key={category._id}
-                      className="btn btn-outline-primary m-3"
-                      onClick={() => {
-                        setVisible(true);
-                        setSelected(category);
-                        setUpdatingName(category.name);
-                        setUpdatingPhoto(category.photo);
-                        setId(category._id);
-                      }}
-                    >
-                      {category.name}
-                    </button>
-                  )
-                )
-              )}
+              {categories?.map((category) => (
+                <button
+                  key={category._id}
+                  className="btn btn-outline-primary m-3"
+                  onClick={() => {
+                    setVisible(true);
+                    setSelected(category);
+                    setUpdatingName(category.name);
+                    setUpdatingPhoto(category.photo);
+                    setId(category._id);
+                  }}
+                >
+                  {category.name}
+                </button>
+              ))}
             </div>
             {/* Ant UI - popup category*/}
             <Modal

@@ -19,7 +19,7 @@ const {
 const multer = require("multer");
 const path = require("path");
 const uploadDir = path.join(
-  "/Users/laurap/Documents/ecom22/Gioac/client/src",
+  "/Users/laurap/Documents/ecom22/Gioachino/client/src",
   "images"
 );
 
