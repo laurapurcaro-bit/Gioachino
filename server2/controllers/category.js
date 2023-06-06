@@ -13,7 +13,7 @@ const AWSuploadCategoriesToS3 = async (filePath, categoryId, categoryName) => {
   fileStream.on("error", function (err) {
     console.log("File Error", err);
   });
-  // Configure AWS credentials and region
+  // Configure AWS credentials
   await new Upload({
     client: new S3Client({
       credentials: {
