@@ -5,6 +5,8 @@ import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/auth";
 // styles
 import styling from "./App.module.css";
+// Translate
+import { useTranslation, Trans } from "react-i18next";
 
 // Import pages
 import Navbar from "./components/nav/Navbar";
@@ -47,6 +49,22 @@ export default function App() {
   const [auth, setAuth] = useAuth();
   const [showPopup, setShowPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  // Translate
+  const { t, i18n } = useTranslation();
+  const [currentLanguage, setCurrentLanguage] = useState("en");
+
+  const changeLanguage = () => {
+    const language = localStorage.getItem("i18nextLng")
+    i18n.changeLanguage(language);
+    setCurrentLanguage(language);
+  };
+
+  useEffect(() => {
+    // store in local storage the language
+    changeLanguage();
+    console.log("LANNG", localStorage.getItem("i18nextLng"));
+  }, [currentLanguage]);
+  
   // Get user only once
   useEffect(() => {
     try {
@@ -138,7 +156,7 @@ export default function App() {
         <Route path="*" element={<PageNotFound />} replace />
       </Routes>
       {/* Footer */}
-      <Footer className="footer" />
+      <Footer currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} />
     </Router>
   );
 }
