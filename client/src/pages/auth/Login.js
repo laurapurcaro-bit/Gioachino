@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useAuth } from "../../context/auth";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Login = () => {
+const LoginPopup = ({ showLoginPopup, setShowLoginPopup }) => {
   const [auth, setAuth] = useAuth();
   // state
   const [email, setEmail] = useState("lau@gmail.com");
@@ -17,6 +17,14 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   console.log("Location", location);
+
+  const handleClose = () => {
+    handleClosing();
+  };
+
+  const handleClosing = () => {
+    setShowLoginPopup(false);
+  };
 
   const handleEmailSubmit = async (e) => {
     // Prevent the default behavior of the browser to reload the page
@@ -31,14 +39,18 @@ const Login = () => {
       if (data?.error) {
         toast.error(data.error);
       } else {
+        // Close popup
+        setShowLoginPopup(false);
         // Save user and token to local storage
-        
         localStorage.setItem("auth", JSON.stringify(data));
         // Put context
         // spread operator: ...auth
         setAuth({ ...auth, user: data.user, token: data.token });
         toast.success("Login successful.");
-        navigate(location.state || `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`);
+        navigate(
+          location.state ||
+            `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`
+        );
       }
     } catch (error) {
       toast.error("Login failed. Please try again.");
@@ -58,37 +70,70 @@ const Login = () => {
   };
 
   return (
-    <div className={styling.login}>
-      <h1 className={styling.loginTitle}>Choose a login method</h1>
-      <div className={styling.wrapper}>
-        <div className={styling.left}>
-          <div className={`${styling.loginButton} ${styling.facebook}`} onClick={facebook}>
-            <img src={facebookIcon} alt="" className={styling.icon} />
-            Facebook
+    <>
+      {showLoginPopup && (
+        <>
+          <div className={`${styling.overlay}`} />
+          <div className={`${styling.loginPopup}`}>
+            <div className={`${styling.loginPopupContent}`}>
+              <span className={`${styling.loginClose}`} onClick={handleClose}>
+                &times;
+              </span>
+
+              <div className={styling.wrapper}>
+                <div className={styling.left}>
+                  <div
+                    className={`${styling.loginButton} ${styling.facebook}`}
+                    onClick={facebook}
+                  >
+                    <img src={facebookIcon} alt="" className={styling.icon} />
+                    Facebook
+                  </div>
+                  <div
+                    className={`${styling.loginButton} ${styling.google}`}
+                    onClick={google}
+                  >
+                    <img src={googleIcon} alt="" className={styling.icon} />
+                    Google
+                  </div>
+                  <div
+                    className={`${styling.loginButton} ${styling.linkedin}`}
+                    onClick={linkedin}
+                  >
+                    <img src={linkedinIcon} alt="" className={styling.icon} />
+                    Linkedin
+                  </div>
+                </div>
+                <div className={styling.center}>
+                  <div className={styling.line} />
+                  <div className={styling.or}>OR</div>
+                </div>
+                <div className={styling.right}>
+                  <form onSubmit={handleEmailSubmit}>
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <button className={styling.submit} type="submit">
+                      Login
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className={`${styling.loginButton} ${styling.google}`} onClick={google}>
-            <img src={googleIcon} alt="" className={styling.icon} />
-            Google
-          </div>
-          <div className={`${styling.loginButton} ${styling.linkedin}`} onClick={linkedin}>
-            <img src={linkedinIcon} alt="" className={styling.icon} />
-            Linkedin
-          </div>
-        </div>
-        <div className={styling.center}>
-          <div className={styling.line} />
-          <div className={styling.or}>OR</div>
-        </div>
-        <div className={styling.right}>
-          <form onSubmit={handleEmailSubmit}>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <button className={styling.submit}>Login</button>
-          </form>
-        </div>
-      </div>
-    </div>
+        </>
+      )}
+    </>
   );
 };
 
-export default Login;
+export default LoginPopup;

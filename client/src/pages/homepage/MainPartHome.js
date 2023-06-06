@@ -1,16 +1,16 @@
 import styling from "./MainPartHome.module.css";
-import plantMain from "../../images/plant-home.png";
+import dogMain from "../../images/persons-dog.jpeg";
 
 export default function MainPartHome() {
   return (
     <div className={`${styling.mainPartBody}`}>
       <div className={`${styling.mainPartLeft}`}>
-        <h2 className={``}>Find perfect plants for your home</h2>
-        <p>Beautiful plants that encourage you to get creative.</p>
+        <h2 className={``}>Bring fashion to your furry friend!</h2>
+        <p>Beautiful dog accessories that encourage you to live with fashion.</p>
         <button className={`btn btn-dark`}>Shop now</button>
       </div>
       <div className={`${styling.mainPartRight}`}>
-        <img src={plantMain} alt="plant"/>
+        <img src={dogMain} style={{width: "800px"}} alt="plant" />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import styling from "./Navbar.module.css";
 
-export default function Navbar() {
+export default function Navbar({setShowLoginPopup}) {
   // context
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
@@ -63,7 +63,7 @@ export default function Navbar() {
         {/* if condition true => do login register : do logout */}
         {!auth.user ? (
           <>
-            <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} to="/login">
+            <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} onClick={(e) => (setShowLoginPopup(true))}>
               Login
             </NavLink>
 
