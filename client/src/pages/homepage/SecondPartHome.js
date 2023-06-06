@@ -19,14 +19,14 @@ export default function SecondPartHome() {
       console.log(err);
     }
   };
-  console.log("CATEGORIES", categories);
+
   return (
     <div className={`container-fluid ${styling.secondPartBody}`}>
       <div className={`${styling.secondPartCategories}`}>
         <h1><Trans>Categories</Trans></h1>
       </div>
       <div className={`${styling.secondPartImages}`}>
-        <div className={`row`}>
+        <div className={styling.row}>
           {categories?.map((category) => {
             return <CategoryCardImg key={category._id} category={category} />;
           })}
