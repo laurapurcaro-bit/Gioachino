@@ -3,47 +3,40 @@ const slugify = require("slugify");
 const Category = require("../models/category");
 const Product = require("../models/product");
 const fs = require("fs");
-const AWS = require("aws-sdk");
+const { Upload } = require("@aws-sdk/lib-storage");
+const { S3Client } = require("@aws-sdk/client-s3");
 
 const AWSuploadCategoriesToS3 = async (filePath, categoryId, categoryName) => {
-  // Configure AWS credentials and region
-  AWS.config.update({ region: "eu-central-1" });
   const category = slugify(categoryName.toLowerCase());
-  const s3 = new AWS.S3({
-    apiVersion: "2006-03-01",
-    region: "eu-central-1",
-    credentials: {
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
-  // call S3 to retrieve upload file to specified bucket
-
-  let uploadParams = {
-    Bucket: `gioachino-dev/categories/${category}`,
-    Key: "",
-    Body: "",
-    ACL: "public-read",
-    ContentType: "image/png",
-  };
-
   // Configure the file stream and obtain the upload parameters
   let fileStream = fs.createReadStream(filePath);
   fileStream.on("error", function (err) {
     console.log("File Error", err);
   });
-  uploadParams.Body = fileStream;
-  uploadParams.Key = categoryId + ".png";
-
-  // call S3 to retrieve upload file to specified bucket
-  s3.upload(uploadParams, function (err, data) {
-    if (err) {
-      console.log("Error", err);
-    }
-    if (data) {
-      console.log("Upload Success", data.Location);
-    }
-  });
+  // Configure AWS credentials and region
+  await new Upload({
+    client: new S3Client({
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+      region: "eu-central-1",
+    }),
+    params: {
+      ACL: "public-read",
+      Bucket: `gioachino-dev`,
+      Key: `categories/${category}/${categoryId}.png`,
+      Body: fileStream,
+      ContentType: "image/png",
+    },
+  })
+    .done()
+    .then((data) => {
+      console.log("DATA", data.Location);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 const create = async (req, res) => {
@@ -105,6 +98,7 @@ const update = async (req, res) => {
     }
     // Add photo to product const
     if (photo) {
+      console.log("PHOTO", photo);
       AWSuploadCategoriesToS3(photo[0].path, category._id, category.name);
       category.photo.name = category._id + ".png";
     }

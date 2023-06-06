@@ -1,6 +1,4 @@
 export function CategoryForm(props) {
-  console.log("Category form", props.photo);
-  console.log("id", props.id);
   return (
     <div className="p-3">
       <form onSubmit={props.handleSubmit}>
