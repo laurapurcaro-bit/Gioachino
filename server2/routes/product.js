@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir); // Specify the destination folder for file uploads
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname); // Generate a unique filename for the uploaded file
+    cb(null, file.originalname); // Generate a unique filename for the uploaded file
   },
 });
 

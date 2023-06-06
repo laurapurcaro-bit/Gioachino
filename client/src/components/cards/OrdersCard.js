@@ -1,13 +1,13 @@
 export default function OrdersCard({ p }) {
   const currency = "EUR";
   const localString = "en-US";
-  // console.log("ORDERS CARD", p);
+  console.log("ORDERS CARD", p);
   return (
     <div className="card mb-3">
       <div className="row g-0">
         <div className="col-md-4">
           <img
-            src={`${process.env.REACT_APP_API}/product/photo/${p._id}`}
+            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${p.category.slug}/${p._id}-main.png`}
             alt={p.name}
             style={{
               height: "100%",

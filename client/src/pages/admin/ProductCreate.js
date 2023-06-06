@@ -50,6 +50,11 @@ export default function AdminCreateProduct() {
       formData.append("name", name);
       formData.append("description", description);
       formData.append("price", price);
+      for (const element of categories) {
+        if (element._id === category) {
+          formData.append("categoryName", element.name);
+        }
+      }
       formData.append("category", category);
       formData.append("shipping", shipping);
       formData.append("stock", stock);
@@ -58,8 +63,8 @@ export default function AdminCreateProduct() {
       }
 
       if (additionalPhotos) {
-        for (let i = 0; i < additionalPhotos.length; i++) {
-          formData.append("additionalPhotos", additionalPhotos[i]);
+        for (const element of additionalPhotos) {
+          formData.append("additionalPhotos", element);
         }
       }
 
@@ -71,8 +76,8 @@ export default function AdminCreateProduct() {
         toast.error(data.error);
       } else {
         // Show the newly created category
-        toast.success(`Product ${data.name} created`);
-        navigate("/dashboard/admin/products");
+        toast.success(`Product ${name} created`);
+        // navigate("/dashboard/admin/products");
       }
     } catch (err) {
       console.log(err);
@@ -100,6 +105,8 @@ export default function AdminCreateProduct() {
                 onChange={(e) => setAdditionalPhotos(e.target.files)}
                 hidden
               />
+              {/* Create additional photos */}
+              {/* Show new photos */}
               {additionalPhotos?.length > 0 && (
                 <div className="text-center">
                   {Array.from(additionalPhotos).map((file, index) => (
@@ -123,12 +130,17 @@ export default function AdminCreateProduct() {
                     name="additionalPhotos"
                     accept="image/*"
                     multiple
-                    onChange={(e) => setAdditionalPhotos(e.target.files)}
+                    onChange={(e) => {
+                      setAdditionalPhotos(e.target.files);
+
+                      console.log("ADDITIONAL PHOTOS", additionalPhotos);
+                    }}
                     hidden
                   />
                 </label>
               </div>
               {/* Photo */}
+              {/* Read From S3 */}
               {photo?.size && (
                 <div className="text-center">
                   <img
@@ -146,7 +158,9 @@ export default function AdminCreateProduct() {
                     type="file"
                     name="photo"
                     accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
+                    onChange={(e) => {
+                      setPhoto(e.target.files[0]);
+                    }}
                     hidden
                   />
                 </label>

@@ -28,6 +28,10 @@ const productSchema = new mongoose.Schema(
       ref: "Category",
       required: true,
     },
+    categorySlug: {
+      type: String,
+      required: true,
+    },
     // for the cart
     quantity: {
       type: Number,
@@ -42,16 +46,11 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     photo: {
-      data: Buffer,
-      contentType: String,
       name: String,
       photosInfo: {},
     },
     additionalPhotos: {
-      data: [Buffer],
-      contentType: [String],
       name: [String],
-      photosInfo: [{}],
       default: [],
     },
     shipping: {

@@ -16,14 +16,44 @@ const {
   photo,
 } = require("../controllers/category");
 
+const multer = require("multer");
+const path = require("path");
+const uploadDir = path.join(
+  "/Users/laurap/Documents/ecom22/Gioac/client/src",
+  "images"
+);
+
+// Create a storage engine for multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadDir); // Specify the destination folder for file uploads
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); // Generate a unique filename for the uploaded file
+  },
+});
+
+// Create the multer middleware with the specified storage engine
+const upload = multer({ storage: storage });
+
 // Route where you can create category
 // CRUD operations
-router.post("/category", requireSignIn, isAdmin, formidable(), create);
+router.post(
+  "/category",
+  requireSignIn,
+  isAdmin,
+  upload.fields([
+    { name: "photo", maxCount: 1 },
+  ]),
+  create
+);
 router.put(
   "/category/:categoryId",
   requireSignIn,
   isAdmin,
-  formidable(),
+  upload.fields([
+    { name: "photo", maxCount: 1 },
+  ]),
   update
 );
 router.delete("/category/:categoryId", requireSignIn, isAdmin, remove);

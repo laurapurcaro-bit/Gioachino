@@ -1,15 +1,139 @@
 const Product = require("../models/product");
 const slugify = require("slugify");
 const fs = require("fs"); // Specify the directory to store the uploaded images
+const AWS = require("aws-sdk");
+
+const AWSuploadProductsToS3 = async (filePath, productId, i, categoryName) => {
+  // Configure AWS credentials and region
+  AWS.config.update({ region: "eu-central-1" });
+  const category = categoryName.toLowerCase();
+  const s3 = new AWS.S3({
+    apiVersion: "2006-03-01",
+    region: "eu-central-1",
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    }
+  });
+  // call S3 to retrieve upload file to specified bucket
+
+  let uploadParams = { Bucket: `gioachino-dev/products/${category}`, Key: "", Body: "", ACL: "public-read", ContentType: "image/png"};
+
+  // Configure the file stream and obtain the upload parameters
+  let fileStream = fs.createReadStream(filePath);
+  fileStream.on("error", function (err) {
+    console.log("File Error", err);
+  });
+  uploadParams.Body = fileStream;
+  uploadParams.Key = productId + "-" + i + ".png";
+
+  // call S3 to retrieve upload file to specified bucket
+  s3.upload(uploadParams, function (err, data) {
+    if (err) {
+      console.log("Error", err);
+    }
+    if (data) {
+      console.log("Upload Success", data.Location);
+    }
+  });
+};
+
+// const create = async (req, res) => {
+//   try {
+//     // // Handle form data
+//     const { name, price, description, category, stock, shipping } = req.body;
+//     const { photo, additionalPhotos } = req.files;
+//     console.log(req.files);
+//     // Extract the file paths of the uploaded photos
+//     const photoPath = photo[0].path;
+
+//     // validation
+//     switch (true) {
+//       case !name.trim():
+//         res.json({ error: "Name is required" });
+//         break;
+//       case !description.trim():
+//         res.json({ error: "Description is required" });
+//         break;
+//       case !price:
+//         res.json({ error: "Price is required" });
+//         break;
+//       case !category.trim():
+//         res.json({ error: "Category is required" });
+//         break;
+//       case !stock:
+//         res.json({ error: "Quantity is required" });
+//         break;
+//       case !shipping:
+//         res.json({ error: "Shipping is required" });
+//         break;
+//       // No bigger than 1MB
+//       case photo && photo[0].size > 1000000:
+//         res.json({ error: "Photo needs to be less then 1Mb" });
+//         break;
+//     }
+//     // Update product
+//     const product = new Product({ ...req.body, slug: slugify(name) });
+//     // Add photo to product const
+//     if (additionalPhotos) {
+//       product.additionalPhotos.data = additionalPhotos.map((file) =>
+//         fs.readFileSync(file.path)
+//       );
+//       product.additionalPhotos.contentType = additionalPhotos.map(
+//         (file) => file.mimetype
+//       );
+//       product.additionalPhotos.name = additionalPhotos.map(
+//         (file) => file.originalname
+//       );
+//       product.additionalPhotos.photosInfo = additionalPhotos.map((file) => ({
+//         name: file.filename,
+//         path: file.destination,
+//         size: file.size,
+//         type: file.mimetype,
+//       }));
+//       // check if the file size is less than 1MB
+//       additionalPhotos.map((file) => {
+//         if (file.size > 1000000) {
+//           res.json({ error: "Photo needs to be less then 1Mb" });
+//         }
+//       });
+//     }
+//     // Add photo to product const
+//     if (photo) {
+//       product.photo.data = fs.readFileSync(photoPath);
+//       product.photo.contentType = photo[0].type;
+//       product.photo.name = photo[0].originalname;
+//       product.photo.photoInfo = {
+//         name: photo[0].filename,
+//         path: photo[0].destination,
+//         size: photo[0].size,
+//         type: photo[0].mimetype,
+//       };
+//     }
+
+//     // Save the product to the database
+//     await product.save();
+
+//     res.status(201).json({ message: "Product created successfully" });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Failed to create product" });
+//   }
+// };
 
 const create = async (req, res) => {
   try {
     // // Handle form data
-    const { name, price, description, category, stock, shipping } = req.body;
+    const {
+      name,
+      price,
+      description,
+      category,
+      stock,
+      shipping,
+      categoryName,
+    } = req.body;
     const { photo, additionalPhotos } = req.files;
-    console.log(req.files);
-    // Extract the file paths of the uploaded photos
-    const photoPath = photo[0].path;
 
     // validation
     switch (true) {
@@ -37,30 +161,22 @@ const create = async (req, res) => {
         break;
     }
     // Update product
-    const product = new Product({ ...req.body, slug: slugify(name) });
-    // Add photo to product const
+    const product = new Product({ ...req.body, categorySlug: slugify(categoryName), slug: slugify(name) });
+    
     if (additionalPhotos) {
-      product.additionalPhotos.data = additionalPhotos.map((file) =>
-        fs.readFileSync(file.path)
-      );
-      product.additionalPhotos.contentType = additionalPhotos.map(
-        (file) => file.mimetype
-      );
-      product.additionalPhotos.name = additionalPhotos.map((file) => file.originalname);
-      product.additionalPhotos.photosInfo = additionalPhotos.map((file) => ({name: file.filename, path: file.destination, size: file.size, type: file.mimetype}));
-      // check if the file size is less than 1MB
-      additionalPhotos.map((file) => {
-        if (file.size > 1000000) {
-          res.json({ error: "Photo needs to be less then 1Mb" });
-        }
+      // Add photos to S3
+      additionalPhotos.map((file, i) => {
+        AWSuploadProductsToS3(file.path, product._id, i, categoryName);
       });
+      product.additionalPhotos.name = additionalPhotos.map(
+        (file) => file.originalname
+      );
     }
-    // Add photo to product const
+    
     if (photo) {
-      product.photo.data = fs.readFileSync(photoPath);
-      product.photo.contentType = photo[0].type;
+      // Upload the main photo to S3
+      AWSuploadProductsToS3(photo[0].path, product._id, "main", categoryName);
       product.photo.name = photo[0].originalname;
-      product.photo.photoInfo = {name: photo[0].filename, path: photo[0].destination, size: photo[0].size, type: photo[0].mimetype};
     }
 
     // Save the product to the database
@@ -80,7 +196,7 @@ const update = async (req, res) => {
     // // Handle image
     // console.log(req.files);
     // Make sure that required fields are sent
-    const { name, price, description, category, stock, shipping } = req.body;
+    const { name, price, description, category, stock, shipping, categoryName } = req.body;
     const { photo, additionalPhotos } = req.files;
     // validation
     switch (true) {
@@ -113,6 +229,7 @@ const update = async (req, res) => {
       req.params.productId,
       {
         ...req.body,
+        categorySlug: slugify(categoryName),
         slug: slugify(name),
       },
       // new: true: return the updated product
@@ -120,22 +237,19 @@ const update = async (req, res) => {
     );
     // Add photo to product const
     if (additionalPhotos) {
-      product.additionalPhotos.data = additionalPhotos.map((file) =>
-        fs.readFileSync(file.path)
+      // Add photos to S3
+      additionalPhotos.map((file, i) => {
+        AWSuploadProductsToS3(file.path, product._id, i, categoryName);
+      });
+      product.additionalPhotos.name = additionalPhotos.map(
+        (file) => file.originalname
       );
-      product.additionalPhotos.contentType = additionalPhotos.map(
-        (file) => file.mimetype || file.type
-      );
-      product.additionalPhotos.name = additionalPhotos.map((file) => file.originalname || file.name);
-      product.additionalPhotos.photosInfo = additionalPhotos.map((file) => ({filename: file.filename || file.name, path: file.destination || file.path, size: file.size, mimetype: file.mimetype || file.type}));
-      // check if the file size is less than 1MB
     }
-    // Add photo to product const
+    
     if (photo) {
-      product.photo.data = fs.readFileSync(photoPath);
-      product.photo.contentType = photo[0].type;
+      // Upload the main photo to S3
+      AWSuploadProductsToS3(photo[0].path, product._id, "main", categoryName);
       product.photo.name = photo[0].originalname;
-      product.photo.photoInfo = {filename: photo[0].filename, path: photo[0].destination, size: photo[0].size, mimetype: photo[0].mimetype};
     }
 
     // Save product to DB
@@ -157,7 +271,6 @@ const list = async (req, res) => {
     const products = await Product.find({})
       // Populate is for getting the category object
       .populate("category")
-      .select("-photo -additionalPhotos")
       .limit(12)
       .sort({ createdAt: -1 });
 
@@ -173,7 +286,6 @@ const read = async (req, res) => {
     // Get product by slug
     // select(): Select everything except photo data
     const product = await Product.findOne({ slug: req.params.slug })
-      .select("-photo -additionalPhotos")
       .populate("category");
     res.json(product);
   } catch (error) {
@@ -181,8 +293,6 @@ const read = async (req, res) => {
     return res.status(400).json(err.message);
   }
 };
-
-
 
 const remove = async (req, res) => {
   try {
@@ -239,7 +349,7 @@ const listProducts = async (req, res) => {
     const page = req.params.pageNumber ? req.params.pageNumber : 1;
     const products = await Product.find({})
       // don't return photo
-      .select("-photo -additionalPhotos")
+      // .select("-photo -additionalPhotos")
       // Skip 6 products per page
       .skip((page - 1) * perPage)
       .limit(perPage)
@@ -262,7 +372,7 @@ const productSearch = async (req, res) => {
         { name: { $regex: search, $options: "i" } },
         { description: { $regex: search, $options: "i" } },
       ],
-    }).select("-photo -additionalPhotos");
+    })
     // return the products
     res.json(results);
   } catch (err) {
@@ -301,10 +411,10 @@ const additionalPhotos = async (req, res) => {
     // Retrieve the additionalPhotos from the product
     if (product) {
       // If photo exists
-      if (product.additionalPhotos.data) {
+      if (product.additionalPhotos.name) {
         // Set content type
-        res.set("Content-Type", "image/png");
-        res.send(product.additionalPhotos.data);
+        // res.set("Content-Type", "image/png");
+        res.send(product.additionalPhotos);
       }
     }
   } catch (err) {
@@ -322,11 +432,11 @@ const photo = async (req, res) => {
     // If product exists
     if (product) {
       // If photo exists
-      if (product.photo.data) {
+      if (product.photo.name) {
         // Set content type
-        res.set("Content-Type", product.photo.contentType);
+        // res.set("Content-Type", product.photo.contentType);
         // Send photo data
-        return res.send(product.photo.data);
+        return res.send(product.photo.name);
       }
     }
   } catch (err) {

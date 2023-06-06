@@ -100,17 +100,17 @@ export default function SingleProductPage() {
       <div className={styling.imageSection}>
         <div className={styling.imgRepo}>
           <img
-            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
             alt={product?.name}
             // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
           />
           <img
-            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
             alt={product?.name}
             // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
           />
           <img
-            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
             alt={product?.name}
             // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
           />
@@ -118,7 +118,7 @@ export default function SingleProductPage() {
         <div className={styling.mainImage}>
           <img
             // className={styling.mainImage}
-            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
             alt={product?.name}
           />
         </div>
@@ -138,7 +138,7 @@ export default function SingleProductPage() {
             <p>Quantita</p>
             <span>
               <button onClick={handleDecreaseQuantity}>-</button>
-              <p>{quantity}</p>
+              <p>{quantity + 1}</p>
               <button onClick={handleIncreaseQuantity}>+</button>
             </span>
           </span>
