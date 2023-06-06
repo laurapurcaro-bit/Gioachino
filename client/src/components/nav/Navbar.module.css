@@ -5,6 +5,7 @@
   margin: 2rem;
   padding: 1rem 0;
   background-color: white;
+  z-index: 0;
 }
 
 /* Navbar font */

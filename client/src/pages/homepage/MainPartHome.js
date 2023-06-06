@@ -10,7 +10,7 @@ export default function MainPartHome() {
         <button className={`btn btn-dark`}>Shop now</button>
       </div>
       <div className={`${styling.mainPartRight}`}>
-        <img src={dogMain} className={`${styling.image}`} alt="plant" />
+        <img src={dogMain} className={`${styling.mainImage}`} alt="plant" />
       </div>
     </div>
   );

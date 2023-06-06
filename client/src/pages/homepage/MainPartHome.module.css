@@ -12,7 +12,7 @@
 .mainPartLeft {
   justify-content: left;
   padding-left: 5rem;
-  padding-right: 15rem;
+  padding-right: 5rem;
 }
 
 .mainPartRight img {
@@ -39,6 +39,8 @@
 }
 
 /* image */
-.image {
-  width: 75rem;
+.mainImage {
+  width: 60rem;
+  height: 55rem;
+  padding-right: 8rem;
 }
