@@ -9,7 +9,7 @@ import styling from "./App.module.css";
 // Import pages
 import Navbar from "./components/nav/Navbar";
 import Home from "./pages/homepage/Home";
-import Login from "./pages/auth/Login";
+import LoginPopup from "./pages/auth/Login";
 import Dashboard from "./pages/user/Dashboard";
 import Register from "./pages/auth/Register";
 import GetUser from "./pages/auth/GetUser";
@@ -36,12 +36,17 @@ import CheckoutPage from "./pages/checkout/CheckoutPage";
 import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
 
 const PageNotFound = () => {
-  return <div className="d-flex justify-content-center align-items-center vh-100">404 - Page not found</div>;
+  return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      404 - Page not found
+    </div>
+  );
 };
 
 export default function App() {
   const [auth, setAuth] = useAuth();
   const [showPopup, setShowPopup] = useState(false);
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
   // Get user only once
   useEffect(() => {
     try {
@@ -78,7 +83,7 @@ export default function App() {
   return (
     <Router>
       {/* Navbar */}
-      <Navbar />
+      <Navbar setShowLoginPopup={setShowLoginPopup} />
       {/* Snack bar */}
       <Toaster position="top-center" />
       {/* Signin to newsletter popup */}
@@ -86,6 +91,15 @@ export default function App() {
         <>
           <div className={styling.overlay} />
           <Popup onClose={handleClosePopup} />
+        </>
+      )}
+      {/* Login popup */}
+      {showLoginPopup && (
+        <>
+          <LoginPopup
+            showLoginPopup={showLoginPopup}
+            setShowLoginPopup={setShowLoginPopup}
+          />
         </>
       )}
       <Routes>
@@ -97,7 +111,7 @@ export default function App() {
         <Route path="/search" element={<ResultsSearchBar />} />
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<SingleProductPage />} />
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<LoginPopup />} /> */}
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<CheckoutPage />} />
         <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
@@ -115,7 +129,10 @@ export default function App() {
           <Route path="admin/products" element={<AdminShowProducts />} />
           <Route path="admin/orders" element={<ManageOrdersAdmin />} />
           <Route path="admin/search" element={<AdminResultsSearchBar />} />
-          <Route path="admin/products/update/:slug" element={<AdminUpdateProduct />} />
+          <Route
+            path="admin/products/update/:slug"
+            element={<AdminUpdateProduct />}
+          />
         </Route>
         {/* <Route path="/register" element={<Register />} /> */}
         <Route path="*" element={<PageNotFound />} replace />

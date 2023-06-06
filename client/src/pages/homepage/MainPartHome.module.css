@@ -37,3 +37,8 @@
   text-decoration: none;
   margin-left: 0; /* Remove the margin-left property */
 }
+
+/* image */
+.image {
+  width: 75rem;
+}
