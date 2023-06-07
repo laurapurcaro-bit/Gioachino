@@ -25,6 +25,37 @@ i18n
           Harnesses: "Harnesses",
           Beds: "Beds",
           Bowls: "Bowls",
+          // Navbar
+          Catalogue: "Catalogue",
+          Search: "Search",
+          Account: "Account",
+          // User Dashboard
+          Hello: "Hello",
+          "Your account": "Your account",
+          "In your account, Gioachino, you can manage your orders, returns, and contact information.":
+            "In your account, Gioachino, you can manage your orders, returns, and contact information.",
+          "Here you can find information about your updates, returns, or refunds.":
+            "Here you can find information about your updates, returns, or refunds.",
+          "Continue shopping.": "Continue shopping.",
+          // User Menu
+          Overview: "Overview",
+          "Personal details": "Personal details",
+          "Saved items": "Saved items",
+          "My orders": "My orders",
+          Returns: "Returns",
+          Addresses: "Addresses",
+          "Payment methods": "Payment methods",
+          // Shop
+          "Filter by Categories": "Filter by Categories",
+          "Filter by Prices": "Filter by Prices",
+          // prices names
+          "Any": "Any price",
+          "$0 to $19": "0$ to 19$",
+          "$20 to $39": "20$ to 39$",
+          "$40 to $59": "40$ to 59$",
+          "$60 to $79": "60$ to 79$",
+          "More than $80": "More than 80$",
+          Reset: "Reset",
         },
       },
       it: {
@@ -44,6 +75,37 @@ i18n
           Harnesses: "Pettorine",
           Beds: "Divani",
           Bowls: "Ciotole",
+          // Navbar
+          Catalogue: "Catalogo",
+          Search: "Cerca",
+          Account: "Profilo",
+          // User Dashboard
+          Hello: "Ciao",
+          "Your account": "Il tuo account",
+          "In your account, Gioachino, you can manage your orders, returns, and contact information.":
+            "Dal tuo account Gioachino puoi gestire i tuoi ordini, resi e dati di contatto.",
+          "Here you can find information about your updates, returns, or refunds.":
+            "Qui puoi trovare informazioni sui tuoi aggiornamenti, resi o rimborsi.",
+          "Continue shopping.": "Continua lo shopping.",
+          // User Menu
+          Overview: "Panoramica",
+          "Personal details": "Dati personali",
+          "Saved items": "Liste salvati",
+          "My orders": "I miei ordini",
+          Returns: "Resi",
+          Addresses: "Indirizzi",
+          "Payment methods": "Metodi di pagamento",
+          // Shop
+          "Filter by Categories": "Filtra per Categorie",
+          "Filter by Prices": "Filtra per Prezzi",
+          // prices names
+          "Any": "Tutti i prezzi",
+          "$0 to $19": "0$ a 19$",
+          "$20 to $39": "20$ a 39$",
+          "$40 to $59": "40$ a 59$",
+          "$60 to $79": "60$ a 79$",
+          "More than $80": "Più di 80$",
+          Reset: "Azzera",
         },
       },
     },

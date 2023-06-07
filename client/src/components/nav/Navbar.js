@@ -5,8 +5,14 @@ import axios from "axios";
 import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import styling from "./Navbar.module.css";
+import { Trans } from "react-i18next";
+import {
+  ShoppingOutlined,
+  HeartOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
-export default function Navbar({setShowLoginPopup}) {
+export default function Navbar({ setShowLoginPopup }) {
   // context
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
@@ -48,12 +54,20 @@ export default function Navbar({setShowLoginPopup}) {
       </div>
       {/* Center elemnts */}
       <div className={`${styling.centerElements}`}>
-        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/">
+        <NavLink
+          className={`${styling.navElements} ${styling.navbarFontLinks}`}
+          aria-current="page"
+          to="/"
+        >
           Home
         </NavLink>
         {/* Shop */}
-        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/shop">
-          Catalogue
+        <NavLink
+          className={`${styling.navElements} ${styling.navbarFontLinks}`}
+          aria-current="page"
+          to="/shop"
+        >
+          <Trans>Catalogue</Trans>
         </NavLink>
         {/* Search bar */}
         <SearchBar />
@@ -63,7 +77,10 @@ export default function Navbar({setShowLoginPopup}) {
         {/* if condition true => do login register : do logout */}
         {!auth.user ? (
           <>
-            <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} onClick={(e) => (setShowLoginPopup(true))}>
+            <NavLink
+              className={`${styling.navElements} ${styling.navbarFontLinks}`}
+              onClick={(e) => setShowLoginPopup(true)}
+            >
               Login
             </NavLink>
 
@@ -74,18 +91,29 @@ export default function Navbar({setShowLoginPopup}) {
              */}
           </>
         ) : (
-          <div className="dropdown">
-            <a className={`${styling.navElements} ${styling.navbarFontLinks} pointer dropdown-toggle`} data-bs-toggle="dropdown" href="/">
-              {auth.user?.firstName.toUpperCase()}
+          <div className={`dropdown ${styling.navElements} `}>
+            <a
+              className={`${styling.navbarFontLinks} pointer dropdown-toggle ${styling.userIcon}`}
+              data-bs-toggle="dropdown"
+              href="/"
+            >
+              <UserOutlined className={`${styling.navIcon}`} />
             </a>
-            <ul className="dropdown-menu">
-              <li>
-                <NavLink className={`${styling.navbarFontLinks}`} to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}>
-                  Dashboard
+            <ul className={`dropdown-menu ${styling.dropdownDiv}`}>
+              <li className={`${styling.dropdownElements}`}>
+                <NavLink
+                  className={`${styling.navbarFontLinks} ${styling.navElements} pointer`}
+                  to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+                >
+                  <Trans>Account</Trans>
                 </NavLink>
               </li>
-              <li>
-                <NavLink className={`${styling.navbarFontLinks} pointer`} onClick={logout} to="/">
+              <li className={`${styling.dropdownElements}`}>
+                <NavLink
+                  className={`${styling.navbarFontLinks} ${styling.navElements} pointer`}
+                  onClick={logout}
+                  to="/"
+                >
                   Logout
                 </NavLink>
               </li>
@@ -94,12 +122,20 @@ export default function Navbar({setShowLoginPopup}) {
         )}
         {/* Wishlist */}
 
-        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} to="/saved-items">
-          Likes
+        <NavLink
+          className={`${styling.navElements} ${styling.navbarFontLinks}`}
+          to="/saved-items"
+        >
+          <HeartOutlined className={`${styling.navIcon}`} />
         </NavLink>
         {/* Cart */}
-        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/cart">
-          {`Cart (${cart?.length || 0})`}
+        <NavLink
+          className={`${styling.navElements} ${styling.navbarFontLinks}`}
+          aria-current="page"
+          to="/cart"
+        >
+          <ShoppingOutlined className={`${styling.navIcon}`} />
+          {`(${cart?.length || 0})`}
         </NavLink>
       </div>
     </div>

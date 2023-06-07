@@ -28,6 +28,12 @@ h2 {
   font-size: 2.5rem;
 }
 
+h1 {
+  font-family: "Playfair Display", serif;
+  /* font-size: 3rem; */
+  font-weight: 400;
+}
+
 p {
   font-size: 1.5rem;
 }
