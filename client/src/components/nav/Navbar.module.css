@@ -72,13 +72,13 @@
 }
 
 .userIcon {
-  margin-right: 5px;
+  /* margin-right: 5px; */
 }
 
 /* Icons */
 .navIcon {
-  font-size: 24px;
-  stroke-width: 20px;
+  font-size: 2rem;
+  stroke-width: 2rem;
   stroke: white;
 }
 
@@ -86,7 +86,7 @@
 .navbar .rightElements {
   display: flex;
   align-items: center;
-  gap: 5rem; /* Adds spacing between the elements */
+  gap: 2.5rem; /* Adds spacing between the elements */
   margin-right: 4rem;
 }
 
