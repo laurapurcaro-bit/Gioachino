@@ -1,11 +1,20 @@
 .secondPartBody {
-    margin-top: 10rem;
+  margin-top: 10rem;
 }
 
 .secondPartCategories {
-    text-align: center;
+  text-align: center;
 }
 
 .secondPartImages {
-    margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 90%;
 }
