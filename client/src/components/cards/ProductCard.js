@@ -1,9 +1,9 @@
-// import moment from "moment";
 import { Badge } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./ProductCard.module.css";
+import { Trans } from "react-i18next";
 
 export default function ProductCard({ product }) {
   // context
@@ -23,7 +23,7 @@ export default function ProductCard({ product }) {
     // Check if the product already exists in the cart
     const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
     const existingProduct = cartLs.find((item) => {
-      return item._id === product._id
+      return item._id === product._id;
     });
 
     if (existingProduct) {
@@ -61,14 +61,20 @@ export default function ProductCard({ product }) {
   return (
     <div className={`card ${styling.card}`}>
       <Badge.Ribbon
-        text={`${product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"}`}
+        text={`${
+          product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"
+        }`}
         placement="start"
         color={`${product?.quantity >= 1 ? "green" : "red"}`}
       >
         <img
           className="card-img-top"
           // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-          src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product.categorySlug.toLowerCase()}/${product._id}-main.png`}
+          src={`${
+            process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+          }/products/${product.categorySlug.toLowerCase()}/${
+            product._id
+          }-main.png`}
           alt={product?.name}
           // className="img img-responsive"
           height="300px"
@@ -78,7 +84,9 @@ export default function ProductCard({ product }) {
       </Badge.Ribbon>
 
       <div className="card-body">
-        <h3>{product?.name}</h3>
+        <h3>
+          <Trans>{product?.name}</Trans>
+        </h3>
         <h2 className="fw-bold">
           {product?.price?.toLocaleString(localString, {
             style: "currency",
@@ -95,10 +103,15 @@ export default function ProductCard({ product }) {
             toast.success(`${product.name} added to cart`);
           }}
         >
-          ADD
+          <span className={`${styling.addText}`}>
+            <Trans>ADD</Trans>
+          </span>
         </button>
-        <button className={`btn ${styling.btn} ${styling.view}`} onClick={() => navigate(`/product/${product.slug}`)}>
-          VIEW
+        <button
+          className={`btn ${styling.btn} ${styling.view}`}
+          onClick={() => navigate(`/product/${product.slug}`)}
+        >
+          <Trans>VIEW</Trans>
         </button>
       </div>
     </div>

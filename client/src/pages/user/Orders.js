@@ -1,5 +1,4 @@
 import { useAuth } from "../../context/auth";
-
 import UserMenu from "../../components/nav/UserMenu";
 import OrdersCard from "../../components/cards/OrdersCard";
 import { useState, useEffect } from "react";
@@ -46,7 +45,10 @@ export default function UserOrders() {
 
             {orders?.map((order, index) => {
               return (
-                <div className="border shadow bg-light rounded-4 mb-3" key={order._id}>
+                <div
+                  className="border shadow bg-light rounded-4 mb-3"
+                  key={order._id}
+                >
                   <table className="table table-bordered">
                     <thead>
                       <tr>
@@ -64,7 +66,9 @@ export default function UserOrders() {
                         <td>{order?.orderStatus}</td>
                         <td>{order?.buyer?.firstName}</td>
                         <td>{moment(order?.createdAt).fromNow()}</td>
-                        <td>{order?.paymentInfo.success ? "Success" : "Failed"}</td>
+                        <td>
+                          {order?.paymentInfo.success ? "Success" : "Failed"}
+                        </td>
                         <td>{order?.products?.length}</td>
                       </tr>
                     </tbody>

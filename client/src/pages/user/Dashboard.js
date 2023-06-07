@@ -2,6 +2,7 @@ import { useAuth } from "../../context/auth";
 import { NavLink } from "react-router-dom";
 import styling from "./Dashboard.module.css";
 import UserMenu from "../../components/nav/UserMenu";
+import { Trans } from "react-i18next";
 
 export default function UserDashboard() {
   // context
@@ -17,14 +18,18 @@ export default function UserDashboard() {
             <UserMenu />
           </div>
           <div className={`${styling.dashboardDiv} col-md-9`}>
-            <h2>👋 Ciao {auth.user?.firstName.toUpperCase()} </h2>
-            <h2>Il tuo account</h2>
-            <p>Dal tuo account Gioachino puoi gestire i tuoi ordini, resi e dati di contatto.</p>
+            <h2>
+              👋<Trans> Hello</Trans> {auth.user?.firstName.toLowerCase()}{" "}
+            </h2>
+            <h2><Trans>Your account</Trans></h2>
+            <p>
+            <Trans>In your account, Gioachino, you can manage your orders, returns, and contact information.</Trans>
+            </p>
             <div className={styling.centerDiv}>
-              <p>Trovi qui le info sui tuoi aggiornamenti, resi o rimborsi.</p>
+              <p><Trans>Here you can find information about your updates, returns, or refunds.</Trans></p>
               <button className={styling.buttonShop}>
                 <NavLink className={styling.buttonShopText} to="/">
-                  Continua lo shopping
+                  <Trans>Continue shopping.</Trans>
                 </NavLink>
               </button>
             </div>

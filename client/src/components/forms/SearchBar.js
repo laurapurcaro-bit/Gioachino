@@ -4,6 +4,7 @@ import { useSearch } from "../../context/search";
 import { useNavigate } from "react-router-dom";
 import styling from "./SearchBar.module.css";
 import stylingNavbar from "../nav/Navbar.module.css";
+import { Trans } from "react-i18next";
 
 export default function Searchbar() {
   // hook
@@ -33,7 +34,7 @@ export default function Searchbar() {
         className={`${stylingNavbar.navElements} ${stylingNavbar.navbarFontLinks} ${styling.searchBarLink}`}
         onClick={toggleSearch}
       >
-        Search
+        <Trans>Search</Trans>
       </span>
       {isSearchOpen && (
         <form className="" onSubmit={handleSearchBar}>

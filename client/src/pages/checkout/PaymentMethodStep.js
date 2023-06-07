@@ -6,6 +6,7 @@ import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./PaymentMethodStep.module.css";
 import OrderSummary from "./OrderSummary";
+import { Trans } from "react-i18next";
 
 const PaymentMethodStep = ({
   paymentMethod,
@@ -20,7 +21,7 @@ const PaymentMethodStep = ({
   // hook
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
-  const cartLs = JSON.parse(localStorage.getItem("cart"))
+  const cartLs = JSON.parse(localStorage.getItem("cart"));
   // function
   const cartTotal = () => {
     let total = 0;
@@ -53,7 +54,9 @@ const PaymentMethodStep = ({
       <div className="card mb-3">
         <div className="row g-0">
           <div className="col-md-7">
-            <h2>Order summary</h2>
+            <h2>
+              <Trans>Order summary</Trans>
+            </h2>
             <OrderSummary
               cart={cart}
               address={address}
@@ -61,7 +64,9 @@ const PaymentMethodStep = ({
             />
           </div>
           <div className="col-md-4">
-            <h2>Step 3: Select payment method</h2>
+            <h2>
+              <Trans>Step 3: Select payment method</Trans>
+            </h2>
             <div>
               <Payment
                 cart={cartLs}
@@ -73,7 +78,7 @@ const PaymentMethodStep = ({
         </div>
       </div>
       <button onClick={onPrevious} className={styling.previousButton}>
-        Previous
+        <Trans>Previous</Trans>
       </button>
     </div>
   );

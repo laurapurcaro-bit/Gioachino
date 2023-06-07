@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Badge } from "antd";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./SingleProductPage.module.css";
+import { Trans } from "react-i18next";
 
 // Single product page
 export default function SingleProductPage() {
@@ -126,16 +126,17 @@ export default function SingleProductPage() {
       <div className={styling.productDetails}>
         {product?.stock < 1 && (
           <div>
-            <span className={styling.esaurito}>ESAURITO</span>
+            <span className={styling.esaurito}><Trans>OUT OF STOCK</Trans></span>
           </div>
         )}
         <div>
-          <h1>{product.name}</h1>
-          <p>{product.description}</p>
+          <h1><Trans>{product.name}</Trans></h1>
+          <h4><Trans>Description</Trans></h4>
+          <p><Trans>{product.description}</Trans></p>
         </div>
         <div className={styling.quantitySection}>
           <span className={styling.quantitySpan}>
-            <p>Quantita</p>
+            <p><Trans>Quantity</Trans></p>
             <span>
               <button onClick={handleDecreaseQuantity}>-</button>
               <p>{quantity + 1}</p>
@@ -149,7 +150,7 @@ export default function SingleProductPage() {
               toast.success(`${product.name} added to cart`);
             }}
           >
-            AGGIUNGI AL CARRELLO
+            <Trans>ADD TO CART</Trans>
           </button>
         </div>
       </div>

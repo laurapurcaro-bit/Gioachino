@@ -59,28 +59,34 @@
   gap: 5rem; /* Adds spacing between the elements */
 }
 
-/* .navbar .centerElements form {
-  display: flex;
-  align-items: center;
+/* dropdown */
+.dropdownElements {
+  margin-top: 5px;
+  padding-left: 7px;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 
-.navbar .centerElements form input[type="search"] {
-  border-radius: 0;
-  height: 30px;
-  float: left;
+.dropdownDiv {
+  margin-top: 5px;
 }
-*/
-/*
-.navbar .centerElements form button {
-  margin-left: 10px; 
-} 
-*/
+
+.userIcon {
+  /* margin-right: 5px; */
+}
+
+/* Icons */
+.navIcon {
+  font-size: 2rem;
+  stroke-width: 2rem;
+  stroke: white;
+}
 
 /* Navbar right elements */
 .navbar .rightElements {
   display: flex;
   align-items: center;
-  gap: 5rem; /* Adds spacing between the elements */
+  gap: 2.5rem; /* Adds spacing between the elements */
   margin-right: 4rem;
 }
 

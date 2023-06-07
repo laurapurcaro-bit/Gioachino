@@ -5,6 +5,7 @@ import ProductCard from "../components/cards/ProductCard";
 import { Checkbox, Radio } from "antd";
 import { prices } from "../prices";
 import styling from "./Shop.module.css";
+import { Trans } from "react-i18next";
 
 export default function Shop() {
   const [categories, setCateories] = useState([]);
@@ -85,13 +86,17 @@ export default function Shop() {
   return (
     <div>
       <div className={styling.gridContainer}>
-        <h1>Catalogue</h1>
+        <h1>
+          <Trans>Catalogue</Trans>
+        </h1>
       </div>
       <CategoriesBar />
       <div className={`container-fluid ${styling.productContainer}`}>
         <div className="row">
           <div className={`col-md-2 ${styling.filterContainer}`}>
-            <h4>Filter by Categories</h4>
+            <h4>
+              <Trans>Filter by Categories</Trans>
+            </h4>
             <div className="row p-2 checkbox-custom">
               {categories?.map((category) => {
                 return (
@@ -101,18 +106,22 @@ export default function Shop() {
                       handleCategoryFilter(e.target.checked, category._id);
                     }}
                   >
-                    {category.name}
+                    <Trans>{category.name}</Trans>
                   </Checkbox>
                 );
               })}
             </div>
-            <h4>Filter by Prices</h4>
+            <h4>
+              <Trans>Filter by Prices</Trans>
+            </h4>
             <div className="row p-2">
               <Radio.Group onChange={(e) => handlePriceFilter(e)}>
                 {prices.map((price) => {
                   return (
                     <div key={price._id}>
-                      <Radio value={price.array}>{price.name}</Radio>
+                      <Radio value={price.array}>
+                        <Trans>{price.name}</Trans>
+                      </Radio>
                     </div>
                   );
                 })}
@@ -120,8 +129,11 @@ export default function Shop() {
             </div>
             {/* Reset filter */}
             <div className="p-3 pt-3">
-              <button className="btn btn-outline-secondary col-6" onClick={() => window.location.reload()}>
-                Reset
+              <button
+                className="btn btn-outline-secondary col-6"
+                onClick={() => window.location.reload()}
+              >
+                <Trans>Reset</Trans>
               </button>
             </div>
           </div>
@@ -130,7 +142,10 @@ export default function Shop() {
             <div className={"row"}>
               {products?.map((product) => {
                 return (
-                  <div className={`col-md-4 ${styling.cardContainer}`} key={product._id}>
+                  <div
+                    className={`col-md-4 ${styling.cardContainer}`}
+                    key={product._id}
+                  >
                     <ProductCard product={product} />
                   </div>
                 );
