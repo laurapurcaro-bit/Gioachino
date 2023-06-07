@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
 import axios from "axios";
 import DropIn from "braintree-web-drop-in-react";
+import { Trans } from "react-i18next";
 
 export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
   // context
@@ -52,10 +53,9 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
 
   return (
     <div className="mt-3">
-      <h4 className="mb-1">Payment</h4>
       {/* <div>{JSON.stringify(clientToken)}</div> */}
       {!clientToken || !cart?.length ? (
-        <div>Loading...</div>
+        <div><Trans>Loading</Trans>...</div>
       ) : (
         <>
           <div className="mt-1 mb-3">
@@ -101,7 +101,7 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
             onClick={handleBuy}
             disabled={!auth.user.address || !instance || loading}
           >
-            {loading ? "Processing..." : "Pay"}
+            {loading ? <p><Trans>Loading</Trans>...</p> : <p><Trans>Pay</Trans></p>}
           </button>
         </>
       )}

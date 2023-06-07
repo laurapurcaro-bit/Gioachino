@@ -1,3 +1,5 @@
+import { Trans } from "react-i18next";
+
 export default function OrdersCard({ p }) {
   const currency = "EUR";
   const localString = "en-US";
@@ -21,11 +23,20 @@ export default function OrdersCard({ p }) {
         </div>
         <div className="col-md-4">
           <div className="card-body">
-            <h5 className="card-title"> {p.name} </h5>
+            <h5 className="card-title">
+              {" "}
+              <Trans>{p.name}</Trans>{" "}
+            </h5>
             <p className="card-text">
-              {p.description?.length < 50
-                ? `${p?.description}`
-                : `${p?.description?.substring(0, 50)}...`}
+              {p.description?.length < 50 ? (
+                <p>
+                  <Trans>{p?.description}</Trans>
+                </p>
+              ) : (
+                <p>
+                  <Trans>{p?.description?.substring(0, 50)}...</Trans>
+                </p>
+              )}
             </p>
             <p className="card-text">
               {p?.price?.toLocaleString(localString, {
@@ -33,7 +44,9 @@ export default function OrdersCard({ p }) {
                 currency: currency,
               })}
             </p>
-            <p className="card-text">Quantity: {p.quantity}</p>
+            <p className="card-text">
+              <Trans>Quantity</Trans>: {p.quantity}
+            </p>
           </div>
         </div>
       </div>

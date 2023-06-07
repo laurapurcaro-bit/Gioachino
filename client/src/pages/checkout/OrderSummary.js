@@ -1,4 +1,5 @@
 import styling from "./OrderSummary.module.css";
+import { Trans } from "react-i18next";
 
 export default function OrderSummary({ cart, address, shipping }) {
   const currency = "EUR";
@@ -9,18 +10,18 @@ export default function OrderSummary({ cart, address, shipping }) {
   return (
     <div>
       <div className={styling.address}>
-        <h2>Address</h2>
+        <h2><Trans>Address</Trans></h2>
         <p>{address.street}</p>
         <p>{address.city}</p>
         <p>{address.zip}</p>
         <p>{address.state}</p>
       </div>
       <div className={styling.shipping}>
-        <h2>Shipping</h2>
-        <p>{shipping}</p>
+        <h2><Trans>Shipping</Trans></h2>
+        <p><Trans>{shipping}</Trans></p>
       </div>
       <div className={styling.cart}>
-        <h2>Cart</h2>
+        <h2><Trans>Cart</Trans></h2>
         <div className={styling.cartProducts}>
           {cart?.map((p, i) => (
             <>
@@ -55,7 +56,7 @@ export default function OrderSummary({ cart, address, shipping }) {
                       })}
                     </p>
                     {/* <p className="card-text">Quantity: {p.count}</p> */}
-                    <p className="card-text">Quantity: {p.quantity}</p>
+                    <p className="card-text"><Trans>Quantity</Trans>: {p.quantity}</p>
                   </div>
                 </div>
               </div>

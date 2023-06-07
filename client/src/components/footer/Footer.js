@@ -1,5 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
 import styling from "./Footer.module.css";
+import { Trans } from "react-i18next";
 
 export default function Footer({currentLanguage, setCurrentLanguage}) {
   
@@ -16,7 +17,7 @@ export default function Footer({currentLanguage, setCurrentLanguage}) {
         </div>
         <div className={styling.centerSection}>
           <div className={styling.footerColumn}>
-            <h4>Connect</h4>
+            <h4><Trans>Connect</Trans></h4>
             <ul>
               <li>Link 1</li>
               <li>Link 2</li>
@@ -24,7 +25,7 @@ export default function Footer({currentLanguage, setCurrentLanguage}) {
             </ul>
           </div>
           <div className={styling.footerColumn}>
-            <h4>Resources</h4>
+            <h4><Trans>Resources</Trans></h4>
             <ul>
               <li>Link 1</li>
               <li>Link 2</li>
@@ -32,7 +33,7 @@ export default function Footer({currentLanguage, setCurrentLanguage}) {
             </ul>
           </div>
           <div className={styling.footerColumn}>
-            <h4>About</h4>
+            <h4><Trans>About</Trans></h4>
             <ul>
               <li>Link 1</li>
               <li>Link 2</li>
@@ -42,18 +43,10 @@ export default function Footer({currentLanguage, setCurrentLanguage}) {
         </div>
         <div className={styling.rightSection}>
           <div className={styling.dropdown}>
-            <label htmlFor="currency">Currency:</label>
-            <select id="currency">
-              <option value="usd">USD</option>
-              <option value="eur">EUR</option>
-              <option value="gbp">GBP</option>
-            </select>
-          </div>
-          <div className={styling.dropdown}>
-            <label htmlFor="language">Language:</label>
+            <label htmlFor="language"><Trans>Language</Trans>:</label>
             <select id="language" value={currentLanguage} onChange={handleLanguageChange}>
-              <option value="en">English</option>
-              <option value="it">Italian</option>
+              <option value="en"><Trans>English</Trans></option>
+              <option value="it"><Trans>Italian</Trans></option>
             </select>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styling from "./AddressStep.module.css";
 import axios from "axios";
+import { Trans, useTranslation } from "react-i18next";
 
 const AddressStep = ({ address, onNext, onAddressChange }) => {
   const { street, city, zip, state } = address;
@@ -9,6 +10,8 @@ const AddressStep = ({ address, onNext, onAddressChange }) => {
   const [cityRequired, setCityRequired] = useState(false);
   const [zipRequired, setZipRequired] = useState(false);
   const [stateRequired, setStateRequired] = useState(false);
+  // Translate
+  const { t } = useTranslation();
 
   const handleStreet = (event) => {
     const updatedAddress = { ...address, street: event.target.value };
@@ -87,55 +90,89 @@ const AddressStep = ({ address, onNext, onAddressChange }) => {
 
   return (
     <div className={styling.container}>
-      <h2>Step 1: Add your address</h2>
+      <h2>
+        <Trans>Step 1: Add your address</Trans>
+      </h2>
       <form>
-        <label>Street</label>
+        <label>
+          <Trans>Street</Trans>
+        </label>
         <input
           type="text"
           value={street}
           onChange={handleStreet}
           className={styling.input}
-          placeholder="Enter your address"
+          placeholder={t('addressPlaceholder')}
           required
+          autoComplete="street-address"
         />
-        {streetRequired && <p className={styling.error}>Street is required</p>}
-        <label>City</label>
+        {streetRequired && (
+          <p className={styling.error}>
+            <Trans>Street is required</Trans>
+          </p>
+        )}
+        <label>
+          <Trans>City</Trans>
+        </label>
         <input
           type="text"
           value={city}
           onChange={handleCity}
           className={styling.input}
-          placeholder="Enter city"
+          placeholder={t('cityPlaceholder')}
           required
+          autoComplete="address-level2"
         />
-        {cityRequired && <p className={styling.error}>City is required</p>}
-        <label>Zip</label>
+        {cityRequired && (
+          <p className={styling.error}>
+            <Trans>City is required</Trans>
+          </p>
+        )}
+        <label>
+          <Trans>Zip</Trans>
+        </label>
         <input
           type="number"
           value={zip}
           onChange={handleZip}
           className={styling.input}
-          placeholder="Enter ZIP"
+          placeholder={t('zipPlaceholder')}
           required
+          autoComplete="postal-code"
         />
-        {zipRequired && <p className={styling.error}>ZIP is required</p>}
-        <label>State</label>
+        {zipRequired && (
+          <p className={styling.error}>
+            <Trans>ZIP is required</Trans>
+          </p>
+        )}
+        <label>
+          <Trans>Country</Trans>
+        </label>
         <input
           type="text"
           value={state}
           onChange={handleState}
           className={styling.input}
-          placeholder="Enter state"
+          placeholder={t('countryPlaceholder')}
           required
+          autoComplete="country"
         />
-        {stateRequired && <p className={styling.error}>State is required</p>}
-        {validationError && <p className={styling.error}>Invalid address</p>}
+        {stateRequired && (
+          <p className={styling.error}>
+            <Trans>State is required</Trans>
+          </p>
+        )}
+        {validationError && (
+          <p className={styling.error}>
+            <Trans>Invalid address</Trans>
+          </p>
+        )}
         <button
           type="button"
           onClick={validateAddress}
           className={styling.button}
         >
-          Next
+          <Trans>Next</Trans>
         </button>
       </form>
     </div>

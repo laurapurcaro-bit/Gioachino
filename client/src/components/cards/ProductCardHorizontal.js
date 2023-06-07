@@ -1,4 +1,3 @@
-import moment from "moment";
 import { Trans } from "react-i18next";
 
 export default function ProductCartHorizontal({ p, removeFromCart }) {

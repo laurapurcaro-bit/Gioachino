@@ -1,5 +1,6 @@
 import React from "react";
 import styling from "./ShippingMethodStep.module.css";
+import { Trans } from "react-i18next";
 
 const ShippingMethodStep = ({
   shippingMethod,
@@ -13,7 +14,7 @@ const ShippingMethodStep = ({
 
   return (
     <div className={styling.container}>
-      <h2>Step 2: Select shipping method</h2>
+      <h2><Trans>Step 2: Select shipping method</Trans></h2>
       <form>
         <div className={styling.shipping}>
           <label className={styling.label}>
@@ -24,7 +25,7 @@ const ShippingMethodStep = ({
               onChange={handleShippingMethodChange}
               className={styling.radio}
             />
-            Standard Shipping
+            <Trans>Standard Shipping</Trans>
           </label>
           <label className={styling.label}>
             <input
@@ -34,7 +35,7 @@ const ShippingMethodStep = ({
               onChange={handleShippingMethodChange}
               className={styling.radio}
             />
-            Express Shipping
+            <Trans>Express Shipping</Trans>
           </label>
         </div>
         <div className={styling.buttons}>
@@ -43,10 +44,10 @@ const ShippingMethodStep = ({
             onClick={onPrevious}
             className={styling.previousButton}
           >
-            Previous
+            <Trans>Previous</Trans>
           </button>
           <button type="button" onClick={onNext} className={styling.nextButton}>
-            Next
+            <Trans>Next</Trans>
           </button>
         </div>
       </form>
