@@ -4,12 +4,27 @@ import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./ProductCard.module.css";
 import { Trans } from "react-i18next";
+import { HeartOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 
 export default function ProductCard({ product }) {
+  // const
+  const inStock = product?.quantity; // - product?.sold;
+  const currency = "EUR";
+  const localString = "en-US";
   // context
   const [cart, setCart] = useCart();
   // hook
+  const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the product is saved
+    const savedItem = JSON.parse(localStorage.getItem("itemSaved"));
+    if (savedItem && savedItem.productId === product._id && savedItem.isSaved) {
+      setIsSaved(true);
+    }
+  }, []);
 
   function productDesc(description) {
     if (description?.length < 60) {
@@ -55,34 +70,42 @@ export default function ProductCard({ product }) {
     }
   };
 
-  const inStock = product?.quantity; // - product?.sold;
-  const currency = "EUR";
-  const localString = "en-US";
+  const handleHeartClick = (product) => {
+    // add to local storage the saved item
+    localStorage.setItem("itemSaved", JSON.stringify({productId: product._id, isSaved: !isSaved}));
+    setIsSaved(!isSaved);
+    // Add your logic to save the item to a list
+    // e.g., dispatch an action or update the state
+  };
+
+
   return (
     <div className={`card ${styling.card}`}>
-      <Badge.Ribbon
-        text={`${
-          product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"
-        }`}
-        placement="start"
-        color={`${product?.quantity >= 1 ? "green" : "red"}`}
-      >
-        <img
-          className="card-img-top"
-          // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-          src={`${
-            process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-          }/products/${product.categorySlug.toLowerCase()}/${
-            product._id
-          }-main.png`}
-          alt={product?.name}
-          // className="img img-responsive"
-          height="300px"
-          width="230px"
-          style={{ objectFit: "cover" }}
-        />
-      </Badge.Ribbon>
-
+      <div className={`${styling.cardImageContainer}`}>
+        <Badge.Ribbon
+          text={`${
+            product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"
+          }`}
+          placement="start"
+          color={`${product?.quantity >= 1 ? "green" : "red"}`}
+        >
+          <HeartOutlined className={`${styling.heartIcon} ${isSaved ? styling.savedHeartIcon : ''}`} onClick={(e) => handleHeartClick(product)} />
+          <img
+            className="card-img-top"
+            // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            src={`${
+              process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+            }/products/${product.categorySlug.toLowerCase()}/${
+              product._id
+            }-main.png`}
+            alt={product?.name}
+            // className="img img-responsive"
+            height="300px"
+            width="230px"
+            style={{ objectFit: "cover" }}
+          />
+        </Badge.Ribbon>
+      </div>
       <div className="card-body">
         <h3>
           <Trans>{product?.name}</Trans>

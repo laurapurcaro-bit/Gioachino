@@ -6,9 +6,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { useAuth } from "../../context/auth";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, NavLink } from "react-router-dom";
+import { Trans } from "react-i18next";
 
-const LoginPopup = ({ showLoginPopup, setShowLoginPopup }) => {
+const LoginPopup = ({
+  showLoginPopup,
+  setShowLoginPopup,
+  setShowRegisterPopup,
+}) => {
   const [auth, setAuth] = useAuth();
   // state
   const [email, setEmail] = useState("lau@gmail.com");
@@ -24,6 +29,7 @@ const LoginPopup = ({ showLoginPopup, setShowLoginPopup }) => {
 
   const handleClosing = () => {
     setShowLoginPopup(false);
+    setShowRegisterPopup(false);
   };
 
   const handleEmailSubmit = async (e) => {
@@ -41,13 +47,17 @@ const LoginPopup = ({ showLoginPopup, setShowLoginPopup }) => {
       } else {
         // Close popup
         setShowLoginPopup(false);
+        setShowRegisterPopup(false);
         // Save user and token to local storage
         localStorage.setItem("auth", JSON.stringify(data));
         // Put context
         // spread operator: ...auth
         setAuth({ ...auth, user: data.user, token: data.token });
         toast.success("Login successful.");
-        navigate(location.state || `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`);
+        navigate(
+          location.state ||
+            `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`
+        );
       }
     } catch (error) {
       toast.error("Login failed. Please try again.");
@@ -77,19 +87,33 @@ const LoginPopup = ({ showLoginPopup, setShowLoginPopup }) => {
                 &times;
               </span>
               <div className={styling.wrapper}>
-                <p>✨ Welcome Back ✨</p>
+                <p>
+                  ✨ <Trans>Welcome Back</Trans> ✨
+                </p>
                 <div className={styling.up}>
                   <form onSubmit={handleEmailSubmit}>
                     <p className={styling.inputTitle}>Email</p>
-                    <input type="email" placeholder="Enter your email address" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                     <p className={styling.inputTitle}> Password</p>
-                    <input type="password" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input
+                      type="password"
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                     <button className={styling.submit} type="submit">
                       LOG IN
                     </button>
                   </form>
                 </div>
-                <p className={styling.or}>o login con</p>
+                <p className={styling.or}>
+                  <Trans>or login with</Trans>
+                </p>
                 <div className={styling.down}>
                   <div className={`${styling.loginButton}`} onClick={google}>
                     <img src={googleIcon} alt="" className={styling.icon} />
@@ -102,11 +126,21 @@ const LoginPopup = ({ showLoginPopup, setShowLoginPopup }) => {
                   </div>
                 </div>
               </div>
-              <span className={`${styling.register}`} onClick={handleClose}>
-                Not registered? Register here.
+              <span className={`${styling.register}`}>
+                <NavLink
+                  onClick={(e) => {
+                    setShowLoginPopup(false);
+                    setShowRegisterPopup(true);
+                  }}
+                >
+                  <Trans>Not registered? Register here.</Trans>
+                </NavLink>
               </span>
-              <span className={`${styling.recoverPassword}`} onClick={handleClose}>
-                Forgot your password?
+              <span
+                className={`${styling.recoverPassword}`}
+                onClick={handleClose}
+              >
+                <Trans>Forgot your password?</Trans>
               </span>
             </div>
           </div>

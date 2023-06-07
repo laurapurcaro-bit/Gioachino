@@ -1,0 +1,159 @@
+.login {
+  height: calc(100vh - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Half of wrapper on left, half on right */
+.up {
+  display: flex;
+  flex-direction: column;
+}
+
+.down {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 5rem;
+}
+
+.loginButton {
+  width: 60%;
+  padding: 15px 25px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.icon {
+  margin-right: 1rem;
+  width: 3rem;
+  height: 3rem;
+}
+
+.input {
+  width: 200px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+
+.submit {
+  width: 100%;
+  color: white;
+  background-color: black;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 15px 20px;
+}
+
+.loginTitle {
+  position: absolute;
+  top: 150px;
+  color: lightgray;
+  font-size: 200%;
+}
+
+input {
+  font-size: 1.2rem;
+  width: 100%;
+  padding: 10px 10px;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box;
+}
+
+.inputTitle {
+  margin: 1rem;
+  width: 10%;
+  font-size: 1.3rem;
+  margin-top: 2rem;
+}
+
+.or {
+  font-size: 1rem;
+  margin-top: 2rem;
+}
+
+.register {
+  position: absolute;
+  font-size: 1rem;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  cursor: pointer;
+}
+.recoverPassword {
+  position: absolute;
+  font-size: 1rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
+}
+
+/* PopUp */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  z-index: 1;
+}
+
+.popupContent {
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.loginPopup {
+  position: fixed;
+  width: 50rem;
+  height: 50rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+  z-index: 1;
+}
+
+.loginPopupContent {
+  background-color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.loginClose {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  cursor: pointer;
+}

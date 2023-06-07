@@ -6,7 +6,7 @@ import { useAuth } from "./context/auth";
 // styles
 import styling from "./App.module.css";
 // Translate
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 // Import pages
 import Navbar from "./components/nav/Navbar";
@@ -36,6 +36,8 @@ import Footer from "./components/footer/Footer";
 import SingleProductPage from "./pages/product/SingleProductPage";
 import CheckoutPage from "./pages/checkout/CheckoutPage";
 import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
+import SavedItems from "./pages/user/SavedItems";
+import RegisterPopup from "./pages/auth/Register";
 
 const PageNotFound = () => {
   return (
@@ -49,6 +51,7 @@ export default function App() {
   const [auth, setAuth] = useAuth();
   const [showPopup, setShowPopup] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
+  const [showRegisterPopup, setShowRegisterPopup] = useState(false);
   // Translate
   const { t, i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState("en");
@@ -117,6 +120,15 @@ export default function App() {
           <LoginPopup
             showLoginPopup={showLoginPopup}
             setShowLoginPopup={setShowLoginPopup}
+            setShowRegisterPopup={setShowRegisterPopup}
+          />
+        </>
+      )}
+      {showRegisterPopup && (
+        <>
+          <RegisterPopup
+            showRegisterPopup={showRegisterPopup}
+            setShowRegisterPopup={setShowRegisterPopup}
           />
         </>
       )}
@@ -127,6 +139,7 @@ export default function App() {
         <Route path="/category/:slug" element={<CategoryView />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<ResultsSearchBar />} />
+        <Route path="/saved-items" element={<SavedItems />} />
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<SingleProductPage />} />
         {/* <Route path="/login" element={<LoginPopup />} /> */}

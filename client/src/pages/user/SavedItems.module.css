@@ -1,0 +1,28 @@
+.whishlistBtn {
+  width: 20%;
+  height: 5rem;
+  margin-top: 3rem;
+  background-color: black;
+  color: white;
+}
+
+.line {
+  margin-top: 4rem;
+  width: 80%;
+  padding: 0 2rem;
+  border: 1px solid #d7d6d1;
+}
+
+.lineContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.savedLists {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}

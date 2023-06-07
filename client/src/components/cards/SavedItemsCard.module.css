@@ -1,0 +1,11 @@
+.cardSavedItems {
+  width: 30rem;
+  height: 20rem;
+  border: 0.1rem solid #d7d6d1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1rem;
+}

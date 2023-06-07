@@ -1,3 +1,8 @@
+.footerDiv {
+  margin-top: 50rem;
+  margin-bottom: 3rem;
+}
+
 .footerContainer {
   display: flex;
   justify-content: space-between;
@@ -51,5 +56,4 @@
   font-weight: 300;
   color: #848484;
   text-align: center;
-  margin: 0 10rem;
 }

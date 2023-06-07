@@ -99,9 +99,7 @@ i18n
           // AddressStep
           "Step 1: Add your address": "Step 1: Add your address",
           Street: "Street",
-          City: "City",
           Zip: "Zip",
-          Country: "Country",
           Next: "Next",
           cityPlaceholder: "Enter your city",
           zipPlaceholder: "Enter your zip code",
@@ -114,9 +112,13 @@ i18n
           // PaymentMethodStep
           "Step 3: Select payment method": "Step 3: Select payment method",
           "Order summary": "Order summary",
-          "Shipping": "Shipping",
-          "Loading": "Loading",
-          "Pay": "Pay",
+          Shipping: "Shipping",
+          Loading: "Loading",
+          Pay: "Pay",
+          // Saved Items
+          "My Wishlist": "My Wishlist",
+          "Here you can find all the products you have saved for later.":
+            "Here you can find all the products you have saved for later.",
         },
       },
       it: {
@@ -215,16 +217,22 @@ i18n
           zipPlaceholder: "Inserisci il tuo CAP",
           countryPlaceholder: "Inserisci lo stato",
           // ShippingMethodStep
-          "Step 2: Select shipping method": "Passo 2: Seleziona il metodo di spedizione",
+          "Step 2: Select shipping method":
+            "Passo 2: Seleziona il metodo di spedizione",
           "Standard Shipping": "Spedizione standard",
           "Express Shipping": "Spedizione express",
           Previous: "Indietro",
           // PaymentMethodStep
-          "Step 3: Select payment method": "Passo 3: Seleziona il metodo di pagamento",
+          "Step 3: Select payment method":
+            "Passo 3: Seleziona il metodo di pagamento",
           "Order summary": "Riepilogo ordine",
-          "Shipping": "Spedizione",
-          "Loading": "Caricamento",
-          "Pay": "Paga",
+          Shipping: "Spedizione",
+          Loading: "Caricamento",
+          Pay: "Paga",
+          // Saved Items
+          "My Wishlist": "I miei preferiti",
+          "Here you can find all the products you have saved for later.":
+            "Qui puoi trovare tutti i prodotti che hai salvato per dopo.",
         },
       },
     },

@@ -16,6 +16,7 @@ const userSchema = new Schema(
     city: { type: String },
     country: { type: String },
     role: { type: Number, default: 0, required: true },
+    savedItems: [{ type: Schema.Types.ObjectId, ref: "Product" }],
   },
   { timestamps: true }
 );
