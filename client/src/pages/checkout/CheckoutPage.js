@@ -12,7 +12,7 @@ export default function CheckoutPage() {
     street: "",
     city: "",
     zip: "",
-    state: "",
+    country: "",
   });
   const [shippingMethod, setShippingMethod] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -26,6 +26,7 @@ export default function CheckoutPage() {
   };
 
   const handleAddressChange = (updatedAddress) => {
+    console.log("updatedAddress", updatedAddress);
     setAddress(updatedAddress);
   };
 

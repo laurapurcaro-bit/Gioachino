@@ -1,5 +1,6 @@
 .container {
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .input {
@@ -20,4 +21,65 @@
   color: red;
   font-size: 14px;
   margin-top: 5px;
+}
+
+form {
+  width: 90%;
+  position: relative;
+  margin-top: 2rem;
+}
+
+.containerMain {
+  padding-top: 2rem;
+}
+
+.line {
+  margin-top: 4rem;
+  width: 80%;
+  padding: 0 2rem;
+  border: 1px solid #d7d6d1;
+}
+
+.lineContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardAddresses {
+  width: 30rem;
+  height: 20rem;
+  border: 0.1rem solid #d7d6d1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1rem;
+}
+
+.buttonsContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.saveButton {
+  order: 1;
+  left: 0;
+  position: relative;
+}
+
+.nextButton {
+  order: 2;
+  position: relative;
+}
+
+.nextContainer {
+  display: flex;
+  justify-content: flex-end;
+  width: 90%;
+  margin-top: 1rem;
+  position: relative;
 }

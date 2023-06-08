@@ -11,10 +11,12 @@ export default function UserAddresses() {
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [newAddress, setNewAddress] = useState({
     street: "",
-    CAP: "",
+    zip: "",
     city: "",
     country: "",
   });
+
+  const [validationError, setValidationError] = useState(false);
 
   // Translate
   const { t } = useTranslation();
@@ -30,8 +32,8 @@ export default function UserAddresses() {
     }));
   };
 
-  const handleSaveAddress = async (e) => {
-    e.preventDefault();
+  const handleSaveAddress = async () => {
+    console.log("validateAddress", validationError);
     // Save the new address to the user's addresses array
     const updatedUser = { ...auth.user };
     if (!updatedUser.addresses) {
@@ -67,11 +69,52 @@ export default function UserAddresses() {
     // Reset the new address state and hide the add address form
     setNewAddress({
       street: "",
-      CAP: "",
+      zip: "",
       city: "",
       country: "",
     });
     setShowAddAddress(false);
+    setValidationError(false);
+  };
+
+  const validateAddress = async (e) => {
+    e.preventDefault();
+    const { street, zip, city, country } = newAddress;
+    console.log("newAddress", newAddress);
+    const apiKey = process.env.REACT_APP_MAPS_KEY;
+    const url = `https://addressvalidation.googleapis.com/v1:validateAddress?key=${apiKey}`;
+
+    const { data } = await axios.post(url, {
+      address: {
+        regionCode: "IT",
+        languageCode: "it",
+        addressLines: [street, city, country, zip],
+      },
+    });
+
+    const { addressComplete } = data.result.verdict;
+    if (addressComplete === true) {
+      const { addressComponents } = data.result.address;
+      for (const element of addressComponents) {
+        console.log("ELEMENTS", element.confirmationLevel);
+        if (element.confirmationLevel !== "CONFIRMED") {
+          // Address is invalid
+          setValidationError(true);
+          toast.error("Address is invalid");
+          return true;
+        }
+        // Address is valid
+        setValidationError(false);
+        toast.success("Address is valid");
+        // Save the new address
+        handleSaveAddress();
+        return;
+      }
+    } else {
+      // Address is invalid
+      setValidationError(true);
+      toast.error("Address is invalid");
+    }
   };
 
   const handleRemoveAddress = async (index, addressId) => {
@@ -112,19 +155,21 @@ export default function UserAddresses() {
           </div>
           {auth?.user?.addresses && auth?.user?.addresses?.length > 0 && (
             // Render the existing addresses
-            <div>
+            <div className="row">
               {auth?.user?.addresses?.map((address, index) => (
-                <div key={index} className={`${styling.cardAddresses}`}>
-                  <div>
-                    <p>{address.street}</p>
-                    <p>{address.CAP}</p>
-                    <p>{address.city}</p>
-                    <p>{address.country}</p>
-                    <button
-                      onClick={() => handleRemoveAddress(index, address._id)}
-                    >
-                      Remove
-                    </button>
+                <div key={index} className="col-md-4">
+                  <div className={`${styling.cardAddresses}`}>
+                    <div>
+                      <p>{address.street}</p>
+                      <p>{address.zip}</p>
+                      <p>{address.city}</p>
+                      <p>{address.country}</p>
+                      <button
+                        onClick={() => handleRemoveAddress(index, address._id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -141,7 +186,7 @@ export default function UserAddresses() {
           {/* Render the add address form if showAddAddress is true */}
           {showAddAddress && (
             <div>
-              <form onSubmit={handleSaveAddress}>
+              <form onSubmit={validateAddress}>
                 <input
                   type="text"
                   name="street"
@@ -151,8 +196,8 @@ export default function UserAddresses() {
                 />
                 <input
                   type="text"
-                  name="CAP"
-                  value={newAddress.CAP}
+                  name="zip"
+                  value={newAddress.zip}
                   onChange={handleInputChange}
                   placeholder={t("ZIP")}
                 />

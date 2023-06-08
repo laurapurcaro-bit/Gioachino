@@ -17,7 +17,7 @@ const userSchema = new Schema(
           type: String,
           
         },
-        CAP: {
+        zip: {
           type: String,
           
         },
