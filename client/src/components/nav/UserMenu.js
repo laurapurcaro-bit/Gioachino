@@ -44,7 +44,7 @@ export default function UserMenu() {
             </NavLink>
           </li>
           <li>
-            <NavLink className={styling.dashboardSection} to="">
+            <NavLink className={styling.dashboardSection} to="/dashboard/user/addresses">
               <Trans>Addresses</Trans>
             </NavLink>
           </li>

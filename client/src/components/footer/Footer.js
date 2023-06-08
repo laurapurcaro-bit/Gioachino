@@ -10,7 +10,7 @@ export default function Footer({currentLanguage, setCurrentLanguage}) {
   };
 
   return (
-    <footer className="footer">
+    <footer className={`${styling.footerDiv}`}>
       <div className={styling.footerContainer}>
         <div className={styling.leftSection}>
           <h2 className={`${styling.footerFontLogo}`}>Gioachino</h2>
@@ -52,7 +52,7 @@ export default function Footer({currentLanguage, setCurrentLanguage}) {
         </div>
       </div>
       <div className={styling.footerParagraph}>
-        <p>Designed by L.P</p>
+        {/* <p>Designed by L.P</p> */}
       </div>
     </footer>
   );

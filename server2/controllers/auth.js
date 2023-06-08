@@ -12,11 +12,9 @@ Things to do before saving user to db:
 */
 
 const register = async (req, res) => {
-  console.log("IMPORTED REGISTER CONTROLLER");
   // with async request use " try catch"
   try {
     // 1. desctructure name, email, password from req.body
-    console.log("REGISTER", req.body);
     const { firstName, lastName, email, password } = req.body;
     // 2. all fields require validation
     // if no name
@@ -107,10 +105,8 @@ const login = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        address: user.address,
-        CAP: user.CAP,
-        city: user.city,
-        country: user.country,
+        addresses: user.addresses,
+        savedItems: user.savedItems,
         role: user.role,
       },
       token,
@@ -125,73 +121,10 @@ const secret = async (req, res) => {
 };
 
 // handle google login
-// no change password if user login with google
-const updateProfile = async (req, res) => {
-  try {
-    console.log("PROFILE UPDATE", req.user);
-    if (req.body.provider === "google") {
-      const { firstName, lastName, address, CAP, city, country } = req.body;
-      console.log("PROFILE! UPDATE", req.body);
-      const user = await UserModelGoogle.findById({ _id: req.user._id });
-      // update user
-      const updated = await UserModelGoogle.findByIdAndUpdate(
-        req.user._id,
-        {
-          firstName: firstName || user.firstName,
-          lastName: lastName || user.lastName,
-          address: address || user.address,
-          CAP: CAP || user.CAP,
-          city: city || user.city,
-          country: country || user.country,
-        },
-        // get updated data
-        { new: true }
-      );
-      // send response
-      res.json(updated);
-    } else {
-      const { firstName, lastName, password, address, CAP, city, country } =
-        req.body;
-      console.log("PROFILE UPDATE", req.body);
-      const user = await User.findById({ _id: req.user._id });
-      // check password length
-      if (password && password.length < 6) {
-        return res.json({
-          error: "Password must be at least 6 characters long",
-        });
-      }
-      // hash password
-      const hashedPassword = password
-        ? await hashPassword(password)
-        : undefined;
-      // update user
-      const updated = await User.findByIdAndUpdate(
-        req.user._id,
-        {
-          firstName: firstName || user.firstName,
-          lastName: lastName || user.lastName,
-          password: hashedPassword || user.password,
-          address: address || user.address,
-          CAP: CAP || user.CAP,
-          city: city || user.city,
-          country: country || user.country,
-        },
-        // get updated data
-        { new: true }
-      );
-      // remove password from response
-      updated.password = undefined;
-      // send response
-      res.json(updated);
-    }
-  } catch (err) {
-    console.log("PROFILE UPDATE ERROR", err);
-  }
-};
+
 
 module.exports = {
   register,
   login,
   secret,
-  updateProfile,
 };

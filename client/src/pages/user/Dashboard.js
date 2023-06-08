@@ -19,7 +19,7 @@ export default function UserDashboard() {
           </div>
           <div className={`${styling.dashboardDiv} col-md-9`}>
             <h2>
-              👋<Trans> Hello</Trans> {auth.user?.firstName.toLowerCase()}{" "}
+              👋 <Trans>Hello</Trans> {auth.user?.firstName.toLowerCase()}{" "}
             </h2>
             <h2><Trans>Your account</Trans></h2>
             <p>

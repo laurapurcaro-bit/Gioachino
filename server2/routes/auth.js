@@ -6,7 +6,6 @@ const {
   register,
   login,
   secret,
-  updateProfile,
 } = require("../controllers/auth");
 
 // 1: endpoint, 2: callback
@@ -18,7 +17,6 @@ router.get("/auth-check", requireSignIn, (req, res) => {
 router.get("/admin-check", requireSignIn, isAdmin, (req, res) => {
   res.json({ ok: true });
 });
-router.put("/profile", requireSignIn, updateProfile);
 // Protect routes so only logged in user have access to it
 // Admin middleware
 // testing

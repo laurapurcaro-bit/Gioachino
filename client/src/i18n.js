@@ -63,12 +63,15 @@ i18n
           firstNamePlaceholder: "Enter your first name",
           lastNamePlaceholder: "Enter your last name",
           Address: "Address",
-          addressPlaceholder: "Enter your address: e.g. Via Rossi 3",
+          streetPlaceholder: "Enter your address: e.g. Via Rossi 3",
           emailPlaceholder: "Enter your email",
           passwordPlaceholder: "Enter your password",
+          ZIP: "ZIP",
           City: "City",
           Country: "Country",
           Update: "Update",
+          "+ Add Address": "+ Add Address",
+          "Save Address": "Save Address",
           // Cart
           Cart: "My cart",
           "My cart": "My cart",
@@ -99,9 +102,7 @@ i18n
           // AddressStep
           "Step 1: Add your address": "Step 1: Add your address",
           Street: "Street",
-          City: "City",
           Zip: "Zip",
-          Country: "Country",
           Next: "Next",
           cityPlaceholder: "Enter your city",
           zipPlaceholder: "Enter your zip code",
@@ -114,9 +115,24 @@ i18n
           // PaymentMethodStep
           "Step 3: Select payment method": "Step 3: Select payment method",
           "Order summary": "Order summary",
-          "Shipping": "Shipping",
-          "Loading": "Loading",
-          "Pay": "Pay",
+          Shipping: "Shipping",
+          Loading: "Loading",
+          Pay: "Pay",
+          // Saved Items
+          "My Wishlist": "My Wishlist",
+          "Here you can find all the products you have saved for later.":
+            "Here you can find all the products you have saved for later.",
+          // Register
+          "Register Here": "Register Here",
+          confirmPasswordPlaceholder: "Confirm your password",
+          "REGISTER": "REGISTER",
+          "Already registered? Login here.": "Already registered? Login here.",
+          // Login
+          "Welcome Back": "Welcome Back",
+          "Login Here": "Login Here",
+          "Not registered? Register here.": "Not registered? Register here.",
+          "Forgot your password?": "Forgot your password?",
+          "or login with": "or login with",
         },
       },
       it: {
@@ -174,12 +190,15 @@ i18n
           firstNamePlaceholder: "Inserisci il tuo nome",
           lastNamePlaceholder: "Inserisci il tuo cognome",
           Address: "Indirizzo",
-          addressPlaceholder: "Inserisci il tuo indirizzo: es. Via Rossi 3",
+          "+ Add Address": "+ Aggiungi indirizzo",
+          streetPlaceholder: "Indirizzo: es. Via Rossi 3",
           emailPlaceholder: "Inserisci la tua email",
           passwordPlaceholder: "Inserisci la tua password",
+          ZIP: "CAP",
           City: "Città",
           Country: "Stato",
           Update: "Salva",
+          "Save Address": "Salva indirizzo",
           // Cart
           Cart: "Il mio carrello",
           "Continue Shopping": "Continua lo shopping",
@@ -215,16 +234,33 @@ i18n
           zipPlaceholder: "Inserisci il tuo CAP",
           countryPlaceholder: "Inserisci lo stato",
           // ShippingMethodStep
-          "Step 2: Select shipping method": "Passo 2: Seleziona il metodo di spedizione",
+          "Step 2: Select shipping method":
+            "Passo 2: Seleziona il metodo di spedizione",
           "Standard Shipping": "Spedizione standard",
           "Express Shipping": "Spedizione express",
           Previous: "Indietro",
           // PaymentMethodStep
-          "Step 3: Select payment method": "Passo 3: Seleziona il metodo di pagamento",
+          "Step 3: Select payment method":
+            "Passo 3: Seleziona il metodo di pagamento",
           "Order summary": "Riepilogo ordine",
-          "Shipping": "Spedizione",
-          "Loading": "Caricamento",
-          "Pay": "Paga",
+          Shipping: "Spedizione",
+          Loading: "Caricamento",
+          Pay: "Paga",
+          // Saved Items
+          "My Wishlist": "I miei preferiti",
+          "Here you can find all the products you have saved for later.":
+            "Qui puoi trovare tutti i prodotti che hai salvato per dopo.",
+          // Register
+          "Register Here": "Registrati qui",
+          confirmPasswordPlaceholder: "Conferma la tua password",
+          "REGISTER": "REGISTRATI",
+          "Already registered? Login here.": "Già registrato? Accedi qui.",
+          // Login
+          "Welcome Back": "Bentornato",
+          "Login Here": "Accedi qui",
+          "Not registered? Register here.": "Non registrato? Registrati qui.",
+          "Forgot your password?": "Hai dimenticato la password?",
+          "or login with": "o accedi con",
         },
       },
     },

@@ -23,7 +23,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background-color: #007bff;
+  background-color: #d7d6d1;
   color: #fff;
   font-weight: bold;
   margin: 0 auto; /* Add margin auto to center-align */
@@ -38,7 +38,7 @@
 }
 
 .step.active {
-  background-color: #007bff;
+  background-color: #d7d6d1;
 }
 
 .stepContent {

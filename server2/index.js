@@ -15,6 +15,7 @@ const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/product");
 const paymentRoutes = require("./routes/payment");
 const orderRoutes = require("./routes/orders");
+const userRoutes = require("./routes/user");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
@@ -79,6 +80,7 @@ passport.use(OAuthFacebook);
 passport.use(OAuthLinkedIn);
 
 app.use("/api", authRoutes);
+app.use("/api", userRoutes);
 app.use("/api", authEmailRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
