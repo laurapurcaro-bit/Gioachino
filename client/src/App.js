@@ -38,6 +38,7 @@ import CheckoutPage from "./pages/checkout/CheckoutPage";
 import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
 import SavedItems from "./pages/user/SavedItems";
 import RegisterPopup from "./pages/auth/Register";
+import UserAddresses from "./pages/user/UserAddresses";
 
 const PageNotFound = () => {
   return (
@@ -129,6 +130,7 @@ export default function App() {
           <RegisterPopup
             showRegisterPopup={showRegisterPopup}
             setShowRegisterPopup={setShowRegisterPopup}
+            setShowLoginPopup={setShowLoginPopup}
           />
         </>
       )}
@@ -152,6 +154,7 @@ export default function App() {
           <Route path="user" element={<Dashboard />} />
           <Route path="user/profile" element={<UserProfile />} />
           <Route path="user/orders" element={<UserOrders />} />
+          <Route path="user/addresses" element={<UserAddresses />} />
         </Route>
         <Route path="/dashboard" element={<AdminRoute />}>
           <Route path="admin" element={<AdminDashboard />} />

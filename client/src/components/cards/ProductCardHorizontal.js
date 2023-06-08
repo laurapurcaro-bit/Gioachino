@@ -27,7 +27,7 @@ export default function ProductCartHorizontal({ p, removeFromCart }) {
           <h5 className="card-title">
             <Trans>{p.name}</Trans>
           </h5>
-          <p className="card-text">
+          <div className="card-text">
             {p.description.length < 50 ? (
               <p>
                 <Trans>{p.description}</Trans>
@@ -37,7 +37,7 @@ export default function ProductCartHorizontal({ p, removeFromCart }) {
                 <Trans>{p.description.substring(0, 50)}...</Trans>
               </p>
             )}
-          </p>
+          </div>
           <p className="card-text">
             {p?.price?.toLocaleString(localString, {
               style: "currency",
@@ -50,11 +50,6 @@ export default function ProductCartHorizontal({ p, removeFromCart }) {
       </div>
 
       <div className="d-flex justify-content-between">
-        <p className="card-text">
-          {/* <small className="text-muted">
-            Listed {moment(p.createdAt).fromNow()}
-          </small> */}
-        </p>
         <p
           className="text-danger mb-2 pointer"
           onClick={() => removeFromCart(p._id)}

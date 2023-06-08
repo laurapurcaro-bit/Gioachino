@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import { useAuth } from "../../context/auth";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 const LoginPopup = ({
   showLoginPopup,
@@ -22,6 +22,8 @@ const LoginPopup = ({
   const navigate = useNavigate();
   const location = useLocation();
   console.log("Location", location);
+  // Translate
+  const { t } = useTranslation();
 
   const handleClose = () => {
     handleClosing();
@@ -95,14 +97,14 @@ const LoginPopup = ({
                     <p className={styling.inputTitle}>Email</p>
                     <input
                       type="email"
-                      placeholder="Enter your email address"
+                      placeholder={t("emailPlaceholder")}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
                     <p className={styling.inputTitle}> Password</p>
                     <input
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder={t("passwordPlaceholder")}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                     />
@@ -126,15 +128,14 @@ const LoginPopup = ({
                   </div>
                 </div>
               </div>
-              <span className={`${styling.register}`}>
-                <NavLink
-                  onClick={(e) => {
-                    setShowLoginPopup(false);
-                    setShowRegisterPopup(true);
-                  }}
-                >
-                  <Trans>Not registered? Register here.</Trans>
-                </NavLink>
+              <span
+                className={`${styling.register}`}
+                onClick={(e) => {
+                  setShowLoginPopup(false);
+                  setShowRegisterPopup(true);
+                }}
+              >
+                <Trans>Not registered? Register here.</Trans>
               </span>
               <span
                 className={`${styling.recoverPassword}`}

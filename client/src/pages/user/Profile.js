@@ -4,6 +4,7 @@ import axios from "axios";
 import UserMenu from "../../components/nav/UserMenu";
 import { toast } from "react-hot-toast"; // react-toastify
 import { Trans, useTranslation } from "react-i18next";
+import styling from "./Profile.module.css";
 
 export default function UserProfile() {
   // context
@@ -15,41 +16,47 @@ export default function UserProfile() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [address, setAddress] = useState("");
+  const [street, setStreet] = useState("");
   const [CAP, setCAP] = useState("");
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
+  const [addresses, setAddresses] = useState([]);
 
   useEffect(() => {
     if (auth?.user) {
-      console.log("AUTH USER", auth.user);
-      const { firstName, lastName, email, address, CAP, city, country } =
+      const { firstName, lastName, email, addresses } =
         auth.user;
       setFirstName(firstName);
       setLastName(lastName);
       setEmail(email);
-      setAddress(address);
-      setCAP(CAP);
-      setCity(city);
-      setCountry(country);
+      setStreet(addresses[0].street);
+      setCAP(addresses[0].CAP);
+      setCity(addresses[0].city);
+      setCountry(addresses[0].country);
     }
   }, [auth?.user]);
   // hanlde if google login or email
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newAddress = {
+      street: street,
+      CAP,
+      city,
+      country,
+    };
+
+    const updatedAddresses = [...addresses, newAddress];
     try {
       if (
         auth.user.provider === "google" ||
         auth.user.provider === "facebook" ||
         auth.user.provider === "apple"
       ) {
+
         const { data } = await axios.put("/profile", {
           firstName,
           lastName,
-          address,
-          CAP,
-          city,
-          country,
+          addresses: updatedAddresses,
           provider: auth.user.provider,
         });
         // Handle error
@@ -57,6 +64,7 @@ export default function UserProfile() {
           toast.error(data.error);
           return;
         } else {
+          setAddresses(updatedAddresses);
           // Update context
           setAuth({ ...auth, user: data });
           // local storage
@@ -72,16 +80,14 @@ export default function UserProfile() {
         const { data } = await axios.put("/profile", {
           firstName,
           lastName,
-          address,
-          CAP,
-          city,
-          country,
+          addresses: updatedAddresses,
           password,
         });
         if (data?.error) {
           toast.error(data.error);
           return;
         } else {
+          setAddresses(updatedAddresses);
           // Update context
           setAuth({ ...auth, user: data });
           // local storage
@@ -102,7 +108,7 @@ export default function UserProfile() {
   return (
     <>
       {/* <pre>{JSON.stringify(auth, null, 4)}</pre> */}
-      <div className="container-fluid">
+      <div className={`container-fluid ${styling.containerMain}`}>
         <div className="row">
           <div className="col-md-3">
             <UserMenu />
@@ -167,14 +173,14 @@ export default function UserProfile() {
 
               <label className="form-label mx-3 mb-0">
                 <h5>
-                  <Trans>Address</Trans>
+                  <Trans>Street</Trans>
                 </h5>
               </label>
               <input
                 className="form-control m-2 p-2"
-                placeholder={t('addressPlaceholder')}
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                placeholder={t('streetPlaceholder')}
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
               />
               <label className="form-label mx-3 mb-0">
                 <h5>

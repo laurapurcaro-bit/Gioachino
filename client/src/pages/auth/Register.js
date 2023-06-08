@@ -3,7 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/auth";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import styling from "./Register.module.css";
 import googleIcon from "../../images/google.svg";
 import facebookIcon from "../../images/facebook.svg";
@@ -12,17 +12,21 @@ import appleIcon from "../../images/apple.svg";
 export default function RegisterPopup({
   showRegisterPopup,
   setShowRegisterPopup,
+  setShowLoginPopup
 }) {
   // state
   const [firstName, setFirstName] = useState("La");
   const [lastName, setLastName] = useState("Mimi");
   const [email, setEmail] = useState("lau@gmail.com");
   const [password, setPassword] = useState("1234567890");
+  const [confirmPassword, setConfirmPassword] = useState("1234567890");
 
   // hook
   const [auth, setAuth] = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  // Translate
+  const { t } = useTranslation();
 
   const handleClose = () => {
     handleClosing();
@@ -51,7 +55,7 @@ export default function RegisterPopup({
         localStorage.setItem("auth", JSON.stringify(data));
         setAuth({ ...auth, user: data.user, token: data.token });
         setShowRegisterPopup(false);
-        toast.success("Successfull registration. Please login.");
+        toast.success("Successfull registration. Please register.");
         navigate(
           location.state ||
             `/dashboard/${data?.user?.role === 1 ? "admin" : "user"}`
@@ -81,9 +85,9 @@ export default function RegisterPopup({
       {showRegisterPopup && (
         <>
           <div className={`${styling.overlay}`} />
-          <div className={`${styling.loginPopup}`}>
-            <div className={`${styling.loginPopupContent}`}>
-              <span className={`${styling.loginClose}`} onClick={handleClose}>
+          <div className={`${styling.registerPopup}`}>
+            <div className={`${styling.registerPopupContent} ${styling.shrinkContent}`}>
+              <span className={`${styling.registerClose}`} onClick={handleClose}>
                 &times;
               </span>
               <div className={styling.wrapper}>
@@ -92,33 +96,46 @@ export default function RegisterPopup({
                 </p>
                 <div className={styling.up}>
                   <form onSubmit={handleSubmit}>
-                    <p className={styling.inputTitle}>First name</p>
+                    <p className={styling.inputTitle}>
+                      <Trans>First name</Trans>
+                    </p>
                     <input
                       type="text"
-                      placeholder="Enter your first name"
+                      placeholder={t('firstNamePlaceholder')}
                       value={firstName}
                       onChange={(e) => setFirstName(e.target.value)}
                     />
-                    <p className={styling.inputTitle}>Last name</p>
+                    <p className={styling.inputTitle}>
+                      <Trans>Last name</Trans>
+                    </p>
                     <input
                       type="text"
-                      placeholder="Enter your last name"
+                      placeholder={t('lastNamePlaceholder')}
                       value={lastName}
                       onChange={(e) => setLastName(e.target.value)}
                     />
                     <p className={styling.inputTitle}>Email</p>
                     <input
                       type="email"
-                      placeholder="Enter your email address"
+                      placeholder={t('emailPlaceholder')}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />
-                    <p className={styling.inputTitle}> Password</p>
+                    <p className={styling.inputTitle}>Password</p>
                     <input
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder={t('passwordPlaceholder')}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
+                    />
+                    <p className={styling.inputTitle}>
+                      <Trans>Confirm password</Trans>
+                    </p>
+                    <input
+                      type="password"
+                      placeholder={t('confirmPasswordPlaceholder')}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <button className={styling.submit} type="submit">
                       <Trans>REGISTER</Trans>
@@ -129,25 +146,25 @@ export default function RegisterPopup({
                   <Trans>or register with</Trans>
                 </p>
                 <div className={styling.down}>
-                  <div className={`${styling.loginButton}`} onClick={google}>
+                  <div className={`${styling.registerButton}`} onClick={google}>
                     <img src={googleIcon} alt="" className={styling.icon} />
                   </div>
-                  <div className={`${styling.loginButton}`} onClick={facebook}>
+                  <div className={`${styling.registerButton}`} onClick={facebook}>
                     <img src={facebookIcon} alt="" className={styling.icon} />
                   </div>
-                  <div className={`${styling.loginButton}`} onClick={linkedin}>
+                  <div className={`${styling.registerButton}`} onClick={linkedin}>
                     <img src={appleIcon} alt="" className={styling.icon} />
                   </div>
                 </div>
               </div>
-              <span className={`${styling.register}`} onClick={handleClose}>
-                <Trans>Already registered? Login here.</Trans>
-              </span>
               <span
-                className={`${styling.recoverPassword}`}
-                onClick={handleClose}
+                className={`${styling.alreadyRegister}`}
+                onClick={(e) => {
+                    setShowLoginPopup(true);
+                    setShowRegisterPopup(false);
+                  }}
               >
-                <Trans>Forgot your password?</Trans>
+                <Trans>Already registered? Login here.</Trans>
               </span>
             </div>
           </div>

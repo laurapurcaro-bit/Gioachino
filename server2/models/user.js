@@ -11,10 +11,26 @@ const userSchema = new Schema(
     photo: { type: String },
     password: { type: String, required: true, minLength: 6, maxLength: 64 },
     provider: { type: String, default: "email" },
-    address: { type: String },
-    CAP: { type: String },
-    city: { type: String },
-    country: { type: String },
+    addresses: [
+      {
+        street: {
+          type: String,
+          
+        },
+        CAP: {
+          type: String,
+          
+        },
+        city: {
+          type: String,
+          
+        },
+        country: {
+          type: String,
+          
+        },
+      },
+    ],
     role: { type: Number, default: 0, required: true },
     savedItems: [{ type: Schema.Types.ObjectId, ref: "Product" }],
   },
