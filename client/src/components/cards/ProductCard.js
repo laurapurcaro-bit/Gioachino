@@ -97,7 +97,7 @@ export default function ProductCard({ product }) {
               process.env.REACT_APP_S3_HTTP_BUCKET_DEV
             }/products/${product.categorySlug.toLowerCase()}/${
               product._id
-            }-main.png`}
+            }-0.png`}
             alt={product?.name}
             // className="img img-responsive"
             height="300px"

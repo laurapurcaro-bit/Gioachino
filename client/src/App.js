@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/auth";
 // styles
 import styling from "./App.module.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 // Translate
 import { useTranslation } from "react-i18next";
 

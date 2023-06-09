@@ -11,7 +11,7 @@ export default function OrdersCard({ p }) {
           <img
             src={`${
               process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-            }/products/${p?.categorySlug?.toLowerCase()}/${p._id}-main.png`}
+            }/products/${p?.categorySlug?.toLowerCase()}/${p._id}-0.png`}
             alt={p.name}
             style={{
               height: "100%",

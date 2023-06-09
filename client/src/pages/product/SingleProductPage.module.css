@@ -22,10 +22,12 @@ button {
   flex: 1;
   width: 100%;
   height: auto;
+  width: 55rem;
 }
 
 .mainImage img {
   height: 62rem;
+  
 }
 
 .imgRepo {
@@ -84,4 +86,33 @@ button {
   margin-top: 5rem;
   background-color: black;
   color: white;
+}
+
+.customArrowContainer {
+
+}
+.customPrevArr {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: none;
+  border: none;
+  color: #d7d6d1;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.customNextArr {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  z-index: 2;
+  background: none;
+  border: none;
+  color: #d7d6d1;
+  font-size: 3rem;
+  cursor: pointer;
 }

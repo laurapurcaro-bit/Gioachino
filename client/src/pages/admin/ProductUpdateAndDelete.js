@@ -157,7 +157,7 @@ export default function AdminUpdateProduct() {
                 <div className="text-center">
                   {/* Fetch the latest image */}
                   <img
-                    src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${categorySlug}/${id}-main.png`}
+                    src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${categorySlug}/${id}-0.png`}
                     alt="product"
                     className="img img-responsive"
                     height="200px"
