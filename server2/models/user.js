@@ -1,6 +1,17 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+const WishlistSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  savedItems: {
+    type: Array,
+    default: [],
+  },
+});
+
 const userSchema = new Schema(
   {
     // cut whitespace with trim
@@ -32,7 +43,10 @@ const userSchema = new Schema(
       },
     ],
     role: { type: Number, default: 0, required: true },
-    savedItems: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+    whishlists: {
+      type: [WishlistSchema],
+      default: [],
+    },
   },
   { timestamps: true }
 );

@@ -49,7 +49,7 @@ export default function AdminShowProducts() {
                   <div className="row g-0">
                     <div className="col-md-4">
                       <img
-                        src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${p.categorySlug.toLowerCase()}/${p._id}-main.png`}
+                        src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${p.categorySlug.toLowerCase()}/${p._id}-0.png`}
                         className="img img-fluid rounded-start"
                         // Make sure all images are the same size
                         style={{

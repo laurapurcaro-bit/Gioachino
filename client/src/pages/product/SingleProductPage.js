@@ -5,6 +5,10 @@ import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./SingleProductPage.module.css";
 import { Trans } from "react-i18next";
+import { Carousel } from "react-responsive-carousel";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
+import RelatedProductCard from "../../components/cards/RelatedProductCard";
+
 
 // Single product page
 export default function SingleProductPage() {
@@ -12,8 +16,8 @@ export default function SingleProductPage() {
   const [cart, setCart] = useCart();
   // state
   const [product, setProduct] = useState({});
-  const [productPhotos, setProductPhotos] = useState([]);
-  // const [relatedProducts, setRelatedProducts] = useState([]);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantity, setQuantity] = useState(0);
   // hook
   const params = useParams();
@@ -41,12 +45,15 @@ export default function SingleProductPage() {
 
   const loadRelatedProducts = async (productId, categoryId) => {
     try {
-      // const { data } = await axios.get(`/products/related/${productId}/${categoryId}`);
-      // setRelatedProducts(data);
+      const { data } = await axios.get(
+        `/products/related/${productId}/${categoryId}`
+      );
+      setRelatedProducts(data);
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleIncreaseQuantity = () => {
     setQuantity(quantity + 1);
     product.quantity = product.quantity + 1;
@@ -90,68 +97,147 @@ export default function SingleProductPage() {
     }
   };
 
-  // function changeImage(imagePath) {
-  //   let mainImage = document.querySelector(".mainImage img");
-  //   mainImage.src = imagePath;
-  // }
+  const renderCustomPrevArrow = (onClickHandler, hasPrev) => {
+    return (
+      hasPrev && (
+        <div
+          className={`${styling.customArrowContainer}`}
+          onClick={onClickHandler}
+        >
+          <button className={`${styling.customPrevArr}`}>
+            <LeftOutlined />
+          </button>
+        </div>
+      )
+    );
+  };
+
+  const renderCustomNextArrow = (onClickHandler, hasNext) => {
+    return (
+      hasNext && (
+        <div
+          className={`${styling.customArrowContainer}`}
+          onClick={onClickHandler}
+        >
+          <button className={`${styling.customNextArr}`}>
+            <RightOutlined />
+          </button>
+        </div>
+      )
+    );
+  };
 
   return (
     <div className={styling.productPage}>
-      <div className={styling.imageSection}>
-        <div className={styling.imgRepo}>
-          <img
-            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
-            alt={product?.name}
-            // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
-          />
-          <img
-            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
-            alt={product?.name}
-            // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
-          />
-          <img
-            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
-            alt={product?.name}
-            // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
-          />
-        </div>
-        <div className={styling.mainImage}>
-          <img
-            // className={styling.mainImage}
-            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.categorySlug?.toLowerCase()}/${product._id}-main.png`}
-            alt={product?.name}
-          />
-        </div>
-      </div>
-      <div className={styling.productDetails}>
-        {product?.stock < 1 && (
-          <div>
-            <span className={styling.esaurito}><Trans>OUT OF STOCK</Trans></span>
+      <div className="row">
+        <div className="col-md-6">
+          <div className={styling.imageSection}>
+            <div className={styling.imgRepo}>
+              {/* Additional Images */}
+              {product?.additionalPhotos?.name?.map((photo, index) => (
+                <img
+                  key={index}
+                  src={`${
+                    process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+                  }/products/${product?.category?.name.toLowerCase()}/${
+                    product._id
+                  }-${index + 1}.png`}
+                  alt={product?.name}
+                  onClick={() => setSelectedImageIndex(index + 1)}
+                  // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
+                />
+              ))}
+            </div>
+            {/* Main Image */}
+            <div className={styling.mainImage}>
+              <Carousel
+                showArrows={true}
+                showThumbs={false}
+                infiniteLoop={true}
+                selectedItem={selectedImageIndex}
+                onChange={(index) => setSelectedImageIndex(index)}
+                renderArrowPrev={renderCustomPrevArrow}
+                renderArrowNext={renderCustomNextArrow}
+              >
+                {product?.additionalPhotos?.name?.map((photo, index) => (
+                  <img
+                    key={index}
+                    src={`${
+                      process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+                    }/products/${product?.category?.name.toLowerCase()}/${
+                      product._id
+                    }-${index}.png`}
+                    alt={product?.name}
+                    onClick={() => setSelectedImageIndex(index + 1)}
+                    // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
+                  />
+                ))}
+              </Carousel>
+            </div>
           </div>
-        )}
-        <div>
-          <h1><Trans>{product.name}</Trans></h1>
-          <h4><Trans>Description</Trans></h4>
-          <p><Trans>{product.description}</Trans></p>
         </div>
-        <div className={styling.quantitySection}>
-          <span className={styling.quantitySpan}>
-            <p><Trans>Quantity</Trans></p>
-            <span>
-              <button onClick={handleDecreaseQuantity}>-</button>
-              <p>{quantity + 1}</p>
-              <button onClick={handleIncreaseQuantity}>+</button>
-            </span>
-          </span>
-          <button
-            className={styling.quantityBtn}
-            onClick={() => {
-              addToCart(product);
-              toast.success(`${product.name} added to cart`);
-            }}
-          >
-            <Trans>ADD TO CART</Trans>
-          </button>
+        {/* Product description */}
+        <div className="col-md-6">
+          <div className={styling.productDetails}>
+            {product?.stock < 1 && (
+              <div>
+                <span className={styling.esaurito}>
+                  <Trans>OUT OF STOCK</Trans>
+                </span>
+              </div>
+            )}
+            <div>
+              <h1>
+                <Trans>{product.name}</Trans>
+              </h1>
+              <h4>
+                <Trans>Description</Trans>
+              </h4>
+              <p>
+                <Trans>{product.description}</Trans>
+              </p>
+            </div>
+            <div className={styling.quantitySection}>
+              <span className={styling.quantitySpan}>
+                <p>
+                  <Trans>Quantity</Trans>
+                </p>
+                <span>
+                  <button onClick={handleDecreaseQuantity}>-</button>
+                  <p>{quantity + 1}</p>
+                  <button onClick={handleIncreaseQuantity}>+</button>
+                </span>
+              </span>
+              <button
+                className={styling.quantityBtn}
+                onClick={() => {
+                  addToCart(product);
+                  toast.success(`${product.name} added to cart`);
+                }}
+              >
+                <Trans>ADD TO CART</Trans>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-6 mt-5">
+            <div className="">
+              <h2>
+                {relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}
+              </h2>
+              {/* Show only if no related products */}
+              {relatedProducts.length < 1 && <p>No related products</p>}
+              {relatedProducts.map((product, index) => (
+                <div key={index} className="row mt-5">
+                  <RelatedProductCard
+                    product={product}
+                    key={product._id}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

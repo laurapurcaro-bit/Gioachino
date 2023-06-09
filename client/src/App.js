@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { useAuth } from "./context/auth";
 // styles
 import styling from "./App.module.css";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 // Translate
 import { useTranslation } from "react-i18next";
 
@@ -58,7 +59,7 @@ export default function App() {
   const [currentLanguage, setCurrentLanguage] = useState("en");
 
   const changeLanguage = () => {
-    const language = localStorage.getItem("i18nextLng")
+    const language = localStorage.getItem("i18nextLng");
     i18n.changeLanguage(language);
     setCurrentLanguage(language);
   };
@@ -68,7 +69,7 @@ export default function App() {
     changeLanguage();
     console.log("LANNG", localStorage.getItem("i18nextLng"));
   }, [currentLanguage]);
-  
+
   // Get user only once
   useEffect(() => {
     try {
@@ -141,7 +142,9 @@ export default function App() {
         <Route path="/category/:slug" element={<CategoryView />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<ResultsSearchBar />} />
-        <Route path="/saved-items" element={<SavedItems />} />
+        <Route path="/logged" element={<PrivateRoute />}>
+          <Route path="saved-items" element={<SavedItems />} />
+        </Route>
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<SingleProductPage />} />
         {/* <Route path="/login" element={<LoginPopup />} /> */}
@@ -172,7 +175,10 @@ export default function App() {
         <Route path="*" element={<PageNotFound />} replace />
       </Routes>
       {/* Footer */}
-      <Footer currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} />
+      <Footer
+        currentLanguage={currentLanguage}
+        setCurrentLanguage={setCurrentLanguage}
+      />
     </Router>
   );
 }

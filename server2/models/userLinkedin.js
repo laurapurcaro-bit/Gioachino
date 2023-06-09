@@ -31,7 +31,7 @@ const userSchemaLinkedin = new mongoose.Schema({
       },
     },
   ],
-  savedItems: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+  whishlists: [],
   role: { type: Number, default: 0, required: true },
 });
 const UserModelLinkedin = mongoose.model("Userlinkedin", userSchemaLinkedin);

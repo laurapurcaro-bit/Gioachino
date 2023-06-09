@@ -161,9 +161,89 @@ const updateAddress = async (req, res) => {
   }
 };
 
+const updateWhishlists = async (req, res) => {
+  console.log("UPDATE WHISHLISTS", req.body);
+  try {
+    const { newWhishlists } = req.body;
+    console.log("WHISHLISTS", newWhishlists);
+    console.log("USER", req.user._id);
+
+    let user;
+    if (req.body.provider !== "email") {
+      user = await UserModelGoogle.findByIdAndUpdate(
+        req.user._id,
+        {
+          $push: {
+            whishlists: {
+              name: newWhishlists.name,
+              savedItems: [],
+            },
+          },
+        },
+        { new: true, upsert: true }
+      );
+    } else {
+      user = await User.findByIdAndUpdate(
+        req.user._id,
+        {
+          $push: {
+            whishlists: {
+              name: newWhishlists.name,
+              savedItems: [],
+            },
+          },
+        },
+        { new: true, upsert: true }
+      );
+    }
+
+    // Send response
+    res.json(user.whishlists);
+  } catch (err) {
+    console.log("PROFILE UPDATE ERROR", err);
+    res.status(400).send("Error updating whishlists");
+  }
+};
+
+const readWhishlists = async (req, res) => {
+  try {
+    // Retrieve the user's whishlists
+    const user = await User.findById(req.user?._id);
+    // Send the whishlists as the response
+    res.json(user.whishlists);
+  } catch (err) {
+    console.log("READ WHISHLISTS ERROR", err);
+    res.status(400).send("Error reading whishlists");
+  }
+};
+
+const deleteWhishlist = async (req, res) => {
+  const { wishlistId } = req.params;
+
+  try {
+    // Find the user and remove the specified wishlist
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $pull: { whishlists: { _id: wishlistId } } },
+      { new: true }
+    );
+
+    // Send the updated whishlists as the response
+    res.json(user.whishlists);
+  } catch (err) {
+    console.log("DELETE WHISHLIST ERROR", err);
+    res.status(400).send("Error deleting whishlist");
+  }
+};
+
+
+
 module.exports = {
   updateProfile,
   addAddress,
   deleteAddress,
   updateAddress,
+  updateWhishlists,
+  readWhishlists,
+  deleteWhishlist,
 };

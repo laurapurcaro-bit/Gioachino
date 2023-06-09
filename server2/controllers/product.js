@@ -87,7 +87,7 @@ const create = async (req, res) => {
     if (additionalPhotos) {
       // Add photos to S3
       additionalPhotos.map((file, i) => {
-        AWSuploadProductsToS3(file.path, product._id, i, categoryName);
+        AWSuploadProductsToS3(file.path, product._id, i+1, categoryName);
       });
       product.additionalPhotos.name = additionalPhotos.map(
         (file) => file.originalname
@@ -96,7 +96,7 @@ const create = async (req, res) => {
 
     if (photo) {
       // Upload the main photo to S3
-      AWSuploadProductsToS3(photo[0].path, product._id, "main", categoryName);
+      AWSuploadProductsToS3(photo[0].path, product._id, 0, categoryName);
       product.photo.name = photo[0].originalname;
     }
 
@@ -168,7 +168,7 @@ const update = async (req, res) => {
     if (additionalPhotos) {
       // Add photos to S3
       additionalPhotos.map((file, i) => {
-        AWSuploadProductsToS3(file.path, product._id, i, categoryName);
+        AWSuploadProductsToS3(file.path, product._id, i+1, categoryName);
       });
       product.additionalPhotos.name = additionalPhotos.map(
         (file) => file.originalname
@@ -177,7 +177,7 @@ const update = async (req, res) => {
 
     if (photo) {
       // Upload the main photo to S3
-      AWSuploadProductsToS3(photo[0].path, product._id, "main", categoryName);
+      AWSuploadProductsToS3(photo[0].path, product._id, 0, categoryName);
       product.photo.name = photo[0].originalname;
     }
 
