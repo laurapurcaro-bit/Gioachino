@@ -124,7 +124,7 @@ export default function Navbar({ setShowLoginPopup }) {
 
         <NavLink
           className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          to="/saved-items"
+          to="/logged/saved-items"
         >
           <HeartOutlined className={`${styling.navIcon}`} />
         </NavLink>

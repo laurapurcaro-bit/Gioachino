@@ -17,12 +17,16 @@ export default function ProductCard({ product }) {
   // hook
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
-
+  console.log("PRODUCT", product);
   useEffect(() => {
     // Check if the product is saved
     const savedItem = JSON.parse(localStorage.getItem("itemSaved"));
-    if (savedItem && savedItem.productId === product._id && savedItem.isSaved) {
-      setIsSaved(true);
+    if (savedItem) {
+      savedItem.forEach((element) => {
+        if (element.productId === product._id && element.isSaved) {
+          setIsSaved(true);
+        }
+      });
     }
   }, []);
 
@@ -72,12 +76,43 @@ export default function ProductCard({ product }) {
 
   const handleHeartClick = (product) => {
     // add to local storage the saved item
-    localStorage.setItem("itemSaved", JSON.stringify({productId: product._id, isSaved: !isSaved}));
     setIsSaved(!isSaved);
     // Add your logic to save the item to a list
+    if (!isSaved) {
+      // Get the saved items from local storage
+      const savedItems = JSON.parse(localStorage.getItem("itemSaved"));
+      let updatedItems = [];
+      if (savedItems) {
+        // If there are saved items, make a copy of the array
+        updatedItems = [...savedItems];
+      }
+      console.log("SAVED ITEMS", product);
+      // Add the new product to the updated list
+      updatedItems.push({
+        productId: product._id,
+        category: product?.categorySlug.toLowerCase(),
+        isSaved: !isSaved,
+      });
+      console.log("UPDATED ITEMS", updatedItems);
+      // Save the updated list back to local storage
+      localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
+    } else {
+      // Get the saved items from local storage
+      const savedItems = JSON.parse(localStorage.getItem("itemSaved"));
+      let updatedItems = [];
+
+      if (savedItems) {
+        // Filter out the selected product from the saved items
+        updatedItems = savedItems.filter(
+          (item) => item.productId !== product._id
+        );
+      }
+
+      // Save the updated list back to local storage
+      localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
+    }
     // e.g., dispatch an action or update the state
   };
-
 
   return (
     <div className={`card ${styling.card}`}>
@@ -89,7 +124,12 @@ export default function ProductCard({ product }) {
           placement="start"
           color={`${product?.quantity >= 1 ? "green" : "red"}`}
         >
-          <HeartOutlined className={`${styling.heartIcon} ${isSaved ? styling.savedHeartIcon : ''}`} onClick={(e) => handleHeartClick(product)} />
+          <HeartOutlined
+            className={`${styling.heartIcon} ${
+              isSaved ? styling.savedHeartIcon : ""
+            }`}
+            onClick={(e) => handleHeartClick(product)}
+          />
           <img
             className="card-img-top"
             // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
