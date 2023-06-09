@@ -29,10 +29,10 @@ export default function UserProfile() {
       setFirstName(firstName);
       setLastName(lastName);
       setEmail(email);
-      setStreet(addresses[0].street);
-      setCAP(addresses[0].CAP);
-      setCity(addresses[0].city);
-      setCountry(addresses[0].country);
+      setStreet(addresses[0]?.street);
+      setCAP(addresses[0]?.CAP);
+      setCity(addresses[0]?.city);
+      setCountry(addresses[0]?.country);
     }
   }, [auth?.user]);
   // hanlde if google login or email
