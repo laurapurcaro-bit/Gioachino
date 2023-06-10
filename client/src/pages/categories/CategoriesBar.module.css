@@ -26,7 +26,6 @@
   width: 10rem;
   height: 10rem;
   border-radius: 20%;
-  z-index: 1;
 }
 
 .cardImg:hover {
