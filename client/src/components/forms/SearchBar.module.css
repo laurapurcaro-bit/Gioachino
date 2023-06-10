@@ -17,6 +17,10 @@
   text-decoration: underline;
 }
 
+.form {
+  margin: 0;
+}
+
 .searchBarInput {
   border: 0.1rem solid #5e6b78;
   border-radius: 0.6rem;

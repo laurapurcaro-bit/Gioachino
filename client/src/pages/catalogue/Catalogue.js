@@ -85,12 +85,10 @@ export default function Catalogue() {
 
   return (
     <div>
-      <div className={styling.gridContainer}>
-        <h1>
-          <Trans>Catalogue</Trans>
-        </h1>
-      </div>
       <CategoriesBar />
+      <div className={`${styling.lineContainer}`}>
+        <hr className={`${styling.line}`} />
+      </div>
       <div className={`container-fluid ${styling.productContainer}`}>
         <div className="row">
           <div className={`col-md-2 ${styling.filterContainer}`}>

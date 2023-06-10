@@ -21,7 +21,6 @@ body {
   font-weight: 400;
   color: var(--color-text);
   background-color: var(--color-background);
-  z-index: -1;
 }
 
 h2 {

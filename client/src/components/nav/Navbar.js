@@ -6,11 +6,7 @@ import useCategory from "../../hooks/useCategory";
 import { useCart } from "../../context/cart";
 import styling from "./Navbar.module.css";
 import { Trans } from "react-i18next";
-import {
-  ShoppingOutlined,
-  HeartOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { ShoppingOutlined, HeartOutlined, UserOutlined } from "@ant-design/icons";
 
 export default function Navbar({ setShowLoginPopup }) {
   // context
@@ -50,25 +46,39 @@ export default function Navbar({ setShowLoginPopup }) {
       {/* justify-content-between: add space between elements; shadow: put bar with shadow; mb-2: margin-bottom: 2*/}
       {/* Homepage */}
       <div>
-        <h2 className={`${styling.navbarFontLogo}`}>Gioachino</h2>
+        <NavLink className={`${styling.navbarFontLogoDiv} `} aria-current="page" to="/">
+          <h2 className={`${styling.navbarFontLogo}`}>Gioachino</h2>
+        </NavLink>
       </div>
       {/* Center elemnts */}
       <div className={`${styling.centerElements}`}>
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          aria-current="page"
-          to="/"
-        >
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/">
           Home
         </NavLink>
-        {/* Shop */}
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          aria-current="page"
-          to="/shop"
-        >
-          <Trans>Catalogue</Trans>
-        </NavLink>
+        {/* Catalogue */}
+        <div className="dropdown">
+          <li>
+            <a className={` ${styling.navElements} ${styling.navbarFontLinks}  ${styling.catalogue}`} data-bs-toggle="dropdown" href="/">
+              <Trans>Catalogue</Trans>
+            </a>
+            <ul className={`dropdown-menu ${styling.dropdown}`}>
+              <li>
+                <NavLink className={`nav-link ${styling.navlink}`} to={`/catalogue`}>
+                  All categories
+                </NavLink>
+              </li>
+              {categories?.map((category) => {
+                return (
+                  <li key={category._id}>
+                    <NavLink className={`nav-link ${styling.navlink}`} to={`/category/${category.slug}`}>
+                      {category.name}
+                    </NavLink>
+                  </li>
+                );
+              })}
+            </ul>
+          </li>
+        </div>
         {/* Search bar */}
         <SearchBar />
       </div>
@@ -77,10 +87,7 @@ export default function Navbar({ setShowLoginPopup }) {
         {/* if condition true => do login register : do logout */}
         {!auth.user ? (
           <>
-            <NavLink
-              className={`${styling.navElements} ${styling.navbarFontLinks}`}
-              onClick={(e) => setShowLoginPopup(true)}
-            >
+            <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} onClick={(e) => setShowLoginPopup(true)}>
               Login
             </NavLink>
 
@@ -92,11 +99,7 @@ export default function Navbar({ setShowLoginPopup }) {
           </>
         ) : (
           <div className={`dropdown ${styling.navElements} `}>
-            <a
-              className={`${styling.navbarFontLinks} pointer dropdown-toggle ${styling.userIcon}`}
-              data-bs-toggle="dropdown"
-              href="/"
-            >
+            <a className={`${styling.navbarFontLinks} pointer dropdown-toggle ${styling.userIcon}`} data-bs-toggle="dropdown" href="/">
               <UserOutlined className={`${styling.navIcon}`} />
             </a>
             <ul className={`dropdown-menu ${styling.dropdownDiv}`}>
@@ -109,11 +112,7 @@ export default function Navbar({ setShowLoginPopup }) {
                 </NavLink>
               </li>
               <li className={`${styling.dropdownElements}`}>
-                <NavLink
-                  className={`${styling.navbarFontLinks} ${styling.navElements} pointer`}
-                  onClick={logout}
-                  to="/"
-                >
+                <NavLink className={`${styling.navbarFontLinks} ${styling.navElements} pointer`} onClick={logout} to="/">
                   Logout
                 </NavLink>
               </li>
@@ -122,18 +121,11 @@ export default function Navbar({ setShowLoginPopup }) {
         )}
         {/* Wishlist */}
 
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          to="/logged/saved-items"
-        >
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} to="/logged/saved-items">
           <HeartOutlined className={`${styling.navIcon}`} />
         </NavLink>
         {/* Cart */}
-        <NavLink
-          className={`${styling.navElements} ${styling.navbarFontLinks}`}
-          aria-current="page"
-          to="/cart"
-        >
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} aria-current="page" to="/cart">
           <ShoppingOutlined className={`${styling.navIcon}`} />
           {`(${cart?.length || 0})`}
         </NavLink>
@@ -142,11 +134,9 @@ export default function Navbar({ setShowLoginPopup }) {
   );
 }
 
-{
-  /* Category dropdown */
-}
-{
-  /* <div className="dropdown">
+/* Category dropdown */
+
+/* <div className="dropdown">
   <li className="nav-item">
     <a
       className="nav-link pointer dropdown-toggle"
@@ -179,4 +169,3 @@ export default function Navbar({ setShowLoginPopup }) {
     </ul>
   </li>
 </div> */
-}
