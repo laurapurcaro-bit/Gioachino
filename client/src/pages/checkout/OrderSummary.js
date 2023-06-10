@@ -5,40 +5,46 @@ export default function OrderSummary({ cart, address, shipping }) {
   const currency = "EUR";
   const localString = "en-US";
 
-  console.log("address", address);
+  console.log("cart", cart);
 
   return (
     <div>
       <div className={styling.address}>
-        <h2><Trans>Address</Trans></h2>
+        <h2>
+          <Trans>Address</Trans>
+        </h2>
         <p>{address.street}</p>
         <p>{address.city}</p>
         <p>{address.zip}</p>
-        <p>{address.state}</p>
+        <p>{address.country}</p>
       </div>
       <div className={styling.shipping}>
-        <h2><Trans>Shipping</Trans></h2>
-        <p><Trans>{shipping}</Trans></p>
+        <h2>
+          <Trans>Shipping</Trans>
+        </h2>
+        <p>
+          <Trans>{shipping}</Trans>
+        </p>
       </div>
       <div className={styling.cart}>
-        <h2><Trans>Cart</Trans></h2>
+        <h2>
+          <Trans>Cart</Trans>
+        </h2>
         <div className={styling.cartProducts}>
           {cart?.map((p, i) => (
             <>
-              <div className="row g-0">
+              <div key={i} className="row g-0">
                 <div className="col-md-4">
                   <img
-                    src={`${process.env.REACT_APP_API}/product/photo/${p._id}`}
-                    alt={p.name}
-                    style={{
-                      height: "100%",
-                      width: "100%",
-                      // fix this!!!!!!!
-                      // objectFit: "cover",
-
-                      marginLeft: "-10%",
-                      borderBottomRightRadius: "0px",
-                    }}
+                    className={styling.productImg}
+                    src={`${
+                      process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+                    }/products/${p?.categorySlug?.toLowerCase()}/${
+                      p?._id
+                    }-0.png`}
+                    alt={"img"}
+                    height="100%"
+                    width="100%"
                   />
                 </div>
                 <div className="col-md-4">
@@ -56,7 +62,9 @@ export default function OrderSummary({ cart, address, shipping }) {
                       })}
                     </p>
                     {/* <p className="card-text">Quantity: {p.count}</p> */}
-                    <p className="card-text"><Trans>Quantity</Trans>: {p.quantity}</p>
+                    <p className="card-text">
+                      <Trans>Quantity</Trans>: {p.quantity}
+                    </p>
                   </div>
                 </div>
               </div>

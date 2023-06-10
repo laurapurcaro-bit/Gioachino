@@ -40,7 +40,7 @@ const processPayment = async (req, res) => {
   try {
     // hardcode $10
     // console.log("PAYMENT", req.body);
-    const { nonce, cart, amount, provider } = req.body;
+    const { nonce, cart, amount, provider, selectedAddress, shippingMethod } = req.body;
     const correctAmount = amount.split("€")[1];
     console.log("CORRECT AMOUNT", correctAmount);
     let newTransaction = gateway.transaction.sale(
@@ -74,6 +74,8 @@ const processPayment = async (req, res) => {
             cart: cart,
             orderId: orderId,
             amount: correctAmount,
+            shippingAddress: selectedAddress,
+            shippingMethod: shippingMethod,
             paymentInfo: {
               transactionId: result.transaction.id,
               transactionMethod: result.transaction.paymentInstrumentType,

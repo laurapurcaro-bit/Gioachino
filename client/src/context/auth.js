@@ -13,8 +13,6 @@ const AuthProvider = ({ children }) => {
 
   // axios config for all requests
   axios.defaults.baseURL = process.env.REACT_APP_API;
-  console.log("auth.token", process.env.REACT_APP_API);
-  // axios.defaults.headers.common["Authorization"] = auth?.token;
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
   useEffect(() => {

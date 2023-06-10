@@ -145,6 +145,10 @@ const AddressStep = ({ address, onNext, onAddressChange }) => {
       toast.error("Add at least one address");
       return;
     }
+    if (!selectedAddresses[0]) {
+      toast.error("Select an address");
+      return;
+    }
     onNext();
   };
 
