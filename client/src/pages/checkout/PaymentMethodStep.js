@@ -8,13 +8,7 @@ import styling from "./PaymentMethodStep.module.css";
 import OrderSummary from "./OrderSummary";
 import { Trans } from "react-i18next";
 
-const PaymentMethodStep = ({
-  paymentMethod,
-  onPrevious,
-  onPaymentMethodChange,
-  address,
-  shippingMethod,
-}) => {
+const PaymentMethodStep = ({ onPrevious, address, shippingMethod }) => {
   // const
   const currency = "EUR";
   const localString = "en-US";
@@ -69,6 +63,8 @@ const PaymentMethodStep = ({
             </h2>
             <div>
               <Payment
+                selectedAddress={address}
+                shippingMethod={shippingMethod}
                 cart={cartLs}
                 cartTotal={cartTotal}
                 onPaymentSuccess={onPaymentSuccess}

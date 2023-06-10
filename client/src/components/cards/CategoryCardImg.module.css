@@ -1,7 +1,6 @@
 .card {
   width: calc(100% / 6);
   margin-bottom: 2rem;
-  z-index: -1;
 }
 
 .name {

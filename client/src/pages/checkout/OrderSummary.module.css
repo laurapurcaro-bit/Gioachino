@@ -30,3 +30,8 @@
     line-height: 1.5;
     margin-left: 3rem;
 }
+
+.productImg {
+    height: 10rem;
+    width: 10rem;
+}

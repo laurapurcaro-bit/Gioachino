@@ -6,21 +6,51 @@ import styling from "./ProductCard.module.css";
 import { Trans } from "react-i18next";
 import { HeartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import CryptoJS from "crypto-js";
 
 export default function ProductCard({ product }) {
   // const
   const inStock = product?.quantity; // - product?.sold;
   const currency = "EUR";
   const localString = "en-US";
+  const encryptionKey = process.env.REACT_APP_ENCRYPTION_KEY;
   // context
   const [cart, setCart] = useCart();
   // hook
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
   console.log("PRODUCT", product);
+
+  const encryptData = (data, localStorageKey) => {
+    // ********** ENCRYPTION **********
+    const encryptedData = CryptoJS.AES.encrypt(
+      JSON.stringify(data),
+      encryptionKey
+    ).toString();
+    localStorage.setItem(`${localStorageKey}`, encryptedData);
+    console.log("ENCRYPTED DATA", encryptedData);
+  };
+
+  const decryptData = (localStorageKey) => {
+    // ********** DECRYPTION **********
+    const encryptedDataLs = localStorage.getItem(`${localStorageKey}`);
+    if (encryptedDataLs) {
+      const decryptedData = JSON.parse(
+        CryptoJS.AES.decrypt(encryptedDataLs, encryptionKey).toString(
+          CryptoJS.enc.Utf8
+        )
+      );
+      console.log("DECRYPTED DATA", decryptedData);
+      return decryptedData;
+    }
+    console.log("DECRYPTED DATA L", encryptedDataLs);
+    return [];
+  };
+
   useEffect(() => {
     // Check if the product is saved
-    const savedItem = JSON.parse(localStorage.getItem("itemSaved"));
+    const savedItem = decryptData("itemSaved");
+    // const savedItem = JSON.parse(localStorage.getItem("itemSaved"));
     if (savedItem) {
       savedItem.forEach((element) => {
         if (element.productId === product._id && element.isSaved) {
@@ -80,7 +110,8 @@ export default function ProductCard({ product }) {
     // Add your logic to save the item to a list
     if (!isSaved) {
       // Get the saved items from local storage
-      const savedItems = JSON.parse(localStorage.getItem("itemSaved"));
+      const savedItems = decryptData("itemSaved");
+
       let updatedItems = [];
       if (savedItems) {
         // If there are saved items, make a copy of the array
@@ -95,19 +126,26 @@ export default function ProductCard({ product }) {
       });
       console.log("UPDATED ITEMS", updatedItems);
       // Save the updated list back to local storage
-      localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
+      // localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
+      // encrypt
+      encryptData(updatedItems, "itemSaved");
     } else {
-      // Get the saved items from local storage
-      const savedItems = JSON.parse(localStorage.getItem("itemSaved"));
+      // Remove selected saved item from local storage
+      const savedItems = decryptData("itemSaved");
+      // const savedItems = JSON.parse(localStorage.getItem("itemSaved"));
       let updatedItems = [];
 
       if (savedItems) {
         // Filter out the selected product from the saved items
-        updatedItems = savedItems.filter((item) => item.productId !== product._id);
+        updatedItems = savedItems.filter(
+          (item) => item.productId !== product._id
+        );
       }
-
+      console.log("UPDATED ITEMS", updatedItems);
       // Save the updated list back to local storage
-      localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
+      // localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
+      // encrypt
+      encryptData(updatedItems, "itemSaved");
     }
     // e.g., dispatch an action or update the state
   };
@@ -115,23 +153,26 @@ export default function ProductCard({ product }) {
   return (
     <div className={`card ${styling.card}`}>
       <div className={`${styling.cardImageContainer}`}>
-        <Badge.Ribbon
-          text={`${product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"}`}
-          placement="start"
-          color={`${product?.quantity >= 1 ? "green" : "red"}`}
-        >
-          <HeartOutlined className={`${styling.heartIcon} ${isSaved ? styling.savedHeartIcon : ""}`} onClick={(e) => handleHeartClick(product)} />
-          <img
-            className="card-img-top"
-            // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product.categorySlug.toLowerCase()}/${product._id}-0.png`}
-            alt={product?.name}
-            // className="img img-responsive"
-            height="300px"
-            width="200px"
-            style={{ objectFit: "cover" }}
-          />
-        </Badge.Ribbon>
+        <HeartOutlined
+          className={`${styling.heartIcon} ${
+            isSaved ? styling.savedHeartIcon : ""
+          }`}
+          onClick={(e) => handleHeartClick(product)}
+        />
+        <img
+          className="card-img-top"
+          // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+          src={`${
+            process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+          }/products/${product.categorySlug.toLowerCase()}/${
+            product._id
+          }-0.png`}
+          alt={product?.name}
+          // className="img img-responsive"
+          height="300px"
+          width="200px"
+          style={{ objectFit: "cover" }}
+        />
       </div>
       <div className="card-body">
         <h3>
@@ -157,7 +198,10 @@ export default function ProductCard({ product }) {
             <Trans>ADD</Trans>
           </span>
         </button>
-        <button className={`btn ${styling.btn} ${styling.view}`} onClick={() => navigate(`/product/${product.slug}`)}>
+        <button
+          className={`btn ${styling.btn} ${styling.view}`}
+          onClick={() => navigate(`/product/${product.slug}`)}
+        >
           <Trans>VIEW</Trans>
         </button>
       </div>

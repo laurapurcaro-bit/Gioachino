@@ -4,7 +4,7 @@ import axios from "axios";
 import DropIn from "braintree-web-drop-in-react";
 import { Trans } from "react-i18next";
 
-export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
+export default function Payment({ cart, cartTotal, onPaymentSuccess, selectedAddress, shippingMethod }) {
   // context
   const [auth] = useAuth();
   // state
@@ -39,6 +39,8 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
       const { data } = await axios.post("/braintree/payment", {
         nonce,
         cart: cart,
+        selectedAddress: selectedAddress,
+        shippingMethod: shippingMethod,
         amount: amount,
         provider: auth.user.provider,
       });
@@ -99,7 +101,7 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess }) {
           <button
             className="btn btn-primary col-md-12"
             onClick={handleBuy}
-            disabled={!auth.user.address || !instance || loading}
+            disabled={!selectedAddress || !instance || loading}
           >
             {loading ? <p><Trans>Loading</Trans>...</p> : <p><Trans>Pay</Trans></p>}
           </button>

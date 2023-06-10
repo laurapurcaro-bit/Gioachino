@@ -1,5 +1,4 @@
 import { useCart } from "../../context/cart";
-import { useAuth } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
 import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
 import { Trans } from "react-i18next";
@@ -10,27 +9,8 @@ export default function Cart() {
   const localString = "en-US";
   // context
   const [cart, setCart] = useCart();
-  const [auth] = useAuth();
   // hook
   const navigate = useNavigate();
-
-  // const subtitleText = () => {
-  //   if (cart?.length > 1) {
-  //     if (auth.token) {
-  //       return `You have ${cart?.length} items in the cart.`;
-  //     } else {
-  //       return `Please login to checkout`;
-  //     }
-  //   } else if (cart?.length === 1) {
-  //     if (auth.token) {
-  //       return `You have ${cart?.length} item in the cart.`;
-  //     } else {
-  //       return `Please login to checkout`;
-  //     }
-  //   } else {
-  //     return "Cart is empty";
-  //   }
-  // };
 
   const removeFromCart = (product) => {
     // Remove product from both singleCart and cart

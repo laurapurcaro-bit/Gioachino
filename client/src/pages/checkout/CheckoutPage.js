@@ -15,7 +15,6 @@ export default function CheckoutPage() {
     country: "",
   });
   const [shippingMethod, setShippingMethod] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("");
 
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -34,9 +33,6 @@ export default function CheckoutPage() {
     setShippingMethod(value);
   };
 
-  const handlePaymentMethodChange = (value) => {
-    setPaymentMethod(value);
-  };
 
   const renderStep = () => {
     switch (currentStep) {
@@ -60,9 +56,7 @@ export default function CheckoutPage() {
       case 3:
         return (
           <PaymentMethodStep
-            paymentMethod={paymentMethod}
             onPrevious={handlePreviousStep}
-            onPaymentMethodChange={handlePaymentMethodChange}
             address={address}
             shippingMethod={shippingMethod}
           />
