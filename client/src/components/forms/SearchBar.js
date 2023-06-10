@@ -37,7 +37,7 @@ export default function Searchbar() {
         <Trans>Search</Trans>
       </span>
       {isSearchOpen && (
-        <form className="" onSubmit={handleSearchBar}>
+        <form className={styling.form} onSubmit={handleSearchBar}>
           <input
             className={styling.searchBarInput}
             type="search"

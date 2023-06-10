@@ -3,6 +3,7 @@ import axios from "axios";
 // you can read the Route params
 import { useParams } from "react-router-dom";
 import ProductCard from "../../components/cards/ProductCard";
+import styling from "./CategoryView.module.css";
 
 export default function CategoryView() {
   // state
@@ -28,7 +29,13 @@ export default function CategoryView() {
 
   return (
     <>
-      <div className="container-fluid">
+      <div className={styling.header}>
+        <h2>{params.slug}</h2>
+      </div>
+      <div className={`${styling.lineContainer}`}>
+        <hr className={`${styling.line}`} />
+      </div>
+      <div className={`container-fluid ${styling.mainContainer}`}>
         <div className="row mt-3">
           {products?.map((product) => {
             return (

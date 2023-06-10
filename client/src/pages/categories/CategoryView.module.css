@@ -1,0 +1,26 @@
+.header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  text-transform: capitalize;
+  padding-top: 3rem;
+}
+
+.line {
+  width: 90%;
+  padding: 0 2rem;
+  border: 1px solid #d7d6d1;
+}
+
+.lineContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.mainContainer {
+  padding: 2rem 5rem;
+  position: relative;
+  z-index: -1;
+}
