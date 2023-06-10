@@ -25,7 +25,7 @@ import AdminShowProducts from "./pages/admin/ProductShow";
 import AdminUpdateProduct from "./pages/admin/ProductUpdateAndDelete";
 import UserOrders from "./pages/user/Orders";
 import UserProfile from "./pages/user/Profile";
-import Shop from "./pages/Shop";
+import Catalogue from "./pages/catalogue/Catalogue";
 import ResultsSearchBar from "./pages/ResultsSearchBar";
 import CategoriesList from "./pages/categories/CategoriesList";
 import CategoryView from "./pages/categories/CategoryView";
@@ -42,11 +42,7 @@ import RegisterPopup from "./pages/auth/Register";
 import UserAddresses from "./pages/user/UserAddresses";
 
 const PageNotFound = () => {
-  return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      404 - Page not found
-    </div>
-  );
+  return <div className="d-flex justify-content-center align-items-center vh-100">404 - Page not found</div>;
 };
 
 export default function App() {
@@ -119,25 +115,17 @@ export default function App() {
       {/* Login popup */}
       {showLoginPopup && (
         <>
-          <LoginPopup
-            showLoginPopup={showLoginPopup}
-            setShowLoginPopup={setShowLoginPopup}
-            setShowRegisterPopup={setShowRegisterPopup}
-          />
+          <LoginPopup showLoginPopup={showLoginPopup} setShowLoginPopup={setShowLoginPopup} setShowRegisterPopup={setShowRegisterPopup} />
         </>
       )}
       {showRegisterPopup && (
         <>
-          <RegisterPopup
-            showRegisterPopup={showRegisterPopup}
-            setShowRegisterPopup={setShowRegisterPopup}
-            setShowLoginPopup={setShowLoginPopup}
-          />
+          <RegisterPopup showRegisterPopup={showRegisterPopup} setShowRegisterPopup={setShowRegisterPopup} setShowLoginPopup={setShowLoginPopup} />
         </>
       )}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/catalogue" element={<Catalogue />} />
         <Route path="/categories" element={<CategoriesList />} />
         <Route path="/category/:slug" element={<CategoryView />} />
         <Route path="/cart" element={<Cart />} />
@@ -166,19 +154,13 @@ export default function App() {
           <Route path="admin/products" element={<AdminShowProducts />} />
           <Route path="admin/orders" element={<ManageOrdersAdmin />} />
           <Route path="admin/search" element={<AdminResultsSearchBar />} />
-          <Route
-            path="admin/products/update/:slug"
-            element={<AdminUpdateProduct />}
-          />
+          <Route path="admin/products/update/:slug" element={<AdminUpdateProduct />} />
         </Route>
         {/* <Route path="/register" element={<Register />} /> */}
         <Route path="*" element={<PageNotFound />} replace />
       </Routes>
       {/* Footer */}
-      <Footer
-        currentLanguage={currentLanguage}
-        setCurrentLanguage={setCurrentLanguage}
-      />
+      <Footer currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} />
     </Router>
   );
 }

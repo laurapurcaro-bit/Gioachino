@@ -2,10 +2,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 2rem;
-  padding: 1rem 0;
-  background-color: white;
-  z-index: 0;
+  /* margin: 2rem; */
+  padding: 2rem 2rem;
+  background-color: #fafafa;
+  z-index: 1;
 }
 
 /* Navbar font */
@@ -26,6 +26,11 @@
 }
 
 /* Navbar elements */
+.navbarFontLogoDiv {
+  text-decoration: none;
+  position: relative;
+}
+
 .navElements {
   text-decoration: none;
   position: relative;
@@ -69,6 +74,15 @@
 
 .dropdownDiv {
   margin-top: 5px;
+}
+
+.dropdown {
+  width: 12rem;
+}
+.navlink {
+  text-decoration: none;
+  color: black;
+  font-size: 1.2rem;
 }
 
 .userIcon {

@@ -15,4 +15,17 @@
 
 .cardContainer {
   padding: 0 5rem 5rem 5rem;
+  z-index: -1;
+}
+
+.line {
+  width: 90%;
+  padding: 0 2rem;
+  border: 1px solid #d7d6d1;
+}
+
+.lineContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

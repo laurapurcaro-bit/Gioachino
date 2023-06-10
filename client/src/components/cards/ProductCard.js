@@ -103,9 +103,7 @@ export default function ProductCard({ product }) {
 
       if (savedItems) {
         // Filter out the selected product from the saved items
-        updatedItems = savedItems.filter(
-          (item) => item.productId !== product._id
-        );
+        updatedItems = savedItems.filter((item) => item.productId !== product._id);
       }
 
       // Save the updated list back to local storage
@@ -118,30 +116,19 @@ export default function ProductCard({ product }) {
     <div className={`card ${styling.card}`}>
       <div className={`${styling.cardImageContainer}`}>
         <Badge.Ribbon
-          text={`${
-            product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"
-          }`}
+          text={`${product?.quantity >= 1 ? `${inStock} in stock` : "Out of Stock"}`}
           placement="start"
           color={`${product?.quantity >= 1 ? "green" : "red"}`}
         >
-          <HeartOutlined
-            className={`${styling.heartIcon} ${
-              isSaved ? styling.savedHeartIcon : ""
-            }`}
-            onClick={(e) => handleHeartClick(product)}
-          />
+          <HeartOutlined className={`${styling.heartIcon} ${isSaved ? styling.savedHeartIcon : ""}`} onClick={(e) => handleHeartClick(product)} />
           <img
             className="card-img-top"
             // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-            src={`${
-              process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-            }/products/${product.categorySlug.toLowerCase()}/${
-              product._id
-            }-0.png`}
+            src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product.categorySlug.toLowerCase()}/${product._id}-0.png`}
             alt={product?.name}
             // className="img img-responsive"
             height="300px"
-            width="230px"
+            width="200px"
             style={{ objectFit: "cover" }}
           />
         </Badge.Ribbon>
@@ -170,10 +157,7 @@ export default function ProductCard({ product }) {
             <Trans>ADD</Trans>
           </span>
         </button>
-        <button
-          className={`btn ${styling.btn} ${styling.view}`}
-          onClick={() => navigate(`/product/${product.slug}`)}
-        >
+        <button className={`btn ${styling.btn} ${styling.view}`} onClick={() => navigate(`/product/${product.slug}`)}>
           <Trans>VIEW</Trans>
         </button>
       </div>
