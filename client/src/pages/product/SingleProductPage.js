@@ -9,7 +9,6 @@ import { Carousel } from "react-responsive-carousel";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import RelatedProductCard from "../../components/cards/RelatedProductCard";
 
-
 // Single product page
 export default function SingleProductPage() {
   // context
@@ -45,9 +44,7 @@ export default function SingleProductPage() {
 
   const loadRelatedProducts = async (productId, categoryId) => {
     try {
-      const { data } = await axios.get(
-        `/products/related/${productId}/${categoryId}`
-      );
+      const { data } = await axios.get(`/products/related/${productId}/${categoryId}`);
       setRelatedProducts(data);
     } catch (error) {
       console.log(error);
@@ -74,9 +71,7 @@ export default function SingleProductPage() {
   const addToCart = (product) => {
     // Check if the product already exists in the cart
     const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingProductIndex = cartLs.findIndex(
-      (item) => item._id === product._id
-    );
+    const existingProductIndex = cartLs.findIndex((item) => item._id === product._id);
     // If no element is found, it returns -1
     if (existingProductIndex !== -1) {
       console.log("PROD EX");
@@ -100,10 +95,7 @@ export default function SingleProductPage() {
   const renderCustomPrevArrow = (onClickHandler, hasPrev) => {
     return (
       hasPrev && (
-        <div
-          className={`${styling.customArrowContainer}`}
-          onClick={onClickHandler}
-        >
+        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
           <button className={`${styling.customPrevArr}`}>
             <LeftOutlined />
           </button>
@@ -115,10 +107,7 @@ export default function SingleProductPage() {
   const renderCustomNextArrow = (onClickHandler, hasNext) => {
     return (
       hasNext && (
-        <div
-          className={`${styling.customArrowContainer}`}
-          onClick={onClickHandler}
-        >
+        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
           <button className={`${styling.customNextArr}`}>
             <RightOutlined />
           </button>
@@ -137,11 +126,9 @@ export default function SingleProductPage() {
               {product?.additionalPhotos?.name?.map((photo, index) => (
                 <img
                   key={index}
-                  src={`${
-                    process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-                  }/products/${product?.category?.name.toLowerCase()}/${
-                    product._id
-                  }-${index + 1}.png`}
+                  src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${
+                    index + 1
+                  }.png`}
                   alt={product?.name}
                   onClick={() => setSelectedImageIndex(index + 1)}
                   // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -149,8 +136,9 @@ export default function SingleProductPage() {
               ))}
             </div>
             {/* Main Image */}
-            <div className={styling.mainImage}>
+            <div className={styling.mainImageContainer}>
               <Carousel
+                className={styling.carouselContainer}
                 showArrows={true}
                 showThumbs={false}
                 infiniteLoop={true}
@@ -162,11 +150,7 @@ export default function SingleProductPage() {
                 {product?.additionalPhotos?.name?.map((photo, index) => (
                   <img
                     key={index}
-                    src={`${
-                      process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-                    }/products/${product?.category?.name.toLowerCase()}/${
-                      product._id
-                    }-${index}.png`}
+                    src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${index}.png`}
                     alt={product?.name}
                     onClick={() => setSelectedImageIndex(index + 1)}
                     // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -223,17 +207,12 @@ export default function SingleProductPage() {
         <div className="row">
           <div className="col-md-6 mt-5">
             <div className="">
-              <h2>
-                {relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}
-              </h2>
+              <h2>{relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}</h2>
               {/* Show only if no related products */}
               {relatedProducts.length < 1 && <p>No related products</p>}
               {relatedProducts.map((product, index) => (
                 <div key={index} className="row mt-5">
-                  <RelatedProductCard
-                    product={product}
-                    key={product._id}
-                  />
+                  <RelatedProductCard product={product} key={product._id} />
                 </div>
               ))}
             </div>
