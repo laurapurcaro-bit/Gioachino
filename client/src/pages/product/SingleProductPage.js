@@ -152,8 +152,9 @@ export default function SingleProductPage() {
               ))}
             </div>
             {/* Main Image */}
-            <div className={styling.mainImage}>
+            <div className={styling.mainImageContainer}>
               <Carousel
+                className={styling.carouselContainer}
                 showArrows={true}
                 showThumbs={false}
                 infiniteLoop={true}
@@ -227,16 +228,17 @@ export default function SingleProductPage() {
           <div className="col-md-6 mt-5">
             <div className="">
               <h2>
-                {relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}
+                {relatedProducts.length < 1 ? (
+                  <h2>See also</h2>
+                ) : (
+                  <h2>Related Products</h2>
+                )}
               </h2>
               {/* Show only if no related products */}
               {relatedProducts.length < 1 && <p>No related products</p>}
               {relatedProducts.map((product, index) => (
                 <div key={index} className="row mt-5">
-                  <RelatedProductCard
-                    product={product}
-                    key={product._id}
-                  />
+                  <RelatedProductCard product={product} key={product._id} />
                 </div>
               ))}
             </div>
