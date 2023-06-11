@@ -1,4 +1,3 @@
-import { Badge } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
@@ -23,10 +22,7 @@ export default function ProductCard({ product }) {
 
   const encryptData = (data, localStorageKey) => {
     // ********** ENCRYPTION **********
-    const encryptedData = CryptoJS.AES.encrypt(
-      JSON.stringify(data),
-      encryptionKey
-    ).toString();
+    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), encryptionKey).toString();
     localStorage.setItem(`${localStorageKey}`, encryptedData);
     console.log("ENCRYPTED DATA", encryptedData);
   };
@@ -35,11 +31,7 @@ export default function ProductCard({ product }) {
     // ********** DECRYPTION **********
     const encryptedDataLs = localStorage.getItem(`${localStorageKey}`);
     if (encryptedDataLs) {
-      const decryptedData = JSON.parse(
-        CryptoJS.AES.decrypt(encryptedDataLs, encryptionKey).toString(
-          CryptoJS.enc.Utf8
-        )
-      );
+      const decryptedData = JSON.parse(CryptoJS.AES.decrypt(encryptedDataLs, encryptionKey).toString(CryptoJS.enc.Utf8));
       console.log("DECRYPTED DATA", decryptedData);
       return decryptedData;
     }
@@ -137,9 +129,7 @@ export default function ProductCard({ product }) {
 
       if (savedItems) {
         // Filter out the selected product from the saved items
-        updatedItems = savedItems.filter(
-          (item) => item.productId !== product._id
-        );
+        updatedItems = savedItems.filter((item) => item.productId !== product._id);
       }
       console.log("UPDATED ITEMS", updatedItems);
       // Save the updated list back to local storage
@@ -153,20 +143,11 @@ export default function ProductCard({ product }) {
   return (
     <div className={`card ${styling.card}`}>
       <div className={`${styling.cardImageContainer}`}>
-        <HeartOutlined
-          className={`${styling.heartIcon} ${
-            isSaved ? styling.savedHeartIcon : ""
-          }`}
-          onClick={(e) => handleHeartClick(product)}
-        />
+        <HeartOutlined className={`${styling.heartIcon} ${isSaved ? styling.savedHeartIcon : ""}`} onClick={(e) => handleHeartClick(product)} />
         <img
           className="card-img-top"
           // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-          src={`${
-            process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-          }/products/${product.categorySlug.toLowerCase()}/${
-            product._id
-          }-0.png`}
+          src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product.categorySlug.toLowerCase()}/${product._id}-0.png`}
           alt={product?.name}
           // className="img img-responsive"
           height="300px"
@@ -198,10 +179,7 @@ export default function ProductCard({ product }) {
             <Trans>ADD</Trans>
           </span>
         </button>
-        <button
-          className={`btn ${styling.btn} ${styling.view}`}
-          onClick={() => navigate(`/product/${product.slug}`)}
-        >
+        <button className={`btn ${styling.btn} ${styling.view}`} onClick={() => navigate(`/product/${product.slug}`)}>
           <Trans>VIEW</Trans>
         </button>
       </div>
