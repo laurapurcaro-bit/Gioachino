@@ -75,9 +75,7 @@ export default function SingleProductPage() {
     // Check if the product already exists in the cart
     // const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
     const cartLs = decryptData("cart");
-    const existingProductIndex = cartLs.findIndex(
-      (item) => item._id === product._id
-    );
+    const existingProductIndex = cartLs.findIndex((item) => item._id === product._id);
     // If no element is found, it returns -1
     if (existingProductIndex !== -1) {
       console.log("PROD EX");
@@ -186,7 +184,7 @@ export default function SingleProductPage() {
                 </span>
               </div>
             )}
-            <div>
+            <div className={styling.header}>
               <h1>
                 <Trans>{product.name}</Trans>
               </h1>
@@ -242,7 +240,7 @@ export default function SingleProductPage() {
               <p>Size:</p>
               <div>
                 <select id="size" className={styling.size} value={selectedSize} onChange={handleSizeChange}>
-                  <option value="">Choose size</option>
+                  <option value="">-</option>
                   <option value="XS">XS</option>
                   <option value="S">S</option>
                   <option value="M">M</option>
@@ -277,13 +275,7 @@ export default function SingleProductPage() {
         <div className="row">
           <div className="col-md-6 mt-5">
             <div className="">
-              <h2>
-                {relatedProducts.length < 1 ? (
-                  <h2>See also</h2>
-                ) : (
-                  <h2>Related Products</h2>
-                )}
-              </h2>
+              <h2>{relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}</h2>
               {/* Show only if no related products */}
               {relatedProducts.length < 1 && <p>No related products</p>}
               {relatedProducts.map((product, index) => (

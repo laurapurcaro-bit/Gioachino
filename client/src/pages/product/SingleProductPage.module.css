@@ -57,9 +57,6 @@ button {
   color: white;
   font-size: 1.5rem;
 }
-.productDetails div {
-  margin-bottom: 5rem;
-}
 
 .quantitySection {
   display: flex;
@@ -125,7 +122,12 @@ button {
   cursor: pointer;
 }
 
+.header {
+  margin-bottom: 5rem;
+}
+
 .colorContainer {
+  margin-bottom: 2rem;
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
@@ -143,6 +145,7 @@ button {
 .colors {
   display: flex;
   justify-content: center;
+  padding-top: 0.5rem;
 }
 
 .colors div {
@@ -197,6 +200,7 @@ button {
   flex-wrap: wrap;
   gap: 2rem;
   min-height: min-content;
+  margin-bottom: 5rem;
 }
 
 .sizeContainer div {
@@ -208,11 +212,11 @@ button {
 }
 
 .size {
+  width: 7rem;
   padding: 8px;
   font-size: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 200px;
+  border: 1px solid #010101;
+  border-radius: 0.4rem;
 }
 
 .down {
