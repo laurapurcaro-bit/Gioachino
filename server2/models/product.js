@@ -53,6 +53,12 @@ const productSchema = new mongoose.Schema(
       name: [String],
       default: [],
     },
+    color: {
+      type: String,
+    },
+    size: {
+      type: String,
+    },
     shipping: {
       type: Boolean,
       required: false,

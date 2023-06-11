@@ -3,6 +3,7 @@ import styling from "./OrderConfirmationPage.module.css";
 import { useNavigate, NavLink } from "react-router-dom";
 import { Trans } from "react-i18next";
 import ConfettiComponent from "./Confetti";
+import { decryptData } from "../../constants";
 
 const OrderConfirmationPage = () => {
   const [order, setOrder] = useState({});
@@ -10,7 +11,8 @@ const OrderConfirmationPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const orderLs = JSON.parse(localStorage.getItem("order"));
+    // const orderLs = JSON.parse(localStorage.getItem("order"));
+    const orderLs = decryptData("order");
     setOrder(orderLs);
     setConfetti(true);
   }, []);

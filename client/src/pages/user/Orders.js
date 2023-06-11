@@ -4,12 +4,14 @@ import OrdersCard from "../../components/cards/OrdersCard";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
+import { Trans } from "react-i18next";
 
 export default function UserOrders() {
   // context
   const [auth] = useAuth();
   // state
   const [orders, setOrders] = useState([]);
+  localStorage.removeItem("order");
 
   useEffect(() => {
     if (auth?.token) {
@@ -41,7 +43,7 @@ export default function UserOrders() {
           </div>
 
           <div className="col-md-9">
-            <div className="p-3 mt-2 mb-2 h4 bg-light">Orders</div>
+            <div className="p-3 mt-2 mb-2 h4 bg-light"><Trans>Orders</Trans></div>
 
             {orders?.map((order, index) => {
               return (
@@ -53,21 +55,20 @@ export default function UserOrders() {
                     <thead>
                       <tr>
                         <th scope="col">#{order._id}</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Buyer</th>
-                        <th scope="col">Ordered</th>
-                        <th scope="col">Payment</th>
-                        <th scope="col">Quantity</th>
+                        <th scope="col"><Trans>Status</Trans></th>
+                        <th scope="col"><Trans>Ordered</Trans></th>
+                        <th scope="col"><Trans>Payment</Trans></th>
+                        <th scope="col"><Trans>Quantity</Trans></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>{index + 1}</td>
-                        <td>{order?.orderStatus}</td>
+                        <td><Trans>{order?.orderStatus}</Trans></td>
                         <td>{order?.buyer?.firstName}</td>
                         <td>{moment(order?.createdAt).fromNow()}</td>
                         <td>
-                          {order?.paymentInfo.success ? "Success" : "Failed"}
+                          {order?.paymentInfo.success ? <p><Trans>Success</Trans></p> : <p><Trans>Failed</Trans></p>}
                         </td>
                         <td>{order?.products?.length}</td>
                       </tr>

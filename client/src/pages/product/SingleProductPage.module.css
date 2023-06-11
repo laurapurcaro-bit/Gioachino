@@ -18,15 +18,20 @@ button {
   gap: 2rem;
 }
 
-.mainImage {
+.mainImageContainer {
   flex: 1;
   width: 100%;
   height: auto;
   width: 55rem;
 }
 
-.mainImage img {
+.mainImageContainer img {
   height: 62rem;
+}
+
+.mainImg {
+  position: relative;
+  z-index: -1;
 }
 
 .imgRepo {
@@ -68,6 +73,7 @@ button {
 .quantitySpan {
   display: flex;
   gap: 1rem;
+  align-items: center;
   width: 85%;
 }
 
@@ -76,9 +82,14 @@ button {
   border: 0.1rem solid black;
   justify-content: space-between;
   display: flex;
+  align-items: center;
   width: 35rem;
   margin-left: 5rem;
   padding: 0 2rem;
+}
+
+.quantitySpan p {
+  margin: 0;
 }
 
 .quantityBtn {
@@ -92,19 +103,20 @@ button {
 .customPrevArr {
   position: absolute;
   top: 50%;
-  left: 10px;
+  left: 0.1rem;
   transform: translateY(-50%);
   background: none;
   border: none;
   color: #d7d6d1;
   font-size: 3rem;
   cursor: pointer;
+  z-index: 1;
 }
 
 .customNextArr {
   position: absolute;
   top: 50%;
-  right: 10px;
+  right: 0.1rem;
   transform: translateY(-50%);
   background: none;
   border: none;
