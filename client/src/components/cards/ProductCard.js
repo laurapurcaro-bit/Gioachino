@@ -5,39 +5,19 @@ import styling from "./ProductCard.module.css";
 import { Trans } from "react-i18next";
 import { HeartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import CryptoJS from "crypto-js";
+import { encryptData, decryptData } from "../../constants";
 
 export default function ProductCard({ product }) {
   // const
   const inStock = product?.quantity; // - product?.sold;
   const currency = "EUR";
   const localString = "en-US";
-  const encryptionKey = process.env.REACT_APP_ENCRYPTION_KEY;
   // context
   const [cart, setCart] = useCart();
   // hook
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
   console.log("PRODUCT", product);
-
-  const encryptData = (data, localStorageKey) => {
-    // ********** ENCRYPTION **********
-    const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), encryptionKey).toString();
-    localStorage.setItem(`${localStorageKey}`, encryptedData);
-    console.log("ENCRYPTED DATA", encryptedData);
-  };
-
-  const decryptData = (localStorageKey) => {
-    // ********** DECRYPTION **********
-    const encryptedDataLs = localStorage.getItem(`${localStorageKey}`);
-    if (encryptedDataLs) {
-      const decryptedData = JSON.parse(CryptoJS.AES.decrypt(encryptedDataLs, encryptionKey).toString(CryptoJS.enc.Utf8));
-      console.log("DECRYPTED DATA", decryptedData);
-      return decryptedData;
-    }
-    console.log("DECRYPTED DATA L", encryptedDataLs);
-    return [];
-  };
 
   useEffect(() => {
     // Check if the product is saved
@@ -62,7 +42,8 @@ export default function ProductCard({ product }) {
 
   const addToCart = (product) => {
     // Check if the product already exists in the cart
-    const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    // const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartLs = decryptData("cart") || [];
     const existingProduct = cartLs.find((item) => {
       return item._id === product._id;
     });
@@ -82,7 +63,8 @@ export default function ProductCard({ product }) {
         return item;
       });
       console.log("UPDATED CART", updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
       setCart(updatedCart);
     } else {
       console.log("PROD NEW");
@@ -92,7 +74,8 @@ export default function ProductCard({ product }) {
       // If the product does not exist, add it to the cart
       // const updatedCart = [...cart, product];
       setCart(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
     }
   };
 
@@ -129,7 +112,9 @@ export default function ProductCard({ product }) {
 
       if (savedItems) {
         // Filter out the selected product from the saved items
-        updatedItems = savedItems.filter((item) => item.productId !== product._id);
+        updatedItems = savedItems.filter(
+          (item) => item.productId !== product._id
+        );
       }
       console.log("UPDATED ITEMS", updatedItems);
       // Save the updated list back to local storage
@@ -143,11 +128,20 @@ export default function ProductCard({ product }) {
   return (
     <div className={`card ${styling.card}`}>
       <div className={`${styling.cardImageContainer}`}>
-        <HeartOutlined className={`${styling.heartIcon} ${isSaved ? styling.savedHeartIcon : ""}`} onClick={(e) => handleHeartClick(product)} />
+        <HeartOutlined
+          className={`${styling.heartIcon} ${
+            isSaved ? styling.savedHeartIcon : ""
+          }`}
+          onClick={(e) => handleHeartClick(product)}
+        />
         <img
           className="card-img-top"
           // src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
-          src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product.categorySlug.toLowerCase()}/${product._id}-0.png`}
+          src={`${
+            process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+          }/products/${product.categorySlug.toLowerCase()}/${
+            product._id
+          }-0.png`}
           alt={product?.name}
           // className="img img-responsive"
           height="300px"
@@ -179,7 +173,10 @@ export default function ProductCard({ product }) {
             <Trans>ADD</Trans>
           </span>
         </button>
-        <button className={`btn ${styling.btn} ${styling.view}`} onClick={() => navigate(`/product/${product.slug}`)}>
+        <button
+          className={`btn ${styling.btn} ${styling.view}`}
+          onClick={() => navigate(`/product/${product.slug}`)}
+        >
           <Trans>VIEW</Trans>
         </button>
       </div>

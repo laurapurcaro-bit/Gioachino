@@ -1,4 +1,5 @@
 import { Buffer } from "buffer";
+import { colors, sizes } from "../../constants";
 import { useAuth } from "../../context/auth";
 import AdminMenu from "../../components/nav/AdminMenu";
 import { useState, useEffect } from "react";
@@ -27,6 +28,8 @@ export default function AdminUpdateProduct() {
   const [categorySlug, setCategorySlug] = useState("");
   const [product, setProduct] = useState({});
   const [stock, setStock] = useState(0);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
   // Id
   const [id, setId] = useState("");
 
@@ -55,8 +58,11 @@ export default function AdminUpdateProduct() {
       setCategory(data.category._id);
       setShipping(data.shipping);
       setStock(data.stock);
+      setColor(data.color);
+      setSize(data.size);
       setCategorySlug(data.categorySlug.toLowerCase());
       setProduct(data);
+      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -79,6 +85,9 @@ export default function AdminUpdateProduct() {
       formData.append("category", category);
       formData.append("shipping", shipping);
       formData.append("stock", stock);
+      formData.append("color", color);
+      formData.append("size", size);
+
       for (const element of categories) {
         if (element._id === category) {
           formData.append("categoryName", element.name);
@@ -259,6 +268,38 @@ export default function AdminUpdateProduct() {
                 {categories?.map((category) => (
                   <Option key={category._id} value={category._id}>
                     {category.name}
+                  </Option>
+                ))}
+              </Select>
+              {/* Color */}
+              <Select
+                // showSearch
+                bordered={false}
+                size="large"
+                className="form-select mb-3"
+                placeholder="Choose a color"
+                value={color}
+                onChange={(color) => setColor(color)}
+              >
+                {colors?.map((color) => (
+                  <Option key={color._id} value={color.name}>
+                    {color.name}
+                  </Option>
+                ))}
+              </Select>
+              {/* Sizes */}
+              <Select
+                // showSearch
+                bordered={false}
+                size="large"
+                value={size}
+                className="form-select mb-3"
+                placeholder="Choose a size"
+                onChange={(size) => setSize(size)}
+              >
+                {sizes?.map((size) => (
+                  <Option key={size._id} value={size.name}>
+                    {size.name}
                   </Option>
                 ))}
               </Select>

@@ -48,6 +48,8 @@ const create = async (req, res) => {
       category,
       stock,
       shipping,
+      color,
+      size,
       categoryName,
     } = req.body;
     const { photo, additionalPhotos } = req.files;
@@ -80,7 +82,7 @@ const create = async (req, res) => {
     // Update product
     const product = new Product({
       ...req.body,
-      categorySlug: slugify(categoryName),
+      categorySlug: slugify(categoryName).toLowerCase(),
       slug: slugify(name),
     });
 
@@ -124,6 +126,8 @@ const update = async (req, res) => {
       category,
       stock,
       shipping,
+      color,
+      size,
       categoryName,
     } = req.body;
     const { photo, additionalPhotos } = req.files;
@@ -158,7 +162,7 @@ const update = async (req, res) => {
       req.params.productId,
       {
         ...req.body,
-        categorySlug: slugify(categoryName),
+        categorySlug: slugify(categoryName).toLowerCase(),
         slug: slugify(name),
       },
       // new: true: return the updated product

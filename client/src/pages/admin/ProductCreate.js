@@ -5,6 +5,7 @@ import axios from "axios";
 import { Select } from "antd";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { colors, sizes } from "../../constants";
 
 const { Option } = Select;
 
@@ -19,11 +20,13 @@ export default function AdminCreateProduct() {
   const [additionalPhotos, setAdditionalPhotos] = useState(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(null);
+  const [color, setColor] = useState("");
+  const [size, setSize] = useState("");
   // Product
   const [category, setCategory] = useState("");
   const [shipping, setShipping] = useState(false);
-  const [stock, setStock] = useState(0);
+  const [stock, setStock] = useState(null);
 
   useEffect(() => {
     loadCategories();
@@ -57,6 +60,8 @@ export default function AdminCreateProduct() {
       }
       formData.append("category", category);
       formData.append("shipping", shipping);
+      formData.append("color", color);
+      formData.append("size", size);
       formData.append("stock", stock);
       if (photo) {
         formData.append("photo", photo);
@@ -201,6 +206,36 @@ export default function AdminCreateProduct() {
                 {categories?.map((category) => (
                   <Option key={category._id} value={category._id}>
                     {category.name}
+                  </Option>
+                ))}
+              </Select>
+              {/* Color */}
+              <Select
+                // showSearch
+                bordered={false}
+                size="large"
+                className="form-select mb-3"
+                placeholder="Choose a color"
+                onChange={(color) => setColor(color)}
+              >
+                {colors?.map((color) => (
+                  <Option key={color._id} value={color.name}>
+                    {color.name}
+                  </Option>
+                ))}
+              </Select>
+              {/* Sizes */}
+              <Select
+                // showSearch
+                bordered={false}
+                size="large"
+                className="form-select mb-3"
+                placeholder="Choose a size"
+                onChange={(size) => setSize(size)}
+              >
+                {sizes?.map((size) => (
+                  <Option key={size._id} value={size.name}>
+                    {size.name}
                   </Option>
                 ))}
               </Select>

@@ -2,6 +2,7 @@ import { useCart } from "../../context/cart";
 import { useNavigate } from "react-router-dom";
 import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
 import { Trans } from "react-i18next";
+import { encryptData } from "../../constants";
 
 export default function Cart() {
   // const
@@ -13,33 +14,14 @@ export default function Cart() {
   const navigate = useNavigate();
 
   const removeFromCart = (product) => {
-    // Remove product from both singleCart and cart
     // Make a copy of the cart
     let myCart = [...cart];
-    // Find the index of the product to be removed
-    let index1 = myCart.findIndex((item) => item._id === product._id);
-    // Remove the product from the cart
-    myCart.splice(index1, 1);
+    // Filter out the product with the matching _id
+    myCart = myCart.filter((item) => item._id !== product._id);
     // Update the state
     setCart(myCart);
-    // Find the index of the product to be removed
-    const removeItemAll = (arr, value) => {
-      let i = 0;
-      while (i < arr.length) {
-        // If the index of the product is found, remove it
-        if (arr[i]._id === value) {
-          arr.splice(i, 1);
-        } else {
-          ++i;
-        }
-      }
-      return arr;
-    };
-    let myCartUpdate = removeItemAll(myCart, product._id);
-    // Update the state
-    setCart(myCartUpdate);
     // Update the local storage
-    localStorage.setItem("cart", JSON.stringify(myCartUpdate));
+    encryptData(myCart, "cart");
   };
 
   const cartSubTotal = (p) => {
@@ -69,7 +51,9 @@ export default function Cart() {
         <div className="row">
           <div className="col-md-12">
             <div className="p-3 mt-2 mb-2 h4 bg-light">
-              <h4><Trans>Cart</Trans></h4>
+              <h4>
+                <Trans>Cart</Trans>
+              </h4>
             </div>
             {cart?.length === 0 && (
               <div className="text-center">
@@ -112,7 +96,9 @@ export default function Cart() {
             </div>
             {/* Right Section */}
             <div className="col-md-4 text-center">
-              <h4><Trans>Total</Trans></h4>
+              <h4>
+                <Trans>Total</Trans>
+              </h4>
               <hr />
               <div>
                 {cart?.map((p) => {
@@ -126,7 +112,9 @@ export default function Cart() {
                 })}
               </div>
 
-              <p><Trans>Total</Trans>: {cartTotal()}</p>
+              <p>
+                <Trans>Total</Trans>: {cartTotal()}
+              </p>
 
               <button
                 className="btn btn-primary"

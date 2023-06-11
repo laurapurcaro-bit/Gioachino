@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import styling from "./PaymentMethodStep.module.css";
 import OrderSummary from "./OrderSummary";
 import { Trans } from "react-i18next";
+import { decryptData, encryptData } from "../../constants";
 
 const PaymentMethodStep = ({ onPrevious, address, shippingMethod }) => {
   // const
@@ -15,7 +16,8 @@ const PaymentMethodStep = ({ onPrevious, address, shippingMethod }) => {
   // hook
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
-  const cartLs = JSON.parse(localStorage.getItem("cart"));
+  // const cartLs = JSON.parse(localStorage.getItem("cart"));
+  const cartLs = decryptData("cart");
   // function
   const cartTotal = () => {
     let total = 0;
@@ -37,7 +39,8 @@ const PaymentMethodStep = ({ onPrevious, address, shippingMethod }) => {
     await axios.post(`/payment-success/send-email`, {
       order: data,
     });
-    localStorage.setItem("order", JSON.stringify(data));
+    // localStorage.setItem("order", JSON.stringify(data));
+    encryptData(data, "order");
     // redirect to dashboard
     navigate("/order-confirmation");
     toast.success("Payment Successful");

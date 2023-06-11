@@ -8,6 +8,7 @@ import { Trans } from "react-i18next";
 import { Carousel } from "react-responsive-carousel";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import RelatedProductCard from "../../components/cards/RelatedProductCard";
+import { decryptData, encryptData } from "../../constants";
 
 // Single product page
 export default function SingleProductPage() {
@@ -44,7 +45,9 @@ export default function SingleProductPage() {
 
   const loadRelatedProducts = async (productId, categoryId) => {
     try {
-      const { data } = await axios.get(`/products/related/${productId}/${categoryId}`);
+      const { data } = await axios.get(
+        `/products/related/${productId}/${categoryId}`
+      );
       setRelatedProducts(data);
     } catch (error) {
       console.log(error);
@@ -70,8 +73,11 @@ export default function SingleProductPage() {
 
   const addToCart = (product) => {
     // Check if the product already exists in the cart
-    const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingProductIndex = cartLs.findIndex((item) => item._id === product._id);
+    // const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartLs = decryptData("cart");
+    const existingProductIndex = cartLs.findIndex(
+      (item) => item._id === product._id
+    );
     // If no element is found, it returns -1
     if (existingProductIndex !== -1) {
       console.log("PROD EX");
@@ -81,21 +87,26 @@ export default function SingleProductPage() {
       updatedCart[existingProductIndex].quantity += product.quantity;
 
       console.log("UPDATED CART", updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
       setCart(updatedCart);
     } else {
       console.log("PROD NEW");
       // If the product does not exist, add it to the cart
       const updatedCart = [...cart, product];
       setCart(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
     }
   };
 
   const renderCustomPrevArrow = (onClickHandler, hasPrev) => {
     return (
       hasPrev && (
-        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
+        <div
+          className={`${styling.customArrowContainer}`}
+          onClick={onClickHandler}
+        >
           <button className={`${styling.customPrevArr}`}>
             <LeftOutlined />
           </button>
@@ -107,7 +118,10 @@ export default function SingleProductPage() {
   const renderCustomNextArrow = (onClickHandler, hasNext) => {
     return (
       hasNext && (
-        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
+        <div
+          className={`${styling.customArrowContainer}`}
+          onClick={onClickHandler}
+        >
           <button className={`${styling.customNextArr}`}>
             <RightOutlined />
           </button>
@@ -126,9 +140,11 @@ export default function SingleProductPage() {
               {product?.additionalPhotos?.name?.map((photo, index) => (
                 <img
                   key={index}
-                  src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${
-                    index + 1
-                  }.png`}
+                  src={`${
+                    process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+                  }/products/${product?.category?.name.toLowerCase()}/${
+                    product._id
+                  }-${index + 1}.png`}
                   alt={product?.name}
                   onClick={() => setSelectedImageIndex(index + 1)}
                   // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -150,7 +166,11 @@ export default function SingleProductPage() {
                 {product?.additionalPhotos?.name?.map((photo, index) => (
                   <img
                     key={index}
-                    src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${index}.png`}
+                    src={`${
+                      process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+                    }/products/${product?.category?.name.toLowerCase()}/${
+                      product._id
+                    }-${index}.png`}
                     alt={product?.name}
                     onClick={() => setSelectedImageIndex(index + 1)}
                     // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -207,7 +227,13 @@ export default function SingleProductPage() {
         <div className="row">
           <div className="col-md-6 mt-5">
             <div className="">
-              <h2>{relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}</h2>
+              <h2>
+                {relatedProducts.length < 1 ? (
+                  <h2>See also</h2>
+                ) : (
+                  <h2>Related Products</h2>
+                )}
+              </h2>
               {/* Show only if no related products */}
               {relatedProducts.length < 1 && <p>No related products</p>}
               {relatedProducts.map((product, index) => (

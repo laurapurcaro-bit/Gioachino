@@ -71,7 +71,7 @@ export default function Navbar({ setShowLoginPopup }) {
                 return (
                   <li key={category._id}>
                     <NavLink className={`nav-link ${styling.navlink}`} to={`/category/${category.slug}`}>
-                      {category.name}
+                      <Trans>{category.name}</Trans>
                     </NavLink>
                   </li>
                 );

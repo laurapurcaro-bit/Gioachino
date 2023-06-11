@@ -52,7 +52,7 @@ export default function ProductCartHorizontal({ p, removeFromCart }) {
       <div className="d-flex justify-content-between">
         <p
           className="text-danger mb-2 pointer"
-          onClick={() => removeFromCart(p._id)}
+          onClick={() => removeFromCart(p)}
         >
           <Trans>Remove</Trans>
         </p>

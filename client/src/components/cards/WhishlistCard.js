@@ -1,27 +1,12 @@
 import styling from "./Whishlist.module.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import CryptoJS from "crypto-js";
+import { decryptData } from "../../constants";
+import { Trans } from "react-i18next";
 
 export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
-  const encryptionKey = process.env.REACT_APP_ENCRYPTION_KEY;
   // state
   const [savedItems, setSavedItems] = useState([]);
-
-  const decryptData = (localStorageKey) => {
-    // ********** DECRYPTION **********
-    const encryptedDataLs = localStorage.getItem(`${localStorageKey}`);
-    if (encryptedDataLs) {
-      const decryptedData = JSON.parse(
-        CryptoJS.AES.decrypt(encryptedDataLs, encryptionKey).toString(
-          CryptoJS.enc.Utf8
-        )
-      );
-      console.log("DECRYPTED DATA", decryptedData);
-      return decryptedData;
-    }
-    return null;
-  };
 
   useEffect(() => {
     loadSavedItemsPreview();
@@ -61,9 +46,9 @@ export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
       <div className={`container-fluid ${styling.textWhishlist}`}>
         <h3>{whishlist.name}</h3>
         {whishlist.savedItems.length > 1 ? (
-          <p>{whishlist.savedItems.length} products</p>
+          <p>{whishlist.savedItems.length} <Trans>products</Trans></p>
         ) : (
-          <p>{whishlist.savedItems.length} product</p>
+          <p>{whishlist.savedItems.length} <Trans>product</Trans></p>
         )}
       </div>
       <div className={`container-fluid ${styling.containerButton}`}>

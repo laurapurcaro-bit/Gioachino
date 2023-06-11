@@ -3,7 +3,7 @@ import CategoriesBar from "../categories/CategoriesBar";
 import axios from "axios";
 import ProductCard from "../../components/cards/ProductCard";
 import { Checkbox, Radio } from "antd";
-import { prices } from "../../prices";
+import { prices } from "../../constants";
 import styling from "./Catalogue.module.css";
 import { Trans } from "react-i18next";
 
