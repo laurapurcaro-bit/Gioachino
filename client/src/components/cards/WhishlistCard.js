@@ -2,6 +2,7 @@ import styling from "./Whishlist.module.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
 import { decryptData } from "../../constants";
+import { Trans } from "react-i18next";
 
 export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
   // state
@@ -45,9 +46,9 @@ export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
       <div className={`container-fluid ${styling.textWhishlist}`}>
         <h3>{whishlist.name}</h3>
         {whishlist.savedItems.length > 1 ? (
-          <p>{whishlist.savedItems.length} products</p>
+          <p>{whishlist.savedItems.length} <Trans>products</Trans></p>
         ) : (
-          <p>{whishlist.savedItems.length} product</p>
+          <p>{whishlist.savedItems.length} <Trans>product</Trans></p>
         )}
       </div>
       <div className={`container-fluid ${styling.containerButton}`}>

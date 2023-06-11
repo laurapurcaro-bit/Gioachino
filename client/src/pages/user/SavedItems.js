@@ -1,4 +1,4 @@
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import styling from "./SavedItems.module.css";
 import Whishlist from "../../components/cards/WhishlistCard";
@@ -11,6 +11,8 @@ export default function SavedItems() {
   const [showAddWishlist, setShowAddWishlist] = useState(false);
   const [wishlistName, setWishlistName] = useState("");
   const [whishlists, setWhishlists] = useState([]);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     loadWhishlists();
@@ -65,8 +67,12 @@ export default function SavedItems() {
     }
   };
 
+  const handleClose = () => {
+    setShowAddWishlist(false);
+  };
+
   return (
-    <div>
+    <div className="mt-5">
       <div className="text-center">
         <h1>
           <Trans>My Wishlist</Trans>
@@ -77,18 +83,23 @@ export default function SavedItems() {
           </Trans>
         </p>
         <button className={styling.whishlistBtn} onClick={handleAddWishlist}>
-          Add a new wishlist
+          <Trans>Add a new wishlist</Trans>
         </button>
         {showAddWishlist && (
           <div className={`${styling.greyOverlay}`}>
             <div className={`${styling.addWishlistPopup}`}>
+              <div onClick={() => handleClose()}>
+                <span className={styling.close}>&times;</span>
+              </div>
               <input
                 type="text"
                 value={wishlistName}
                 onChange={handleWishlistNameChange}
-                placeholder="Enter wishlist name"
+                placeholder={t("enterWishlistName")}
               />
-              <button onClick={handleAddWishlistConfirm}>Add</button>
+              <button onClick={handleAddWishlistConfirm}>
+                <Trans>Add</Trans>
+              </button>
             </div>
           </div>
         )}
@@ -100,7 +111,11 @@ export default function SavedItems() {
       <div className={styling.savedLists}>
         {whishlists?.length > 0 ? (
           whishlists.map((whishlist) => (
-            <Whishlist key={whishlist._id} whishlist={whishlist} handleRemoveWhishlist={handleRemoveWhishlist} />
+            <Whishlist
+              key={whishlist._id}
+              whishlist={whishlist}
+              handleRemoveWhishlist={handleRemoveWhishlist}
+            />
           ))
         ) : (
           <div></div>

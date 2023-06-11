@@ -43,7 +43,8 @@ export default function ProductCard({ product }) {
 
   const addToCart = (product) => {
     // Check if the product already exists in the cart
-    const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    // const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartLs = decryptData("cart") || [];
     const existingProduct = cartLs.find((item) => {
       return item._id === product._id;
     });
@@ -63,7 +64,8 @@ export default function ProductCard({ product }) {
         return item;
       });
       console.log("UPDATED CART", updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
       setCart(updatedCart);
     } else {
       console.log("PROD NEW");
@@ -73,7 +75,8 @@ export default function ProductCard({ product }) {
       // If the product does not exist, add it to the cart
       // const updatedCart = [...cart, product];
       setCart(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
     }
   };
 

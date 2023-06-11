@@ -8,7 +8,7 @@ import { Trans } from "react-i18next";
 import { Carousel } from "react-responsive-carousel";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import RelatedProductCard from "../../components/cards/RelatedProductCard";
-
+import { decryptData, encryptData } from "../../constants";
 
 // Single product page
 export default function SingleProductPage() {
@@ -73,7 +73,8 @@ export default function SingleProductPage() {
 
   const addToCart = (product) => {
     // Check if the product already exists in the cart
-    const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    // const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartLs = decryptData("cart");
     const existingProductIndex = cartLs.findIndex(
       (item) => item._id === product._id
     );
@@ -86,14 +87,16 @@ export default function SingleProductPage() {
       updatedCart[existingProductIndex].quantity += product.quantity;
 
       console.log("UPDATED CART", updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
       setCart(updatedCart);
     } else {
       console.log("PROD NEW");
       // If the product does not exist, add it to the cart
       const updatedCart = [...cart, product];
       setCart(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      // localStorage.setItem("cart", JSON.stringify(updatedCart));
+      encryptData(updatedCart, "cart");
     }
   };
 
