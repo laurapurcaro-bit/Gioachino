@@ -4,7 +4,7 @@ const prices = [
   {
     _id: 0,
     name: "Any",
-    array: [],
+    array: [0, 999],
   },
   {
     _id: 1,
