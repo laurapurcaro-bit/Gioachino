@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
 import { Trans } from "react-i18next";
 import { encryptData } from "../../constants";
+import styling from "./Cart.module.css";
 
 export default function Cart() {
   // const
@@ -47,7 +48,7 @@ export default function Cart() {
 
   return (
     <>
-      <div className="container-fluid">
+      <div className={`container-fluid`}>
         <div className="row">
           <div className="col-md-12">
             <div className="p-3 mt-2 mb-2 h4 bg-light">
@@ -76,14 +77,14 @@ export default function Cart() {
       {/* Product info in cart */}
       {/* display product with margin: mx-4 */}
       {cart?.length > 0 && (
-        <div className="container mx-4">
-          <div className="row">
-            <div className="col-md-8">
+        <div className={`container bg-light ${styling.cartContainer}`}>
+          <div className={`row ${styling.cartElements}`}>
+            <div className="col-md-6">
               <div className="row">
                 {cart?.map((p) => (
                   <div
                     key={p._id}
-                    className="card mb-3"
+                    className={`${styling.cartProduct}`}
                     style={{ maxWidth: 800 }}
                   >
                     <ProductCardHorizontal
@@ -95,7 +96,7 @@ export default function Cart() {
               </div>
             </div>
             {/* Right Section */}
-            <div className="col-md-4 text-center">
+            <div className={`col-md-4 text-center ${styling.cartTotal}`}>
               <h4>
                 <Trans>Total</Trans>
               </h4>
@@ -122,6 +123,16 @@ export default function Cart() {
               >
                 <Trans>Checkout</Trans>
               </button>
+            </div>
+          </div>
+          <div className={`row`}>
+            <div className={`col-md-6 ${styling.cartProduct}`}>
+              <h2>Shipping</h2>
+            </div>
+          </div>
+          <div className={`row`}>
+            <div className={`col-md-6 ${styling.cartProduct}`}>
+              <h2>Payment methods</h2>
             </div>
           </div>
         </div>

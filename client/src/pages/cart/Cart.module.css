@@ -1,0 +1,19 @@
+.cartContainer {
+  width: 100%;
+}
+
+.cartProduct {
+  background-color: white;
+  margin: 3rem 5rem;
+  padding: 3rem 5rem;
+}
+
+.cartTotal {
+  background-color: white;
+  margin: 3rem 5rem;
+  padding: 3rem 5rem;
+}
+
+.cartElements {
+  justify-content: space-between;
+}
