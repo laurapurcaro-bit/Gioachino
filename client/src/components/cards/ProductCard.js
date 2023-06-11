@@ -6,46 +6,19 @@ import styling from "./ProductCard.module.css";
 import { Trans } from "react-i18next";
 import { HeartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import CryptoJS from "crypto-js";
+import { encryptData, decryptData } from "../../constants";
 
 export default function ProductCard({ product }) {
   // const
   const inStock = product?.quantity; // - product?.sold;
   const currency = "EUR";
   const localString = "en-US";
-  const encryptionKey = process.env.REACT_APP_ENCRYPTION_KEY;
   // context
   const [cart, setCart] = useCart();
   // hook
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
   console.log("PRODUCT", product);
-
-  const encryptData = (data, localStorageKey) => {
-    // ********** ENCRYPTION **********
-    const encryptedData = CryptoJS.AES.encrypt(
-      JSON.stringify(data),
-      encryptionKey
-    ).toString();
-    localStorage.setItem(`${localStorageKey}`, encryptedData);
-    console.log("ENCRYPTED DATA", encryptedData);
-  };
-
-  const decryptData = (localStorageKey) => {
-    // ********** DECRYPTION **********
-    const encryptedDataLs = localStorage.getItem(`${localStorageKey}`);
-    if (encryptedDataLs) {
-      const decryptedData = JSON.parse(
-        CryptoJS.AES.decrypt(encryptedDataLs, encryptionKey).toString(
-          CryptoJS.enc.Utf8
-        )
-      );
-      console.log("DECRYPTED DATA", decryptedData);
-      return decryptedData;
-    }
-    console.log("DECRYPTED DATA L", encryptedDataLs);
-    return [];
-  };
 
   useEffect(() => {
     // Check if the product is saved

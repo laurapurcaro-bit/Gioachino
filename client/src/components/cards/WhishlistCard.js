@@ -1,27 +1,11 @@
 import styling from "./Whishlist.module.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { useState, useEffect } from "react";
-import CryptoJS from "crypto-js";
+import { decryptData } from "../../constants";
 
 export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
-  const encryptionKey = process.env.REACT_APP_ENCRYPTION_KEY;
   // state
   const [savedItems, setSavedItems] = useState([]);
-
-  const decryptData = (localStorageKey) => {
-    // ********** DECRYPTION **********
-    const encryptedDataLs = localStorage.getItem(`${localStorageKey}`);
-    if (encryptedDataLs) {
-      const decryptedData = JSON.parse(
-        CryptoJS.AES.decrypt(encryptedDataLs, encryptionKey).toString(
-          CryptoJS.enc.Utf8
-        )
-      );
-      console.log("DECRYPTED DATA", decryptedData);
-      return decryptedData;
-    }
-    return null;
-  };
 
   useEffect(() => {
     loadSavedItemsPreview();
