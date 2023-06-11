@@ -9,7 +9,6 @@ import { Carousel } from "react-responsive-carousel";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import RelatedProductCard from "../../components/cards/RelatedProductCard";
 
-
 // Single product page
 export default function SingleProductPage() {
   // context
@@ -19,6 +18,8 @@ export default function SingleProductPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantity, setQuantity] = useState(0);
+  const [activeColor, setActiveColor] = useState("blue");
+  const [selectedSize, setSelectedSize] = useState("");
   // hook
   const params = useParams();
   //   const
@@ -45,9 +46,7 @@ export default function SingleProductPage() {
 
   const loadRelatedProducts = async (productId, categoryId) => {
     try {
-      const { data } = await axios.get(
-        `/products/related/${productId}/${categoryId}`
-      );
+      const { data } = await axios.get(`/products/related/${productId}/${categoryId}`);
       setRelatedProducts(data);
     } catch (error) {
       console.log(error);
@@ -74,9 +73,7 @@ export default function SingleProductPage() {
   const addToCart = (product) => {
     // Check if the product already exists in the cart
     const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingProductIndex = cartLs.findIndex(
-      (item) => item._id === product._id
-    );
+    const existingProductIndex = cartLs.findIndex((item) => item._id === product._id);
     // If no element is found, it returns -1
     if (existingProductIndex !== -1) {
       console.log("PROD EX");
@@ -100,10 +97,7 @@ export default function SingleProductPage() {
   const renderCustomPrevArrow = (onClickHandler, hasPrev) => {
     return (
       hasPrev && (
-        <div
-          className={`${styling.customArrowContainer}`}
-          onClick={onClickHandler}
-        >
+        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
           <button className={`${styling.customPrevArr}`}>
             <LeftOutlined />
           </button>
@@ -115,16 +109,21 @@ export default function SingleProductPage() {
   const renderCustomNextArrow = (onClickHandler, hasNext) => {
     return (
       hasNext && (
-        <div
-          className={`${styling.customArrowContainer}`}
-          onClick={onClickHandler}
-        >
+        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
           <button className={`${styling.customNextArr}`}>
             <RightOutlined />
           </button>
         </div>
       )
     );
+  };
+
+  const handleColorClick = (color) => {
+    setActiveColor(color);
+  };
+
+  const handleSizeChange = (event) => {
+    setSelectedSize(event.target.value);
   };
 
   return (
@@ -137,11 +136,9 @@ export default function SingleProductPage() {
               {product?.additionalPhotos?.name?.map((photo, index) => (
                 <img
                   key={index}
-                  src={`${
-                    process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-                  }/products/${product?.category?.name.toLowerCase()}/${
-                    product._id
-                  }-${index + 1}.png`}
+                  src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${
+                    index + 1
+                  }.png`}
                   alt={product?.name}
                   onClick={() => setSelectedImageIndex(index + 1)}
                   // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -162,11 +159,7 @@ export default function SingleProductPage() {
                 {product?.additionalPhotos?.name?.map((photo, index) => (
                   <img
                     key={index}
-                    src={`${
-                      process.env.REACT_APP_S3_HTTP_BUCKET_DEV
-                    }/products/${product?.category?.name.toLowerCase()}/${
-                      product._id
-                    }-${index}.png`}
+                    src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${index}.png`}
                     alt={product?.name}
                     onClick={() => setSelectedImageIndex(index + 1)}
                     // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -197,6 +190,60 @@ export default function SingleProductPage() {
                 <Trans>{product.description}</Trans>
               </p>
             </div>
+            <div className={styling.colorContainer}>
+              <p>Color:</p>
+              <div class={styling.colors}>
+                <div className={styling.eachColor}>
+                  <span
+                    class={`${styling.blue} ${activeColor === "blue" ? `${styling.active}` : ""}`}
+                    onClick={() => handleColorClick("blue")}
+                    data-color="#7ed6df"
+                    data-pic="url(https://i.imgur.com/oRpXTOq.png)"
+                  ></span>
+                  {activeColor === "blue" && <p className={styling.down}>{activeColor}</p>}
+                </div>
+                <div className={styling.eachColor}>
+                  <span
+                    class={`${styling.green} ${activeColor === "green" ? `${styling.active}` : ""}`}
+                    onClick={() => handleColorClick("green")}
+                    data-color="#badc58"
+                    data-pic="url(https://i.imgur.com/iyx4e9c.png)"
+                  ></span>
+                  {activeColor === "green" && <p className={styling.down}>{activeColor}</p>}
+                </div>
+                <div className={styling.eachColor}>
+                  <span
+                    class={`${styling.yellow} ${activeColor === "yellow" ? `${styling.active}` : ""}`}
+                    onClick={() => handleColorClick("yellow")}
+                    data-color="#f9ca24"
+                    data-pic="url(https://i.imgur.com/kzsklN4.png)"
+                  ></span>
+                  {activeColor === "yellow" && <p className={styling.down}>{activeColor}</p>}
+                </div>
+                <div className={styling.eachColor}>
+                  <span
+                    class={`${styling.rose} ${activeColor === "rose" ? `${styling.active}` : ""}`}
+                    onClick={() => handleColorClick("rose")}
+                    data-color="#ff7979"
+                    data-pic="url(https://i.imgur.com/iVJjW92.png)"
+                  ></span>
+                  {activeColor === "rose" && <p className={styling.down}>{activeColor}</p>}
+                </div>
+              </div>
+            </div>
+            <div className={styling.sizeContainer}>
+              <p>Size:</p>
+              <div>
+                <select id="size" className={styling.size} value={selectedSize} onChange={handleSizeChange}>
+                  <option value="">Choose size</option>
+                  <option value="XS">XS</option>
+                  <option value="S">S</option>
+                  <option value="M">M</option>
+                  <option value="L">L</option>
+                  <option value="XL">XL</option>
+                </select>
+              </div>
+            </div>
             <div className={styling.quantitySection}>
               <span className={styling.quantitySpan}>
                 <p>
@@ -223,17 +270,12 @@ export default function SingleProductPage() {
         <div className="row">
           <div className="col-md-6 mt-5">
             <div className="">
-              <h2>
-                {relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}
-              </h2>
+              <h2>{relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}</h2>
               {/* Show only if no related products */}
               {relatedProducts.length < 1 && <p>No related products</p>}
               {relatedProducts.map((product, index) => (
                 <div key={index} className="row mt-5">
-                  <RelatedProductCard
-                    product={product}
-                    key={product._id}
-                  />
+                  <RelatedProductCard product={product} key={product._id} />
                 </div>
               ))}
             </div>

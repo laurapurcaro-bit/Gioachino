@@ -27,7 +27,6 @@ button {
 
 .mainImage img {
   height: 62rem;
-  
 }
 
 .imgRepo {
@@ -44,6 +43,7 @@ button {
 .productDetails {
   flex: 1;
   flex-direction: column;
+  margin-left: 10rem;
 }
 
 .esaurito {
@@ -53,8 +53,7 @@ button {
   font-size: 1.5rem;
 }
 .productDetails div {
-  margin-bottom: 10rem;
-  margin-left: 10rem;
+  margin-bottom: 5rem;
 }
 
 .quantitySection {
@@ -62,6 +61,8 @@ button {
   flex-direction: column;
   align-items: left;
   margin-bottom: 10px;
+  position: relative;
+  bottom: 0;
 }
 
 .quantitySpan {
@@ -88,9 +89,6 @@ button {
   color: white;
 }
 
-.customArrowContainer {
-
-}
 .customPrevArr {
   position: absolute;
   top: 50%;
@@ -113,4 +111,99 @@ button {
   color: #d7d6d1;
   font-size: 3rem;
   cursor: pointer;
+}
+
+.colorContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  min-height: min-content;
+}
+
+.colorContainer div {
+  margin: 0;
+}
+
+.colorContainer p {
+  margin-bottom: 0;
+}
+
+.colors {
+  display: flex;
+  justify-content: center;
+}
+
+.colors div {
+  margin: 0;
+}
+
+.colors span {
+  width: 14px;
+  height: 14px;
+  margin: 0 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+}
+
+.eachColor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.eachColor p {
+  margin-top: 1rem;
+}
+
+.blue {
+  background: #7ed6df;
+}
+.green {
+  background: #badc58;
+}
+.yellow {
+  background: #f9ca24;
+}
+.rose {
+  background: #ff7979;
+}
+
+.active {
+  content: "";
+  width: 22px;
+  height: 30px;
+  border: 2px solid #8888;
+  position: absolute;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.sizeContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  min-height: min-content;
+}
+
+.sizeContainer div {
+  margin: 0;
+}
+
+.sizeContainer p {
+  margin-bottom: 0;
+}
+
+.size {
+  padding: 8px;
+  font-size: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.down {
+  margin-top: 2rem;
+  font-size: 1rem;
 }
