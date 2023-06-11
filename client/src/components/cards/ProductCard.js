@@ -139,8 +139,7 @@ export default function ProductCard({ product }) {
         );
       }
       console.log("UPDATED ITEMS", updatedItems);
-      // Save the updated list back to local storage
-      // encrypt
+      // Save the updated list back to local storage and encrypt
       encryptData(updatedItems, "itemSaved");
       // Update the wishlist
       handleCreateWishilist(whishlistName, updatedItems);
