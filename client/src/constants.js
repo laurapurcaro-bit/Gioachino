@@ -89,7 +89,6 @@ const encryptData = (data, localStorageKey) => {
     encryptionKey
   ).toString();
   localStorage.setItem(`${localStorageKey}`, encryptedData);
-  console.log("ENCRYPTED DATA", encryptedData);
 };
 
 const decryptData = (localStorageKey) => {
@@ -104,7 +103,6 @@ const decryptData = (localStorageKey) => {
     console.log("DECRYPTED DATA", decryptedData);
     return decryptedData;
   }
-  console.log("DECRYPTED DATA L", encryptedDataLs);
   return null;
 };
 
