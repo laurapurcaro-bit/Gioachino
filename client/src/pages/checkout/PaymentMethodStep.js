@@ -16,18 +16,13 @@ const PaymentMethodStep = ({ onPrevious, address, shippingMethod }) => {
   // hook
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
-  // const cartLs = JSON.parse(localStorage.getItem("cart"));
+
   const cartLs = decryptData("cart");
   // function
   const cartTotal = () => {
-    let total = 0;
-    cart.forEach((p) => {
-      total += p.price * p.quantity;
-    });
-    return total.toLocaleString(localString, {
-      style: "currency",
-      currency: currency,
-    });
+    const total = decryptData("cartTotalWithIVA")
+    console.log("TOTAL", total);
+    return total
   };
 
   const onPaymentSuccess = async (data) => {

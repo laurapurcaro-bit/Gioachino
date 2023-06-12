@@ -71,7 +71,7 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess, selectedAdd
                   merchantId: process.env.REACT_APP_BRAINTREE_MERCHANT_ID,
                   transactionInfo: {
                     totalPriceStatus: "FINAL",
-                    totalPrice: amount.split("€")[1],
+                    totalPrice: amount,
                     currencyCode: "EUR",
                   },
                 },
@@ -80,7 +80,7 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess, selectedAdd
                   paymentRequest: {
                     total: {
                       label: "Ecommerce",
-                      amount: amount.split("€")[1],
+                      amount: amount,
                       type: "final",
                     },
                     countryCode: "IT",

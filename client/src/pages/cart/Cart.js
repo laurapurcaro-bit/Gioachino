@@ -13,6 +13,7 @@ export default function Cart() {
   const [cart, setCart] = useCart();
   // hook
   const navigate = useNavigate();
+  console.log("CART", cart);
 
   const removeFromCart = (product) => {
     // Make a copy of the cart
@@ -25,22 +26,45 @@ export default function Cart() {
     encryptData(myCart, "cart");
   };
 
-  const cartSubTotal = (p) => {
-    let totalProduct = 0;
-    totalProduct += p.price * p.quantity;
+  const cartSubTotal = () => {
+    let total = 0;
+    cart.forEach((p) => {
+      total += p.price * p.quantity;
+    });
+    return total
+  };
 
-    return totalProduct.toLocaleString(localString, {
+  const cartSubTotalCurrency = (subtotal) => {
+    return subtotal.toLocaleString(localString, {
+      style: "currency",
+      currency: currency,
+    });
+  }
+
+  const shippingCost = (cartSubTotal) => {
+    const shippingCost = 5;
+    if (cartSubTotal > 50) {
+      return 0;
+    }
+    return shippingCost
+  };
+
+  const shippingCostCurrency = (shippingCost) => {
+    return shippingCost.toLocaleString(localString, {
       style: "currency",
       currency: currency,
     });
   };
 
-  const cartTotal = () => {
-    let total = 0;
-    cart.forEach((p) => {
-      total += p.price * p.quantity;
-    });
-    return total.toLocaleString(localString, {
+  const cartTotalWithIVA = () => {
+    const iva = 0.21;
+    const total = cartSubTotal() + shippingCost() + iva;
+    encryptData(total, "cartTotalWithIVA");
+    return total
+  };
+
+  const cartTotalWithIVACurrency = (cartTotalWithIVA) => {
+    return cartTotalWithIVA.toLocaleString(localString, {
       style: "currency",
       currency: currency,
     });
@@ -76,15 +100,24 @@ export default function Cart() {
       {cart?.length > 0 && (
         <div className={`container bg-light ${styling.cartContainer}`}>
           <div className={`row ${styling.cartElements}`}>
-            <div className={`col-md-6 ${styling.cartProductItems} ${styling.shadow}`}>
+            <div
+              className={`col-md-6 ${styling.cartProductItems} ${styling.shadow}`}
+            >
+              <h2 className={`${styling.cartTitle}`}>
+                <Trans>Cart</Trans> ({cart?.length}{" "}
+                {cart?.length > 1 ? (
+                  <Trans>products</Trans>
+                ) : (
+                  <Trans>product</Trans>
+                )}
+                )
+              </h2>
               <div className={`row`}>
                 {cart?.map((p) => (
-                  <div
-                    key={p._id}
-                    className={``}
-                  >
+                  <div key={p._id} className={``}>
                     <ProductCardHorizontal
                       p={p}
+                      cart={cart}
                       setCart={setCart}
                       removeFromCart={removeFromCart}
                     />
@@ -93,47 +126,85 @@ export default function Cart() {
               </div>
             </div>
             {/* Right Section */}
-            <div className={`col-md-4 text-center`}>
+            <div className={`col-md-4`}>
               <div className={`${styling.cartTotal} ${styling.shadow}`}>
-                <h4>
-                  <Trans>Total</Trans>
-                </h4>
-                <hr />
-                <div>
-                  {cart?.map((p) => {
-                    return (
-                      <div key={p._id}>
-                        <p>
-                          {p.name} x {p.quantity} = {cartSubTotal(p)}
-                        </p>
-                      </div>
-                    );
-                  })}
+                <div className={`${styling.totalContent}`}>
+                  <h2>
+                    <Trans>Total</Trans>
+                  </h2>
+                  <hr />
+                  <table className="table">
+                    <thead className="">
+                      <tr>
+                        <th>
+                          <p className={`${styling.subtotal}`}>
+                            <Trans>Subtotal</Trans>
+                          </p>
+                        </th>
+                        <th>
+                          <p className={`${styling.subtotalContent}`}>
+                            {cartSubTotalCurrency(cartSubTotal())}
+                          </p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p className={`${styling.subtotal}`}>
+                            <Trans>Shipping</Trans>
+                          </p>
+                        </td>
+                        <td>
+                          <p className={`${styling.subtotalContent}`}>
+                            {shippingCostCurrency(shippingCost())}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p className={`${styling.subtotal}`}>
+                            <Trans>Total (IVA inlcuded)</Trans>
+                          </p>
+                        </td>
+                        <td>
+                          <p className={`${styling.subtotalContent}`}>
+                            {cartTotalWithIVACurrency(cartTotalWithIVA())}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <p>
-                  <Trans>Total</Trans>: {cartTotal()}
-                </p>
-                <button
-                  className={`${styling.checkoutButton}`}
-                  onClick={() => navigate("/checkout")}
-                >
-                  <Trans>Checkout</Trans>
-                </button>
+                <div className={`${styling.checkoutSection}`}>
+                  <button
+                    className={`${styling.checkoutButton}`}
+                    onClick={() => navigate("/checkout")}
+                  >
+                    <Trans>Checkout</Trans>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
           {/* Shipping */}
           <div className={`row`}>
-            <div className={`col-md-6 ${styling.cartProduct} ${styling.shadow}`}>
+            <div
+              className={`col-md-6 ${styling.cartProduct} ${styling.shadow}`}
+            >
               <h2>
                 <Trans>Shipping</Trans>
-                <p><Trans>Expected delivery in: 3-5 working days</Trans></p>
+                <p>
+                  <Trans>Expected delivery in: 3-5 working days</Trans>
+                </p>
               </h2>
             </div>
           </div>
           {/* Payment methods */}
           <div className={`row`}>
-            <div className={`col-md-6 ${styling.cartProduct} ${styling.shadow} ${styling.lastContainer}`}>
+            <div
+              className={`col-md-6 ${styling.cartProduct} ${styling.shadow} ${styling.lastContainer}`}
+            >
               <h2>
                 <Trans>Payment methods</Trans>
               </h2>

@@ -1,38 +1,57 @@
 import { Trans } from "react-i18next";
 import styling from "./ProductCardHorizontal.module.css";
 import { DeleteOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { encryptData } from "../../constants";
 
-export default function ProductCartHorizontal({ p, removeFromCart, setCart }) {
+export default function ProductCartHorizontal({
+  p,
+  removeFromCart,
+  cart,
+  setCart,
+}) {
   const currency = "EUR";
   const localString = "en-US";
   // hook
-  const [quantity, setQuantity] = useState(0);
-  const [product, setProduct] = useState({});
+  console.log("CART PRODUCT", cart);
 
   const cartSubTotal = (p) => {
-    let totalProduct = 0;
-    totalProduct += p.price * p.quantity;
+    let subtotal = 0;
+    subtotal += p.price * p.quantity;
 
-    return totalProduct.toLocaleString(localString, {
+    return subtotal.toLocaleString(localString, {
       style: "currency",
       currency: currency,
     });
   };
 
+  const updateCart = (increase, decrease) => {
+    const existingProductIndex = cart.findIndex((item) => item._id === p._id);
+    // If no element is found, it returns -1
+    if (existingProductIndex !== -1) {
+      console.log("PROD EX");
+      console.log("EXISTING PRODUCT", cart);
+      // If the product exists, update the quantity
+      const updatedCart = [...cart];
+      if (increase) {
+        updatedCart[existingProductIndex].quantity += 1;
+      } else if (decrease) {
+        updatedCart[existingProductIndex].quantity -= 1;
+      }
+
+      console.log("UPDATED CART", updatedCart);
+      encryptData(updatedCart, "cart");
+      setCart(updatedCart);
+    }
+  };
+
   const handleIncreaseQuantity = () => {
-    p.quantity = p.quantity + 1;
-    setQuantity(p.quantity + 1);
-    // USE CART CONTEXT
-    setProduct((prev) => ({ ...prev, p }));
+    updateCart(true, false);
     console.log("PRODUCT +", p);
   };
 
   const handleDecreaseQuantity = () => {
     if (p.quantity > 1) {
-      setQuantity(p.quantity - 1);
-      p.quantity = p.quantity - 1;
-      setProduct((prev) => ({ ...prev, p }));
+      updateCart(false, true);
       console.log("PRODUCT -", p);
     }
   };
@@ -49,10 +68,10 @@ export default function ProductCartHorizontal({ p, removeFromCart, setCart }) {
         />
       </div>
       <div className="col-md-4">
-        <div className="">
-          <h5 className="">
+        <div className={`${styling.bodyText}`}>
+          <h3 className="">
             <Trans>{p.name}</Trans>
-          </h5>
+          </h3>
           <div className="">
             {p.description.length < 50 ? (
               <p>
@@ -65,7 +84,7 @@ export default function ProductCartHorizontal({ p, removeFromCart, setCart }) {
             )}
           </div>
           <p className="">
-            <Trans>Color</Trans>: {p.color}
+            <Trans>Color</Trans>: <Trans>{p.color}</Trans>
           </p>
           <p className="">
             <Trans>Size</Trans>: {p.size}
@@ -78,28 +97,31 @@ export default function ProductCartHorizontal({ p, removeFromCart, setCart }) {
           </p>
         </div>
       </div>
-      <div className={`col-md-4 ${styling.rightColumn}`}>
-        <div className="d-flex align-items-center justify-content-end h-100">
+      <div className={`col-md-4`}>
+        <div className="d-flex h-100">
           {/* Quantity */}
-          <button
-            className={styling.quantityBtn}
-            onClick={handleDecreaseQuantity}
-          >
-            -
-          </button>
-          <p className={styling.quantity}>{p.quantity}</p>
-          <button
-            className={styling.quantityBtn}
-            onClick={handleIncreaseQuantity}
-          >
-            +
-          </button>
-          <h4 className={`${styling.productPrice}`}>
-            {p?.price?.toLocaleString(localString, {
-              style: "currency",
-              currency: currency,
-            })}
-          </h4>
+          <div className="row">
+            <div className={`col-md-12`}>
+              <div className={`${styling.rightContainer} ${styling.quantityContainer}`}>
+                <button
+                  className={styling.quantityBtn}
+                  onClick={handleDecreaseQuantity}
+                >
+                  -
+                </button>
+                <p className={styling.quantity}>{p.quantity}</p>
+                <button
+                  className={styling.quantityBtn}
+                  onClick={handleIncreaseQuantity}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className={`col-md-12 ${styling.rightContainer}`}>
+              <h4 className={`${styling.productPrice}`}>{cartSubTotal(p)}</h4>
+            </div>
+          </div>
         </div>
       </div>
     </div>

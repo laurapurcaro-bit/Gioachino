@@ -1,5 +1,5 @@
 .productCard {
-  margin: 3rem 0;
+  margin: 3rem 2rem;
 }
 
 .productImg {
@@ -23,23 +23,46 @@
   padding-right: 3rem;
 }
 
-.rightColumn {
+/* .rightColumn {
   display: flex;
   align-items: flex-end;
   padding: 0 10px;
+} */
+
+.rightColumn {
+  display: flex;
+  margin-top: 10rem;
+  align-items: flex-end; /* Align items at the top */
+  justify-content: flex-end;
+  height: 100%;
 }
 
 .quantityBtn {
   background-color: transparent;
   border: none;
-  font-size: 1.2rem;
+  font-size: 2rem;
   cursor: pointer;
   margin: 0 5px;
 }
 
 .quantity {
-  font-size: 1.2rem;
-  margin: 0 10px;
+  font-size: 2rem;
+  margin: 0 5rem;
+}
+
+.rightContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: right;
+}
+
+.quantityContainer {
+  border: 1px solid black;
+  justify-content: center;
+}
+
+.priceContainer {
+  align-items: flex-end;
 }
 
 .productPrice {
@@ -48,3 +71,6 @@
   font-weight: 600;
 }
 
+.bodyText {
+  margin: 0 3rem;
+}

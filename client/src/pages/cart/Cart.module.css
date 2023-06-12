@@ -15,6 +15,13 @@
   margin-top: 3rem;
 }
 
+.cartTitle {
+  /* font-size: 2rem; */
+  font-weight: 600;
+  margin-top: 3rem;
+  margin-left: 2rem;
+}
+
 .cartTotal {
   background-color: white;
   margin: 3rem 5rem;
@@ -27,7 +34,7 @@
 }
 
 .checkoutButton {
-  width: 70%;
+  width: 100%;
   height: 5rem;
   margin-top: 3rem;
   background-color: black;
@@ -54,4 +61,20 @@
 
 .shadow {
   box-shadow: 0 2px 4px rgba(155, 155, 155, 0.2); /* Adjust the values as per your requirement */
+}
+
+.totalContent {
+  text-align: left;
+}
+
+.subtotal {
+  text-align: left;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.subtotalContent {
+  text-align: right;
+  font-weight: 400;
+  font-size: 2rem;
 }
