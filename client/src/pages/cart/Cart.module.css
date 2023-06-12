@@ -4,16 +4,54 @@
 
 .cartProduct {
   background-color: white;
-  margin: 3rem 5rem;
+  margin-top: 3rem;
+  margin-left: 5rem;
   padding: 3rem 5rem;
+}
+
+.cartProductItems {
+  background-color: white;
+  margin-left: 5rem;
+  margin-top: 3rem;
 }
 
 .cartTotal {
   background-color: white;
   margin: 3rem 5rem;
   padding: 3rem 5rem;
+  width : 100%;
 }
 
 .cartElements {
-  justify-content: space-between;
+  margin-left: none;
+}
+
+.checkoutButton {
+  width: 70%;
+  height: 5rem;
+  margin-top: 3rem;
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.stickyRightSection {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.stickyRightSection .cartTotal {
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+.lastContainer {
+    margin-bottom: 3rem;
+}
+
+.shadow {
+  box-shadow: 0 2px 4px rgba(155, 155, 155, 0.2); /* Adjust the values as per your requirement */
 }

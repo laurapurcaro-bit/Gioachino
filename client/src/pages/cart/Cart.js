@@ -72,23 +72,20 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      {/* <pre>{JSON.stringify(singleCart, null, 4)}</pre>
-      <pre>{JSON.stringify(cart, null, 4)}</pre> */}
-      {/* Product info in cart */}
-      {/* display product with margin: mx-4 */}
+      {/* Cart products */}
       {cart?.length > 0 && (
         <div className={`container bg-light ${styling.cartContainer}`}>
           <div className={`row ${styling.cartElements}`}>
-            <div className="col-md-6">
-              <div className="row">
+            <div className={`col-md-6 ${styling.cartProductItems} ${styling.shadow}`}>
+              <div className={`row`}>
                 {cart?.map((p) => (
                   <div
                     key={p._id}
-                    className={`${styling.cartProduct}`}
-                    style={{ maxWidth: 800 }}
+                    className={``}
                   >
                     <ProductCardHorizontal
                       p={p}
+                      setCart={setCart}
                       removeFromCart={removeFromCart}
                     />
                   </div>
@@ -96,43 +93,50 @@ export default function Cart() {
               </div>
             </div>
             {/* Right Section */}
-            <div className={`col-md-4 text-center ${styling.cartTotal}`}>
-              <h4>
-                <Trans>Total</Trans>
-              </h4>
-              <hr />
-              <div>
-                {cart?.map((p) => {
-                  return (
-                    <div key={p._id}>
-                      <p>
-                        {p.name} x {p.quantity} = {cartSubTotal(p)}
-                      </p>
-                    </div>
-                  );
-                })}
+            <div className={`col-md-4 text-center`}>
+              <div className={`${styling.cartTotal} ${styling.shadow}`}>
+                <h4>
+                  <Trans>Total</Trans>
+                </h4>
+                <hr />
+                <div>
+                  {cart?.map((p) => {
+                    return (
+                      <div key={p._id}>
+                        <p>
+                          {p.name} x {p.quantity} = {cartSubTotal(p)}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+                <p>
+                  <Trans>Total</Trans>: {cartTotal()}
+                </p>
+                <button
+                  className={`${styling.checkoutButton}`}
+                  onClick={() => navigate("/checkout")}
+                >
+                  <Trans>Checkout</Trans>
+                </button>
               </div>
-
-              <p>
-                <Trans>Total</Trans>: {cartTotal()}
-              </p>
-
-              <button
-                className="btn btn-primary"
-                onClick={() => navigate("/checkout")}
-              >
-                <Trans>Checkout</Trans>
-              </button>
             </div>
           </div>
+          {/* Shipping */}
           <div className={`row`}>
-            <div className={`col-md-6 ${styling.cartProduct}`}>
-              <h2>Shipping</h2>
+            <div className={`col-md-6 ${styling.cartProduct} ${styling.shadow}`}>
+              <h2>
+                <Trans>Shipping</Trans>
+                <p><Trans>Expected delivery in: 3-5 working days</Trans></p>
+              </h2>
             </div>
           </div>
+          {/* Payment methods */}
           <div className={`row`}>
-            <div className={`col-md-6 ${styling.cartProduct}`}>
-              <h2>Payment methods</h2>
+            <div className={`col-md-6 ${styling.cartProduct} ${styling.shadow} ${styling.lastContainer}`}>
+              <h2>
+                <Trans>Payment methods</Trans>
+              </h2>
             </div>
           </div>
         </div>
