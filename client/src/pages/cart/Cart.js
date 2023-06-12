@@ -4,6 +4,7 @@ import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal"
 import { Trans } from "react-i18next";
 import { encryptData } from "../../constants";
 import styling from "./Cart.module.css";
+import BusinessDaysConverter from "./BusinessDaysConverter";
 
 export default function Cart() {
   // const
@@ -31,7 +32,7 @@ export default function Cart() {
     cart.forEach((p) => {
       total += p.price * p.quantity;
     });
-    return total
+    return total;
   };
 
   const cartSubTotalCurrency = (subtotal) => {
@@ -39,14 +40,14 @@ export default function Cart() {
       style: "currency",
       currency: currency,
     });
-  }
+  };
 
   const shippingCost = (cartSubTotal) => {
     const shippingCost = 5;
     if (cartSubTotal > 50) {
       return 0;
     }
-    return shippingCost
+    return shippingCost;
   };
 
   const shippingCostCurrency = (shippingCost) => {
@@ -60,7 +61,7 @@ export default function Cart() {
     const iva = 0.21;
     const total = cartSubTotal() + shippingCost() + iva;
     encryptData(total, "cartTotalWithIVA");
-    return total
+    return total;
   };
 
   const cartTotalWithIVACurrency = (cartTotalWithIVA) => {
@@ -194,9 +195,7 @@ export default function Cart() {
             >
               <h2>
                 <Trans>Shipping</Trans>
-                <p>
-                  <Trans>Expected delivery in: 3-5 working days</Trans>
-                </p>
+                <BusinessDaysConverter />
               </h2>
             </div>
           </div>

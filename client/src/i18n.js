@@ -84,8 +84,9 @@ i18n
           Color: "Color",
           Size: "Size",
           Subtotal: "Subtotal",
+          languagePlaceholder: "en-US",
           "Total (IVA inlcuded)": "Total (IVA inlcuded)",
-          "Expected delivery in: 3-5 working days": "Expected delivery in: 3-5 working days",
+          "Expected delivery": "Expected delivery",
           // Product
           ADD: "ADD",
           VIEW: "VIEW",
@@ -137,6 +138,7 @@ i18n
           Shipping: "Shipping",
           Loading: "Loading",
           Pay: "Pay",
+          paymentLanguagePlaceholder: "en_US",
           // Saved Items
           "My Wishlist": "My Wishlist",
           "Here you can find all the products you have saved for later.":
@@ -250,7 +252,8 @@ i18n
           Size: "Taglia",
           Subtotal: "Subtotale",
           "Total (IVA inlcuded)": "Totale (IVA inclusa)",
-          "Expected delivery in: 3-5 working days": "Consegna prevista in: 3-5 giorni lavorativi",
+          "Expected delivery": "Consegna prevista",
+          languagePlaceholder: "it-IT",
           // Product
           ADD: "AGGIUNGI",
           VIEW: "VEDI",
@@ -304,6 +307,7 @@ i18n
           Shipping: "Spedizione",
           Loading: "Caricamento",
           Pay: "Paga",
+          paymentLanguagePlaceholder: "it_IT",
           // Saved Items
           "My Wishlist": "I miei preferiti",
           "Here you can find all the products you have saved for later.":

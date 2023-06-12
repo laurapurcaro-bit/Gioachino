@@ -2,11 +2,20 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../context/auth";
 import axios from "axios";
 import DropIn from "braintree-web-drop-in-react";
-import { Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
+import styling from "./Payment.module.css";
 
-export default function Payment({ cart, cartTotal, onPaymentSuccess, selectedAddress, shippingMethod }) {
+export default function Payment({
+  cart,
+  cartTotal,
+  onPaymentSuccess,
+  selectedAddress,
+  shippingMethod,
+}) {
   // context
   const [auth] = useAuth();
+  const { t } = useTranslation();
+  const paymentLanguagePlaceholder = t("paymentLanguagePlaceholder");
   // state
   const [clientToken, setClientToken] = useState("");
   const [instance, setInstance] = useState("");
@@ -57,15 +66,40 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess, selectedAdd
     <div className="mt-3">
       {/* <div>{JSON.stringify(clientToken)}</div> */}
       {!clientToken || !cart?.length ? (
-        <div><Trans>Loading</Trans>...</div>
+        <div>
+          <Trans>Loading</Trans>...
+        </div>
       ) : (
         <>
           <div className="mt-1 mb-3">
             <DropIn
               options={{
                 authorization: clientToken,
+                // language
+                locale: paymentLanguagePlaceholder,
+                card: {
+                  cardholderName: {
+                    required: true,
+                  },
+                  overrides: {
+                    styles: {
+                      input: {
+                        color: "green",
+                        "font-size": "1rem",
+                      },
+                      ".invalid": {
+                        color: "red",
+                      },
+                    },
+                  },
+                },
                 paypal: {
                   flow: "vault",
+                  buttonStyle: {
+                    color: "blue",
+                    shape: "rect",
+                    size: "medium",
+                  },
                 },
                 googlePay: {
                   merchantId: process.env.REACT_APP_BRAINTREE_MERCHANT_ID,
@@ -103,7 +137,15 @@ export default function Payment({ cart, cartTotal, onPaymentSuccess, selectedAdd
             onClick={handleBuy}
             disabled={!selectedAddress || !instance || loading}
           >
-            {loading ? <p><Trans>Loading</Trans>...</p> : <p><Trans>Pay</Trans></p>}
+            {loading ? (
+              <p>
+                <Trans>Loading</Trans>...
+              </p>
+            ) : (
+              <p>
+                <Trans>Pay</Trans>
+              </p>
+            )}
           </button>
         </>
       )}
