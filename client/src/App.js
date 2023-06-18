@@ -14,7 +14,6 @@ import Navbar from "./components/nav/Navbar";
 import Home from "./pages/homepage/Home";
 import LoginPopup from "./pages/auth/Login";
 import Dashboard from "./pages/user/Dashboard";
-import Register from "./pages/auth/Register";
 import GetUser from "./pages/auth/GetUser";
 import AdminDashboard from "./pages/admin/Dashboard";
 import PrivateRoute from "./components/routes/PrivateRoute";
@@ -35,14 +34,18 @@ import AdminResultsSearchBar from "./pages/admin/AdminResultsSearchBar";
 import Popup from "./components/popup/Popup";
 import Footer from "./components/footer/Footer";
 import SingleProductPage from "./pages/product/SingleProductPage";
-import CheckoutPage from "./pages/checkout/CheckoutPage";
 import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
 import SavedItems from "./pages/user/SavedItems";
 import RegisterPopup from "./pages/auth/Register";
 import UserAddresses from "./pages/user/UserAddresses";
+import CheckoutPageOld from "./pages/checkout/CheckoutPageOld";
 
 const PageNotFound = () => {
-  return <div className="d-flex justify-content-center align-items-center vh-100">404 - Page not found</div>;
+  return (
+    <div className="d-flex justify-content-center align-items-center vh-100">
+      404 - Page not found
+    </div>
+  );
 };
 
 export default function App() {
@@ -115,12 +118,20 @@ export default function App() {
       {/* Login popup */}
       {showLoginPopup && (
         <>
-          <LoginPopup showLoginPopup={showLoginPopup} setShowLoginPopup={setShowLoginPopup} setShowRegisterPopup={setShowRegisterPopup} />
+          <LoginPopup
+            showLoginPopup={showLoginPopup}
+            setShowLoginPopup={setShowLoginPopup}
+            setShowRegisterPopup={setShowRegisterPopup}
+          />
         </>
       )}
       {showRegisterPopup && (
         <>
-          <RegisterPopup showRegisterPopup={showRegisterPopup} setShowRegisterPopup={setShowRegisterPopup} setShowLoginPopup={setShowLoginPopup} />
+          <RegisterPopup
+            showRegisterPopup={showRegisterPopup}
+            setShowRegisterPopup={setShowRegisterPopup}
+            setShowLoginPopup={setShowLoginPopup}
+          />
         </>
       )}
       <Routes>
@@ -135,9 +146,8 @@ export default function App() {
         </Route>
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<SingleProductPage />} />
-        {/* <Route path="/login" element={<LoginPopup />} /> */}
-        <Route path="/register" element={<Register />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
+        {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
+        <Route path="/checkout" element={<CheckoutPageOld />} />
         <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
         {/* Insert routes you want to protect */}
         <Route path="/dashboard" element={<PrivateRoute />}>
@@ -154,13 +164,19 @@ export default function App() {
           <Route path="admin/products" element={<AdminShowProducts />} />
           <Route path="admin/orders" element={<ManageOrdersAdmin />} />
           <Route path="admin/search" element={<AdminResultsSearchBar />} />
-          <Route path="admin/products/update/:slug" element={<AdminUpdateProduct />} />
+          <Route
+            path="admin/products/update/:slug"
+            element={<AdminUpdateProduct />}
+          />
         </Route>
         {/* <Route path="/register" element={<Register />} /> */}
         <Route path="*" element={<PageNotFound />} replace />
       </Routes>
       {/* Footer */}
-      <Footer currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} />
+      <Footer
+        currentLanguage={currentLanguage}
+        setCurrentLanguage={setCurrentLanguage}
+      />
     </Router>
   );
 }

@@ -37,6 +37,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "passport-local-mongoose": "^8.0.0",
-    "slugify": "^1.6.6"
+    "slugify": "^1.6.6",
+    "stripe": "^12.9.0"
   }
 }

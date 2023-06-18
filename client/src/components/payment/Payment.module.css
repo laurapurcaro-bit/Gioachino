@@ -1,0 +1,48 @@
+[data-braintree-id="choose-a-way-to-pay"] {
+  display: none;
+  margin: 0;
+}
+
+[data-braintree-id="payment-method-options"] {
+  color: green;
+}
+
+[data-braintree-id="loading-container"] {
+  background-color: #d7d6d1;
+}
+
+[data-braintree-id="payment-options-container"] {
+  background-color: white;
+  /* box-shadow: -1px 5px 8px 2px #b8b8b8; */
+  margin: 0;
+  padding: 0;
+  border-radius: 0.5rem;
+  z-index: 0;
+}
+
+[class="braintree-option braintree-option__card"] {
+  background-color: white;
+  padding: 2rem 3rem;
+}
+
+[class="braintree-option braintree-option__paypal"] {
+  background-color: white;
+  padding: 2rem 3rem;
+}
+
+[class="braintree-option braintree-option__googlePay"] {
+  background-color: white;
+  /* margin-top: 1rem; */
+  padding: 2rem 3rem;
+  /* border: none; */
+}
+
+[class="braintree-option"] {
+  border: 0.5px solid #d7d6d1;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+[class="braintree-placeholder"] {
+  margin-bottom: -20px;
+}

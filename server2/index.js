@@ -16,6 +16,7 @@ const productRoutes = require("./routes/product");
 const paymentRoutes = require("./routes/payment");
 const orderRoutes = require("./routes/orders");
 const userRoutes = require("./routes/user");
+const mapsRoutes = require("./routes/maps");
 const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
@@ -24,12 +25,15 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const port = 8000;
 
-
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 app.use(
   cors({
     origin: ["http://localhost:3000", "http://localhost:3000/"],
@@ -39,7 +43,17 @@ app.use(
 );
 
 app.use(morgan("dev"));
-app.use(express.json());
+app.use(
+  express.json({
+    // We need the raw body to verify webhook signatures.
+    // Let's compute it only when hitting the Stripe webhook endpoint.
+    verify: function (req, res, buf) {
+      if (req.originalUrl.startsWith("/webhook")) {
+        req.rawBody = buf.toString();
+      }
+    },
+  })
+);
 // 1.
 app.use(
   session({
@@ -87,6 +101,7 @@ app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
 app.use("/api", paymentRoutes);
 app.use("/api", orderRoutes);
+app.use("/api", mapsRoutes);
 
 app.listen(port, () => {
   console.log(`server2 is running on port ${port}`);

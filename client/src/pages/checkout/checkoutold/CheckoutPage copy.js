@@ -33,7 +33,6 @@ export default function CheckoutPage() {
     setShippingMethod(value);
   };
 
-
   const renderStep = () => {
     switch (currentStep) {
       case 1:

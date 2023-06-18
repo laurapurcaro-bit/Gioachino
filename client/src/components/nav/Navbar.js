@@ -64,7 +64,7 @@ export default function Navbar({ setShowLoginPopup }) {
             <ul className={`dropdown-menu ${styling.dropdown}`}>
               <li>
                 <NavLink className={`nav-link ${styling.navlink}`} to={`/catalogue`}>
-                  All categories
+                  <Trans>All categories</Trans>
                 </NavLink>
               </li>
               {categories?.map((category) => {

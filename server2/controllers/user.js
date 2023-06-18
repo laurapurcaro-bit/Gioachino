@@ -164,39 +164,49 @@ const updateAddress = async (req, res) => {
 const updateWhishlists = async (req, res) => {
   console.log("UPDATE WHISHLISTS", req.body);
   try {
-    const { newWhishlists } = req.body;
+    const { newWhishlists, provider } = req.body;
     console.log("WHISHLISTS", newWhishlists);
     console.log("USER", req.user._id);
-
     let user;
-    if (req.body.provider !== "email") {
-      user = await UserModelGoogle.findByIdAndUpdate(
-        req.user._id,
-        {
-          $push: {
-            whishlists: {
-              name: newWhishlists.name,
-              savedItems: [],
-            },
-          },
-        },
-        { new: true, upsert: true }
+    if (provider !== "email") {
+      user = await UserModelGoogle.findById(req.user?._id);
+      const existingWishlist = user.whishlists.find(
+        (wishlist) => wishlist.name === newWhishlists.name
       );
+      if (existingWishlist) {
+        // Update the existing wishlist with new name and savedItems
+        existingWishlist.name = newWhishlists.name;
+        existingWishlist.savedItems = newWhishlists.savedItems;
+      } else {
+        // Create a new wishlist
+        user.whishlists.push({
+          name: newWhishlists.name,
+          savedItems: newWhishlists.savedItems,
+        });
+      }
+      // Save the updated user document
+      await user.save();
     } else {
-      user = await User.findByIdAndUpdate(
-        req.user._id,
-        {
-          $push: {
-            whishlists: {
-              name: newWhishlists.name,
-              savedItems: [],
-            },
-          },
-        },
-        { new: true, upsert: true }
+      // Find whishlist name
+      user = await User.findById(req.user?._id);
+      // Check if a wishlist with the same name already exists
+      const existingWishlist = user.whishlists.find(
+        (wishlist) => wishlist.name === newWhishlists.name
       );
+      if (existingWishlist) {
+        // Update the existing wishlist with new name and savedItems
+        existingWishlist.name = newWhishlists.name;
+        existingWishlist.savedItems = newWhishlists.savedItems;
+      } else {
+        // Create a new wishlist
+        user.whishlists.push({
+          name: newWhishlists.name,
+          savedItems: newWhishlists.savedItems,
+        });
+      }
+      // Save the updated user document
+      await user.save();
     }
-
     // Send response
     res.json(user.whishlists);
   } catch (err) {
@@ -235,8 +245,6 @@ const deleteWhishlist = async (req, res) => {
     res.status(400).send("Error deleting whishlist");
   }
 };
-
-
 
 module.exports = {
   updateProfile,

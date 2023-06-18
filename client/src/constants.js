@@ -1,10 +1,124 @@
 import CryptoJS from "crypto-js";
 
+const provincesInItaly = [
+  'Agrigento',
+  'Alessandria',
+  'Ancona',
+  'Aosta',
+  'Arezzo',
+  'Ascoli Piceno',
+  'Asti',
+  'Avellino',
+  'Bari',
+  'Barletta-Andria-Trani',
+  'Belluno',
+  'Benevento',
+  'Bergamo',
+  'Biella',
+  'Bologna',
+  'Bolzano',
+  'Brescia',
+  'Brindisi',
+  'Cagliari',
+  'Caltanissetta',
+  'Campobasso',
+  'Carbonia-Iglesias',
+  'Caserta',
+  'Catania',
+  'Catanzaro',
+  'Chieti',
+  'Como',
+  'Cosenza',
+  'Cremona',
+  'Crotone',
+  'Cuneo',
+  'Enna',
+  'Fermo',
+  'Ferrara',
+  'Firenze',
+  'Foggia',
+  'Forlì-Cesena',
+  'Frosinone',
+  'Genova',
+  'Gorizia',
+  'Grosseto',
+  'Imperia',
+  'Isernia',
+  'La Spezia',
+  'L\'Aquila',
+  'Latina',
+  'Lecce',
+  'Lecco',
+  'Livorno',
+  'Lodi',
+  'Lucca',
+  'Macerata',
+  'Mantova',
+  'Massa-Carrara',
+  'Matera',
+  'Messina',
+  'Milano',
+  'Modena',
+  'Monza e Brianza',
+  'Napoli',
+  'Novara',
+  'Nuoro',
+  'Ogliastra',
+  'Olbia-Tempio',
+  'Oristano',
+  'Padova',
+  'Palermo',
+  'Parma',
+  'Pavia',
+  'Perugia',
+  'Pesaro e Urbino',
+  'Pescara',
+  'Piacenza',
+  'Pisa',
+  'Pistoia',
+  'Pordenone',
+  'Potenza',
+  'Prato',
+  'Ragusa',
+  'Ravenna',
+  'Reggio Calabria',
+  'Reggio Emilia',
+  'Rieti',
+  'Rimini',
+  'Roma',
+  'Rovigo',
+  'Salerno',
+  'Medio Campidano',
+  'Sassari',
+  'Savona',
+  'Siena',
+  'Siracusa',
+  'Sondrio',
+  'Taranto',
+  'Teramo',
+  'Terni',
+  'Torino',
+  'Ogliastra',
+  'Trapani',
+  'Trento',
+  'Treviso',
+  'Trieste',
+  'Udine',
+  'Varese',
+  'Venezia',
+  'Verbano-Cusio-Ossola',
+  'Vercelli',
+  'Verona',
+  'Vibo Valentia',
+  'Vicenza',
+  'Viterbo'
+];
+
 const prices = [
   {
     _id: 0,
     name: "Any",
-    array: [],
+    array: [0, 999],
   },
   {
     _id: 1,
@@ -89,7 +203,6 @@ const encryptData = (data, localStorageKey) => {
     encryptionKey
   ).toString();
   localStorage.setItem(`${localStorageKey}`, encryptedData);
-  console.log("ENCRYPTED DATA", encryptedData);
 };
 
 const decryptData = (localStorageKey) => {
@@ -101,11 +214,10 @@ const decryptData = (localStorageKey) => {
         CryptoJS.enc.Utf8
       )
     );
-    console.log("DECRYPTED DATA", decryptedData);
+    // console.log("DECRYPTED DATA", decryptedData);
     return decryptedData;
   }
-  console.log("DECRYPTED DATA L", encryptedDataLs);
   return null;
 };
 
-export { prices, colors, sizes, encryptData, decryptData };
+export { prices, colors, sizes, encryptData, decryptData, provincesInItaly };

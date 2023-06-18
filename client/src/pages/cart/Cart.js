@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
 import { Trans } from "react-i18next";
 import { encryptData } from "../../constants";
+import styling from "./Cart.module.css";
+import BusinessDaysConverter from "./BusinessDaysConverter";
 
 export default function Cart() {
   // const
@@ -12,6 +14,7 @@ export default function Cart() {
   const [cart, setCart] = useCart();
   // hook
   const navigate = useNavigate();
+  console.log("CART", cart);
 
   const removeFromCart = (product) => {
     // Make a copy of the cart
@@ -24,22 +27,45 @@ export default function Cart() {
     encryptData(myCart, "cart");
   };
 
-  const cartSubTotal = (p) => {
-    let totalProduct = 0;
-    totalProduct += p.price * p.quantity;
+  const cartSubTotal = () => {
+    let total = 0;
+    cart.forEach((p) => {
+      total += p.price * p.quantity;
+    });
+    return total;
+  };
 
-    return totalProduct.toLocaleString(localString, {
+  const cartSubTotalCurrency = (subtotal) => {
+    return subtotal.toLocaleString(localString, {
       style: "currency",
       currency: currency,
     });
   };
 
-  const cartTotal = () => {
-    let total = 0;
-    cart.forEach((p) => {
-      total += p.price * p.quantity;
+  const shippingCost = (cartSubTotal) => {
+    const shippingCost = 5;
+    if (cartSubTotal > 50) {
+      return 0;
+    }
+    return shippingCost;
+  };
+
+  const shippingCostCurrency = (shippingCost) => {
+    return shippingCost.toLocaleString(localString, {
+      style: "currency",
+      currency: currency,
     });
-    return total.toLocaleString(localString, {
+  };
+
+  const cartTotalWithIVA = () => {
+    const iva = 0.21;
+    const total = cartSubTotal() + shippingCost() + iva;
+    encryptData(total, "cartTotalWithIVA");
+    return total;
+  };
+
+  const cartTotalWithIVACurrency = (cartTotalWithIVA) => {
+    return cartTotalWithIVA.toLocaleString(localString, {
       style: "currency",
       currency: currency,
     });
@@ -47,13 +73,10 @@ export default function Cart() {
 
   return (
     <>
-      <div className="container-fluid">
+      <div className={`container-fluid`}>
         <div className="row">
           <div className="col-md-12">
-            <div className="p-3 mt-2 mb-2 h4 bg-light">
-              <h4>
-                <Trans>Cart</Trans>
-              </h4>
+            <div className="p-3 mt-2 mb-2 h4">
             </div>
             {cart?.length === 0 && (
               <div className="text-center">
@@ -71,23 +94,29 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      {/* <pre>{JSON.stringify(singleCart, null, 4)}</pre>
-      <pre>{JSON.stringify(cart, null, 4)}</pre> */}
-      {/* Product info in cart */}
-      {/* display product with margin: mx-4 */}
+      {/* Cart products */}
       {cart?.length > 0 && (
-        <div className="container mx-4">
-          <div className="row">
-            <div className="col-md-8">
-              <div className="row">
+        <div className={`container bg-light ${styling.cartContainer}`}>
+          <div className={`row ${styling.cartElements}`}>
+            <div
+              className={`col-md-6 ${styling.cartProductItems} ${styling.shadow}`}
+            >
+              <h2 className={`${styling.cartTitle}`}>
+                <Trans>Cart</Trans> ({cart?.length}{" "}
+                {cart?.length > 1 ? (
+                  <Trans>products</Trans>
+                ) : (
+                  <Trans>product</Trans>
+                )}
+                )
+              </h2>
+              <div className={`row`}>
                 {cart?.map((p) => (
-                  <div
-                    key={p._id}
-                    className="card mb-3"
-                    style={{ maxWidth: 800 }}
-                  >
+                  <div key={p._id} className={``}>
                     <ProductCardHorizontal
                       p={p}
+                      cart={cart}
+                      setCart={setCart}
                       removeFromCart={removeFromCart}
                     />
                   </div>
@@ -95,33 +124,86 @@ export default function Cart() {
               </div>
             </div>
             {/* Right Section */}
-            <div className="col-md-4 text-center">
-              <h4>
-                <Trans>Total</Trans>
-              </h4>
-              <hr />
-              <div>
-                {cart?.map((p) => {
-                  return (
-                    <div key={p._id}>
-                      <p>
-                        {p.name} x {p.quantity} = {cartSubTotal(p)}
-                      </p>
-                    </div>
-                  );
-                })}
+            <div className={`col-md-4`}>
+              <div className={`${styling.cartTotal} ${styling.shadow}`}>
+                <div className={`${styling.totalContent}`}>
+                  <h2>
+                    <Trans>Total</Trans>
+                  </h2>
+                  <hr />
+                  <table className="table">
+                    <thead className="">
+                      <tr>
+                        <th>
+                          <p className={`${styling.subtotal}`}>
+                            <Trans>Subtotal</Trans>
+                          </p>
+                        </th>
+                        <th>
+                          <p className={`${styling.subtotalContent}`}>
+                            {cartSubTotalCurrency(cartSubTotal())}
+                          </p>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <p className={`${styling.subtotal}`}>
+                            <Trans>Shipping</Trans>
+                          </p>
+                        </td>
+                        <td>
+                          <p className={`${styling.subtotalContent}`}>
+                            {shippingCostCurrency(shippingCost())}
+                          </p>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <p className={`${styling.subtotal}`}>
+                            <Trans>Total (IVA inlcuded)</Trans>
+                          </p>
+                        </td>
+                        <td>
+                          <p className={`${styling.subtotalContent}`}>
+                            {cartTotalWithIVACurrency(cartTotalWithIVA())}
+                          </p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div className={`${styling.checkoutSection}`}>
+                  <button
+                    className={`${styling.checkoutButton}`}
+                    onClick={() => navigate("/checkout")}
+                  >
+                    <Trans>Checkout</Trans>
+                  </button>
+                </div>
               </div>
-
-              <p>
-                <Trans>Total</Trans>: {cartTotal()}
-              </p>
-
-              <button
-                className="btn btn-primary"
-                onClick={() => navigate("/checkout")}
-              >
-                <Trans>Checkout</Trans>
-              </button>
+            </div>
+          </div>
+          {/* Shipping */}
+          <div className={`row`}>
+            <div
+              className={`col-md-6 ${styling.cartProduct} ${styling.shadow}`}
+            >
+              <h2>
+                <Trans>Shipping</Trans>
+                <BusinessDaysConverter />
+              </h2>
+            </div>
+          </div>
+          {/* Payment methods */}
+          <div className={`row`}>
+            <div
+              className={`col-md-6 ${styling.cartProduct} ${styling.shadow} ${styling.lastContainer}`}
+            >
+              <h2>
+                <Trans>Payment methods</Trans>
+              </h2>
             </div>
           </div>
         </div>

@@ -6,6 +6,8 @@ import { Trans } from "react-i18next";
 import { HeartOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { encryptData, decryptData } from "../../constants";
+import axios from "axios";
+import { useAuth } from "../../context/auth";
 
 export default function ProductCard({ product }) {
   // const
@@ -14,6 +16,7 @@ export default function ProductCard({ product }) {
   const localString = "en-US";
   // context
   const [cart, setCart] = useCart();
+  const [auth] = useAuth();
   // hook
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
@@ -79,12 +82,29 @@ export default function ProductCard({ product }) {
     }
   };
 
-  const handleHeartClick = (product) => {
+  const handleCreateWishilist = async (wishlistName, savedItems) => {
+    if (wishlistName.trim() !== "") {
+      // Add your logic here to save the wishlist name
+      const { data } = await axios.put("/whishlists/add", {
+        newWhishlists: { name: wishlistName, savedItems: savedItems },
+        provider: auth.user.provider || "email",
+      });
+      if (data.error) {
+        toast.error(data.error);
+        return;
+      }
+      toast.success(`Wishlist "${wishlistName}" added`);
+    } else {
+      toast.error("An error occurred. Please try later.");
+    }
+  };
+
+  const handleHeartClick = (product, whishlistName) => {
     // add to local storage the saved item
     setIsSaved(!isSaved);
     // Add your logic to save the item to a list
     if (!isSaved) {
-      // Get the saved items from local storage
+      // Add the saved items in local storage
       const savedItems = decryptData("itemSaved");
 
       let updatedItems = [];
@@ -95,19 +115,21 @@ export default function ProductCard({ product }) {
       console.log("SAVED ITEMS", product);
       // Add the new product to the updated list
       updatedItems.push({
+        whishlistName: whishlistName,
         productId: product._id,
         category: product?.categorySlug.toLowerCase(),
         isSaved: !isSaved,
       });
-      console.log("UPDATED ITEMS", updatedItems);
+      console.log("UPDATED SAVED ITEMS", updatedItems);
       // Save the updated list back to local storage
-      // localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
       // encrypt
       encryptData(updatedItems, "itemSaved");
+      // Update the wishlist
+      handleCreateWishilist(whishlistName, updatedItems);
     } else {
-      // Remove selected saved item from local storage
+      // Remove selected saved item in local storage
       const savedItems = decryptData("itemSaved");
-      // const savedItems = JSON.parse(localStorage.getItem("itemSaved"));
+ 
       let updatedItems = [];
 
       if (savedItems) {
@@ -117,10 +139,10 @@ export default function ProductCard({ product }) {
         );
       }
       console.log("UPDATED ITEMS", updatedItems);
-      // Save the updated list back to local storage
-      // localStorage.setItem("itemSaved", JSON.stringify(updatedItems));
-      // encrypt
+      // Save the updated list back to local storage and encrypt
       encryptData(updatedItems, "itemSaved");
+      // Update the wishlist
+      handleCreateWishilist(whishlistName, updatedItems);
     }
     // e.g., dispatch an action or update the state
   };
@@ -132,7 +154,7 @@ export default function ProductCard({ product }) {
           className={`${styling.heartIcon} ${
             isSaved ? styling.savedHeartIcon : ""
           }`}
-          onClick={(e) => handleHeartClick(product)}
+          onClick={(e) => handleHeartClick(product, "Wishlist")}
         />
         <img
           className="card-img-top"

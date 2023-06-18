@@ -40,6 +40,7 @@ export default function SavedItems() {
     try {
       const wishlistId = whishlist._id;
       const { data } = await axios.delete(`/whishlists/delete/${wishlistId}`);
+      console.log("WHISHLIST Rem", data, whishlists);
       setWhishlists(data);
     } catch (error) {
       console.error("Error deleting wishlist:", error);
@@ -51,7 +52,7 @@ export default function SavedItems() {
     if (wishlistName.trim() !== "") {
       // Add your logic here to save the wishlist name
       const { data } = await axios.put("/whishlists/add", {
-        newWhishlists: { name: wishlistName },
+        newWhishlists: { name: wishlistName, savedItems: [] },
         provider: auth.user.provider || "email",
       });
       if (data.error) {

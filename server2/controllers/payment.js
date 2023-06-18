@@ -3,6 +3,9 @@ const dotenv = require("dotenv").config();
 const { Order } = require("../models/order");
 const Product = require("../models/product");
 const sgMail = require("@sendgrid/mail");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY_DEV, {
+  apiVersion: "2022-08-01",
+});
 
 // config sendgrid
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -32,7 +35,9 @@ const getTotken = async (req, res) => {
 
 function generateOrderId() {
   const timestamp = Date.now().toString();
-  const randomNumber = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+  const randomNumber = Math.floor(Math.random() * 1000000)
+    .toString()
+    .padStart(6, "0");
   return timestamp + randomNumber;
 }
 
@@ -40,12 +45,12 @@ const processPayment = async (req, res) => {
   try {
     // hardcode $10
     // console.log("PAYMENT", req.body);
-    const { nonce, cart, amount, provider, selectedAddress, shippingMethod } = req.body;
-    const correctAmount = amount.split("€")[1];
-    console.log("CORRECT AMOUNT", correctAmount);
+    const { nonce, cart, amount, provider, selectedAddress, shippingMethod } =
+      req.body;
+
     let newTransaction = gateway.transaction.sale(
       {
-        amount: correctAmount,
+        amount: amount,
         paymentMethodNonce: nonce,
         options: {
           submitForSettlement: true,
@@ -53,10 +58,7 @@ const processPayment = async (req, res) => {
       },
       function (error, result) {
         if (result) {
-          console.log(
-            "RESULT",
-            result
-          );
+          console.log("RESULT", result);
           // res.send(result);
           // create order
           const model = () => {
@@ -73,7 +75,7 @@ const processPayment = async (req, res) => {
             products: cart,
             cart: cart,
             orderId: orderId,
-            amount: correctAmount,
+            amount: amount,
             shippingAddress: selectedAddress,
             shippingMethod: shippingMethod,
             paymentInfo: {
@@ -157,4 +159,96 @@ const sendEmailAfterPayment = async (req, res) => {
   }
 };
 
-module.exports = { getTotken, processPayment, sendEmailAfterPayment };
+const configStripe = async (req, res) => {
+  res.send({
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY_DEV,
+  });
+};
+
+const createPaymentIntent = async (req, res) => {
+  try {
+    console.log("BODY", req.body);
+    const paymentIntent = await stripe.paymentIntents.create({
+      currency: "eur",
+      // 10 EUR = 1000 (ovvero 1000 centesimi)
+      amount: 1999,
+      automatic_payment_methods: { enabled: true },
+      shipping: {
+        name: 'Jenny Rosen',
+        address: {
+          line1: '1234 Main Street',
+          city: 'San Francisco',
+          state: 'CA',
+          country: 'US',
+          postal_code: '94111',
+        },
+      },
+      // payment_method_types: ["card", "sepa_debit", "google_pay", "apple_pay"],
+      // Verify your integration in this guide by including this parameter
+      // metadata: { integration_check: "accept_a_payment" },
+    });
+
+    // Send publishable key and PaymentIntent details to client
+    res.status(200).send({
+      clientSecret: paymentIntent.client_secret,
+      paymentIntent: paymentIntent,
+    });
+  } catch (e) {
+    return res.status(400).send({
+      error: {
+        message: e.message,
+      },
+    });
+  }
+};
+
+const webhook = async (req, res) => {
+  // Expose a endpoint as a webhook handler for asynchronous events.
+  // Configure your webhook in the stripe developer dashboard
+  // https://dashboard.stripe.com/test/webhooks
+
+  let data, eventType;
+
+  // Check if webhook signing is configured.
+  if (process.env.STRIPE_WEBHOOK_SECRET) {
+    // Retrieve the event by verifying the signature using the raw body and secret.
+    let event;
+    let signature = req.headers["stripe-signature"];
+    try {
+      event = stripe.webhooks.constructEvent(
+        req.rawBody,
+        signature,
+        process.env.STRIPE_WEBHOOK_SECRET
+      );
+    } catch (err) {
+      console.log(`⚠️  Webhook signature verification failed.`);
+      return res.sendStatus(400);
+    }
+    data = event.data;
+    eventType = event.type;
+  } else {
+    // Webhook signing is recommended, but if the secret is not configured in `config.js`,
+    // we can retrieve the event data directly from the request body.
+    data = req.body.data;
+    eventType = req.body.type;
+  }
+
+  if (eventType === "payment_intent.succeeded") {
+    // Funds have been captured
+    // Fulfill any orders, e-mail receipts, etc
+    // To cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
+    console.log("💰 Payment captured!");
+  } else if (eventType === "payment_intent.payment_failed") {
+    console.log("❌ Payment failed.");
+  }
+  res.sendStatus(200);
+};
+
+module.exports = {
+  getTotken,
+  processPayment,
+  sendEmailAfterPayment,
+  configStripe,
+  createPaymentIntent,
+  webhook,
+};

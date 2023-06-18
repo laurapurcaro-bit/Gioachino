@@ -6,6 +6,9 @@ const {
   getTotken,
   processPayment,
   sendEmailAfterPayment,
+  configStripe,
+  createPaymentIntent,
+  webhook,
 } = require("../controllers/payment");
 // middlewares
 const { requireSignIn } = require("../middlewares/auth");
@@ -18,5 +21,9 @@ router.post(
   requireSignIn,
   sendEmailAfterPayment
 );
+
+router.get("/stripe-config", configStripe);
+router.post("/create-payment-intent", createPaymentIntent);
+router.post("/webhook", webhook);
 
 module.exports = router;
