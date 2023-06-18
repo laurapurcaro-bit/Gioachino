@@ -1,0 +1,53 @@
+.colElements {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+}
+
+.orderSummaryDiv {
+  width: 100%;
+  /* border: 1px solid #ededed; */
+  padding: 2rem 4rem;
+}
+
+.total {
+  font-size: 2.5rem;
+}
+
+.discounts {
+  text-decoration: underline;
+  color: #000000;
+  cursor: pointer;
+}
+
+.giftCard {
+  text-decoration: underline;
+  color: #000000;
+  cursor: pointer;
+}
+
+.productImg {
+  width: 50px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.bodyText {
+  margin-left: 2rem;
+}
+
+.bodyText p {
+  margin-bottom: 0;
+}
+
+.bodyTextPrice {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.badge {
+  position: relative;
+  top: -220px;
+}

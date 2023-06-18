@@ -118,6 +118,7 @@ i18n
           grey: "grey",
           "cherry red": "cherry red",
           beige: "beige",
+          "Additional information": "Additional information",
           // Checkout
           // AddressStep
           "Step 1: Add your address": "Step 1: Add your address",
@@ -285,6 +286,7 @@ i18n
           grey: "grigio",
           "cherry red": "rosso ciliegia",
           beige: "beige",
+          "Additional information": "Informazioni aggiuntive",
           // Checkout
           // AddressStep
           "Step 1: Add your address": "Passo 1: Aggiungi il tuo indirizzo",

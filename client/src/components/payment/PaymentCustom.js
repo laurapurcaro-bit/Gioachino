@@ -5,24 +5,16 @@ import DropIn from "braintree-web-drop-in-react";
 import { Trans, useTranslation } from "react-i18next";
 import styling from "./Payment.module.css";
 
-export default function Payment({
-  cart,
-  cartTotal,
-  onPaymentSuccess,
-  selectedAddress,
-  shippingMethod,
-}) {
+export default function PaymentCustom({ instance, setInstance, message }) {
   // context
   const [auth] = useAuth();
   const { t } = useTranslation();
   const paymentLanguagePlaceholder = t("paymentLanguagePlaceholder");
   // state
   const [clientToken, setClientToken] = useState("");
-  const [instance, setInstance] = useState("");
-  // loading state to disable the pay button
-  const [loading, setLoading] = useState(false);
+
   // constant
-  const amount = cartTotal();
+  //   const amount = cartTotal();
   // hooks
   useEffect(() => {
     if (auth?.token) {
@@ -40,32 +32,10 @@ export default function Payment({
     }
   };
 
-  const handleBuy = async () => {
-    try {
-      setLoading(true);
-      // access the nonce
-      const { nonce } = await instance.requestPaymentMethod();
-      const { data } = await axios.post("/braintree/payment", {
-        nonce,
-        cart: cart,
-        selectedAddress: selectedAddress,
-        shippingMethod: shippingMethod,
-        amount: amount,
-        provider: auth.user.provider,
-      });
-      setLoading(false);
-      // empty the cart and send email and redirect to dashboard
-      onPaymentSuccess(data);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="mt-3">
       {/* <div>{JSON.stringify(clientToken)}</div> */}
-      {!clientToken || !cart?.length ? (
+      {!clientToken ? (
         <div>
           <Trans>Loading</Trans>...
         </div>
@@ -106,7 +76,7 @@ export default function Payment({
                   merchantId: process.env.REACT_APP_BRAINTREE_MERCHANT_ID,
                   transactionInfo: {
                     totalPriceStatus: "FINAL",
-                    totalPrice: amount,
+                    totalPrice: 1,
                     currencyCode: "EUR",
                   },
                 },
@@ -115,7 +85,7 @@ export default function Payment({
                   paymentRequest: {
                     total: {
                       label: "Ecommerce",
-                      amount: amount,
+                      amount: 1,
                       type: "final",
                     },
                     countryCode: "IT",
@@ -132,22 +102,8 @@ export default function Payment({
               // we need to send instance to process the payment
               onInstance={(instance) => setInstance(instance)}
             />
+            {message && <div className="text-danger" style={{fontSize: "1.5rem"}}>{message}</div>}
           </div>
-          <button
-            className="btn btn-primary col-md-12"
-            onClick={handleBuy}
-            disabled={!selectedAddress || !instance || loading}
-          >
-            {loading ? (
-              <p>
-                <Trans>Loading</Trans>...
-              </p>
-            ) : (
-              <p>
-                <Trans>Pay</Trans>
-              </p>
-            )}
-          </button>
         </>
       )}
     </div>

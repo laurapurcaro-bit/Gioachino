@@ -20,7 +20,7 @@ export default function RelatedProductCard({ product }) {
 
   return (
     <>
-      <div className="col-md-3" onClick={() => navigateToRelatedProduct(product)}>
+      <div className={`col-md-1 ${styling.relatedProd}`} onClick={() => navigateToRelatedProduct(product)}>
         <img
           className={`${styling.cardImage}`}
           src={`${
@@ -31,7 +31,7 @@ export default function RelatedProductCard({ product }) {
           alt={product?.name}
         />
       </div>
-      <div className="col-md-2" onClick={() => navigateToRelatedProduct(product)}>
+      <div className="col-md-1" onClick={() => navigateToRelatedProduct(product)}>
         <div className="">
           <h3>{product?.name}</h3>
           <h4 className="fw-bold">

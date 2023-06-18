@@ -1,13 +1,13 @@
 import React from "react";
-import Payment from "../../components/payment/Payment";
+import Payment from "../../../components/payment/Payment";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCart } from "../../context/cart";
+import { useCart } from "../../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./PaymentMethodStep.module.css";
 import OrderSummary from "./OrderSummary";
 import { Trans } from "react-i18next";
-import { decryptData, encryptData } from "../../constants";
+import { decryptData, encryptData } from "../../../constants";
 
 const PaymentMethodStep = ({ onPrevious, address, shippingMethod }) => {
   // const
@@ -20,9 +20,9 @@ const PaymentMethodStep = ({ onPrevious, address, shippingMethod }) => {
   const cartLs = decryptData("cart");
   // function
   const cartTotal = () => {
-    const total = decryptData("cartTotalWithIVA")
+    const total = decryptData("cartTotalWithIVA");
     console.log("TOTAL", total);
-    return total
+    return total;
   };
 
   const onPaymentSuccess = async (data) => {

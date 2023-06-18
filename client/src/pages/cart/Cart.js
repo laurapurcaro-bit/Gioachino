@@ -76,10 +76,7 @@ export default function Cart() {
       <div className={`container-fluid`}>
         <div className="row">
           <div className="col-md-12">
-            <div className="p-3 mt-2 mb-2 h4 bg-light">
-              <h4>
-                <Trans>Cart</Trans>
-              </h4>
+            <div className="p-3 mt-2 mb-2 h4">
             </div>
             {cart?.length === 0 && (
               <div className="text-center">

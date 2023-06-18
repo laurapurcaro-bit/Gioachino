@@ -1,0 +1,41 @@
+.colElements {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.leftBorderNone {
+  border-left: none !important;
+}
+
+/* PaymentMethod.module.css */
+
+.paymentDiv {
+  border: 1px solid #000000;
+  padding: 20px;
+}
+
+.paymentDiv .StripeElement {
+  border: 1px solid red !important;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.paymentDiv .StripeElement--focus {
+  border-color: blue;
+}
+
+.paymentDiv .StripeElement--invalid {
+  border-color: red;
+}
+
+/* Add any other custom styles as needed */
+.cardElement {
+  background-color: white;
+  padding: 10px 20px 11px;
+  border-radius: 5px;
+  width: 100%;
+  border: 1px solid #afafaf;
+  box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+}

@@ -9,6 +9,7 @@ import { Carousel } from "react-responsive-carousel";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
 import RelatedProductCard from "../../components/cards/RelatedProductCard";
 import { decryptData, encryptData } from "../../constants";
+import TabWrapper from "./Tabwrapper";
 
 // Single product page
 export default function SingleProductPage() {
@@ -47,7 +48,9 @@ export default function SingleProductPage() {
 
   const loadRelatedProducts = async (productId, categoryId) => {
     try {
-      const { data } = await axios.get(`/products/related/${productId}/${categoryId}`);
+      const { data } = await axios.get(
+        `/products/related/${productId}/${categoryId}`
+      );
       setRelatedProducts(data);
     } catch (error) {
       console.log(error);
@@ -75,7 +78,9 @@ export default function SingleProductPage() {
     // Check if the product already exists in the cart
     // const cartLs = JSON.parse(localStorage.getItem("cart")) || [];
     const cartLs = decryptData("cart");
-    const existingProductIndex = cartLs.findIndex((item) => item._id === product._id);
+    const existingProductIndex = cartLs.findIndex(
+      (item) => item._id === product._id
+    );
     // If no element is found, it returns -1
     if (existingProductIndex !== -1) {
       console.log("PROD EX");
@@ -101,7 +106,10 @@ export default function SingleProductPage() {
   const renderCustomPrevArrow = (onClickHandler, hasPrev) => {
     return (
       hasPrev && (
-        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
+        <div
+          className={`${styling.customArrowContainer}`}
+          onClick={onClickHandler}
+        >
           <button className={`${styling.customPrevArr}`}>
             <LeftOutlined />
           </button>
@@ -113,7 +121,10 @@ export default function SingleProductPage() {
   const renderCustomNextArrow = (onClickHandler, hasNext) => {
     return (
       hasNext && (
-        <div className={`${styling.customArrowContainer}`} onClick={onClickHandler}>
+        <div
+          className={`${styling.customArrowContainer}`}
+          onClick={onClickHandler}
+        >
           <button className={`${styling.customNextArr}`}>
             <RightOutlined />
           </button>
@@ -140,9 +151,11 @@ export default function SingleProductPage() {
               {product?.additionalPhotos?.name?.map((photo, index) => (
                 <img
                   key={index}
-                  src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${
-                    index + 1
-                  }.png`}
+                  src={`${
+                    process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+                  }/products/${product?.category?.name.toLowerCase()}/${
+                    product._id
+                  }-${index + 1}.png`}
                   alt={product?.name}
                   onClick={() => setSelectedImageIndex(index + 1)}
                   // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -164,7 +177,11 @@ export default function SingleProductPage() {
                 {product?.additionalPhotos?.name?.map((photo, index) => (
                   <img
                     key={index}
-                    src={`${process.env.REACT_APP_S3_HTTP_BUCKET_DEV}/products/${product?.category?.name.toLowerCase()}/${product._id}-${index}.png`}
+                    src={`${
+                      process.env.REACT_APP_S3_HTTP_BUCKET_DEV
+                    }/products/${product?.category?.name.toLowerCase()}/${
+                      product._id
+                    }-${index}.png`}
                     alt={product?.name}
                     onClick={() => setSelectedImageIndex(index + 1)}
                     // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
@@ -200,46 +217,67 @@ export default function SingleProductPage() {
               <div class={styling.colors}>
                 <div className={styling.eachColor}>
                   <span
-                    class={`${styling.blue} ${activeColor === "blue" ? `${styling.active}` : ""}`}
+                    class={`${styling.blue} ${
+                      activeColor === "blue" ? `${styling.active}` : ""
+                    }`}
                     onClick={() => handleColorClick("blue")}
                     data-color="#7ed6df"
                     data-pic="url(https://i.imgur.com/oRpXTOq.png)"
                   ></span>
-                  {activeColor === "blue" && <p className={styling.down}>{activeColor}</p>}
+                  {activeColor === "blue" && (
+                    <p className={styling.down}>{activeColor}</p>
+                  )}
                 </div>
                 <div className={styling.eachColor}>
                   <span
-                    class={`${styling.green} ${activeColor === "green" ? `${styling.active}` : ""}`}
+                    class={`${styling.green} ${
+                      activeColor === "green" ? `${styling.active}` : ""
+                    }`}
                     onClick={() => handleColorClick("green")}
                     data-color="#badc58"
                     data-pic="url(https://i.imgur.com/iyx4e9c.png)"
                   ></span>
-                  {activeColor === "green" && <p className={styling.down}>{activeColor}</p>}
+                  {activeColor === "green" && (
+                    <p className={styling.down}>{activeColor}</p>
+                  )}
                 </div>
                 <div className={styling.eachColor}>
                   <span
-                    class={`${styling.yellow} ${activeColor === "yellow" ? `${styling.active}` : ""}`}
+                    class={`${styling.yellow} ${
+                      activeColor === "yellow" ? `${styling.active}` : ""
+                    }`}
                     onClick={() => handleColorClick("yellow")}
                     data-color="#f9ca24"
                     data-pic="url(https://i.imgur.com/kzsklN4.png)"
                   ></span>
-                  {activeColor === "yellow" && <p className={styling.down}>{activeColor}</p>}
+                  {activeColor === "yellow" && (
+                    <p className={styling.down}>{activeColor}</p>
+                  )}
                 </div>
                 <div className={styling.eachColor}>
                   <span
-                    class={`${styling.rose} ${activeColor === "rose" ? `${styling.active}` : ""}`}
+                    class={`${styling.rose} ${
+                      activeColor === "rose" ? `${styling.active}` : ""
+                    }`}
                     onClick={() => handleColorClick("rose")}
                     data-color="#ff7979"
                     data-pic="url(https://i.imgur.com/iVJjW92.png)"
                   ></span>
-                  {activeColor === "rose" && <p className={styling.down}>{activeColor}</p>}
+                  {activeColor === "rose" && (
+                    <p className={styling.down}>{activeColor}</p>
+                  )}
                 </div>
               </div>
             </div>
             <div className={styling.sizeContainer}>
               <p>Size:</p>
               <div>
-                <select id="size" className={styling.size} value={selectedSize} onChange={handleSizeChange}>
+                <select
+                  id="size"
+                  className={styling.size}
+                  value={selectedSize}
+                  onChange={handleSizeChange}
+                >
                   <option value="">-</option>
                   <option value="XS">XS</option>
                   <option value="S">S</option>
@@ -273,9 +311,20 @@ export default function SingleProductPage() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-6 mt-5">
+          <div className="col-md-12">
+            <TabWrapper />
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12 mt-5">
             <div className="">
-              <h2>{relatedProducts.length < 1 ? <h2>See also</h2> : <h2>Related Products</h2>}</h2>
+              <h2>
+                {relatedProducts.length < 1 ? (
+                  <h2>See also</h2>
+                ) : (
+                  <h2>Related Products</h2>
+                )}
+              </h2>
               {/* Show only if no related products */}
               {relatedProducts.length < 1 && <p>No related products</p>}
               {relatedProducts.map((product, index) => (

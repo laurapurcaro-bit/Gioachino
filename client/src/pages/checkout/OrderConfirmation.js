@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styling from "./OrderConfirmationPage.module.css";
+import styling from "./OrderConfirmation.module.css";
 import { useNavigate, NavLink } from "react-router-dom";
 import { Trans } from "react-i18next";
 import ConfettiComponent from "./Confetti";

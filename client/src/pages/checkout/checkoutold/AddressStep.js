@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styling from "./AddressStep.module.css";
 import axios from "axios";
 import { Trans, useTranslation } from "react-i18next";
-import { useAuth } from "../../context/auth";
+import { useAuth } from "../../../context/auth";
 import { toast } from "react-hot-toast";
 
 const AddressStep = ({ address, onNext, onAddressChange }) => {
