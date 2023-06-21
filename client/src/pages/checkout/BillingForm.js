@@ -31,6 +31,26 @@ const BillingForm = ({ formData, handleChange, setFormData }) => {
   return (
     <form className={styling.billingFormContainer}>
       {/* Make name and surname in one row */}
+      <div className={styling.twoRowsInput}>
+        <label>Name:</label>
+        <input
+          type="text"
+          name="billing.name"
+          placeholder="Name"
+          value={formData.billing.name}
+          onChange={handleChange}
+        />
+      </div>
+      <div className={styling.twoRowsInput}>
+        <label>Surname:</label>
+        <input
+          type="text"
+          name="billing.surname"
+          placeholder="Surname"
+          value={formData.billing.surname}
+          onChange={handleChange}
+        />
+      </div>
       <div className={styling.oneRowInput}>
         <label>Address:</label>
         <input

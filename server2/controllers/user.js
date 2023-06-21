@@ -19,7 +19,8 @@ const updateProfile = async (req, res) => {
         {
           firstName: firstName || user.firstName,
           lastName: lastName || user.lastName,
-          addresses: addresses || user.addresses,
+          shippingAddresses: addresses || user.shippingAddresses,
+          billingAddresses: user.billingAddresses,
         },
         // get updated data
         { new: true }
@@ -51,7 +52,8 @@ const updateProfile = async (req, res) => {
           firstName: firstName || user.firstName,
           lastName: lastName || user.lastName,
           password: hashedPassword || user.password,
-          addresses: addresses || user.addresses,
+          shippingAddresses: addresses || user.shippingAddresses,
+          billingAddresses: user.billingAddresses,
         },
         // get updated data
         { new: true }
@@ -74,7 +76,7 @@ const addAddress = async (req, res) => {
       const { addresses } = req.body;
       const user = await UserModelGoogle.findByIdAndUpdate(
         req.user._id,
-        { addresses: addresses || [] },
+        { shippingAddresses: addresses || [] },
         { new: true }
       );
 
@@ -84,7 +86,7 @@ const addAddress = async (req, res) => {
       const { addresses } = req.body;
       const user = await User.findByIdAndUpdate(
         req.user._id,
-        { addresses: addresses || [] },
+        { shippingAddresses: addresses || [] },
         { new: true }
       );
 
@@ -105,7 +107,7 @@ const deleteAddress = async (req, res) => {
       const { addressId } = req.body;
       const user = await UserModelGoogle.findByIdAndUpdate(
         req.user._id,
-        { $pull: { addresses: { _id: addressId } } },
+        { $pull: { shippingAddresses: { _id: addressId } } },
         { new: true }
       );
 
@@ -115,7 +117,7 @@ const deleteAddress = async (req, res) => {
       const { addressId } = req.body;
       const user = await User.findByIdAndUpdate(
         req.user._id,
-        { $pull: { addresses: { _id: addressId } } },
+        { $pull: { shippingAddresses: { _id: addressId } } },
         { new: true }
       );
 
@@ -135,8 +137,8 @@ const updateAddress = async (req, res) => {
     if (req.body.provider === "google") {
       const { addressId, updatedAddress } = req.body;
       const user = await UserModelGoogle.findOneAndUpdate(
-        { _id: req.user._id, "addresses._id": addressId },
-        { $set: { "addresses.$": updatedAddress } },
+        { _id: req.user._id, "shippingAddresses._id": addressId },
+        { $set: { "shippingAddresses.$": updatedAddress } },
         { new: true }
       );
 
@@ -145,8 +147,8 @@ const updateAddress = async (req, res) => {
     } else {
       const { addressId, updatedAddress } = req.body;
       const user = await User.findOneAndUpdate(
-        { _id: req.user._id, "addresses._id": addressId },
-        { $set: { "addresses.$": updatedAddress } },
+        { _id: req.user._id, "shippingAddresses._id": addressId },
+        { $set: { "shippingAddresses.$": updatedAddress } },
         { new: true }
       );
 
@@ -246,6 +248,138 @@ const deleteWhishlist = async (req, res) => {
   }
 };
 
+const getLatestShippingAddress = async (req, res) => {
+  try {
+    const user = await User.findById(req.user?._id);
+
+    if (
+      !user ||
+      !user.shippingAddresses ||
+      user.shippingAddresses.length === 0
+    ) {
+      res.json({ message: "User or addresses not found" });
+      return;
+    }
+    // Sort the addresses in descending order based on the timestamp
+    user.shippingAddresses.sort((a, b) => b.timestamp - a.timestamp);
+
+    const latestAddress = user.shippingAddresses[0];
+
+    res.status(200).json(latestAddress);
+  } catch (error) {
+    console.error("Error retrieving latest address:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getLatestBillingAddress = async (req, res) => {
+  try {
+    const user = await User.findById(req.user?._id);
+
+    if (
+      !user ||
+      !user.billingAddresses ||
+      user.billingAddresses.length === 0
+    ) {
+      res.json({ message: "User or addresses not found" });
+      return;
+    }
+    // Sort the addresses in descending order based on the timestamp
+    user.billingAddresses.sort((a, b) => b.timestamp - a.timestamp);
+
+    const latestAddress = user.billingAddresses[0];
+
+    res.status(200).json(latestAddress);
+  } catch (error) {
+    console.error("Error retrieving latest address:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const saveUserInfoCheckout = async (req, res) => {
+  console.log("SAVE USER INFO CHECKOUT", req.body);
+  try {
+    const { form, newShippingAddress, newBillingAddress } = req.body;
+    const userId = req.user._id;
+    User.findById(userId)
+      .then((user) => {
+        if (user) {
+          const { shippingAddresses, billingAddresses } = user;
+
+          // Check if the shipping address already exists
+          const isShippingAddressDuplicate = shippingAddresses.some(
+            (address) =>
+              address.street === newShippingAddress.street &&
+              address.city === newShippingAddress.city &&
+              address.zip === newShippingAddress.zip &&
+              address.country === newShippingAddress.country
+          );
+
+          // Check if the billing address already exists
+          const isBillingAddressDuplicate = billingAddresses.some(
+            (address) =>
+              address.street === newBillingAddress.street &&
+              address.city === newBillingAddress.city &&
+              address.zip === newBillingAddress.zip &&
+              address.country === newBillingAddress.country
+          );
+
+          // Update the User document if the addresses are not duplicates
+          if (!isShippingAddressDuplicate) {
+            user.shippingAddresses.push(newShippingAddress);
+          } else {
+            // If the shipping address is a duplicate, update the timestamp
+            // Take the shipping address index that already exists
+            const shippingAddressIndex = shippingAddresses.findIndex(
+              (address) =>
+                address.street === newShippingAddress.street &&
+                address.city === newShippingAddress.city &&
+                address.zip === newShippingAddress.zip &&
+                address.country === newShippingAddress.country
+            );
+            user.shippingAddresses[shippingAddressIndex].timestamp = new Date();
+          }
+
+          if (!isBillingAddressDuplicate) {
+            user.billingAddresses.push(newBillingAddress);
+          } else {
+            // If the billing address is a duplicate, update the timestamp
+            // Take the billing address index that already exists
+            const billingAddressIndex = billingAddresses.findIndex(
+              (address) =>
+                address.street === newBillingAddress.street &&
+                address.city === newBillingAddress.city &&
+                address.zip === newBillingAddress.zip &&
+                address.country === newBillingAddress.country
+            );
+            user.billingAddresses[billingAddressIndex].timestamp = new Date();
+          }
+          // update phone number
+          user.phone = form.shipping.phone;
+
+          // Save the updated User document
+          return user.save();
+        } else {
+          throw new Error("User not found.");
+        }
+      })
+      .then((updatedUser) => {
+        console.log("Addresses saved successfully.");
+        // Send response
+        res.json(updatedUser);
+      })
+      .catch((error) => {
+        console.error("Error saving addresses:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+      });
+  } catch (error) {
+    console.error("Error saving user info:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getUserEmailandPhone = async (req, res) => {};
+
 module.exports = {
   updateProfile,
   addAddress,
@@ -254,4 +388,7 @@ module.exports = {
   updateWhishlists,
   readWhishlists,
   deleteWhishlist,
+  getLatestShippingAddress,
+  getLatestBillingAddress,
+  saveUserInfoCheckout,
 };

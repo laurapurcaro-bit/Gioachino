@@ -24,15 +24,15 @@ export default function UserProfile() {
 
   useEffect(() => {
     if (auth?.user) {
-      const { firstName, lastName, email, addresses } =
+      const { firstName, lastName, email, shippingAddresses } =
         auth.user;
       setFirstName(firstName);
       setLastName(lastName);
       setEmail(email);
-      setStreet(addresses[0]?.street);
-      setCAP(addresses[0]?.CAP);
-      setCity(addresses[0]?.city);
-      setCountry(addresses[0]?.country);
+      setStreet(shippingAddresses[0]?.street);
+      setCAP(shippingAddresses[0]?.CAP);
+      setCity(shippingAddresses[0]?.city);
+      setCountry(shippingAddresses[0]?.country);
     }
   }, [auth?.user]);
   // hanlde if google login or email

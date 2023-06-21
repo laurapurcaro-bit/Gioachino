@@ -39,6 +39,7 @@ import SavedItems from "./pages/user/SavedItems";
 import RegisterPopup from "./pages/auth/Register";
 import UserAddresses from "./pages/user/UserAddresses";
 import CheckoutPageOld from "./pages/checkout/CheckoutPageOld";
+import { AlreadyPaidStep } from "./pages/checkout/DisplaySteps";
 
 const PageNotFound = () => {
   return (
@@ -143,6 +144,7 @@ export default function App() {
         <Route path="/search" element={<ResultsSearchBar />} />
         <Route path="/logged" element={<PrivateRoute />}>
           <Route path="saved-items" element={<SavedItems />} />
+          <Route path="fast-checkout" element={<AlreadyPaidStep />} />
         </Route>
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<SingleProductPage />} />

@@ -19,26 +19,52 @@ const userSchema = new Schema(
     lastName: { type: String, trim: true, required: true },
     gender: { type: String },
     email: { type: String, trim: true, required: true, unique: true },
+    shippingEmail: { type: String, trim: true },
     photo: { type: String },
     password: { type: String, required: true, minLength: 6, maxLength: 64 },
+    phone: { type: String },
     provider: { type: String, default: "email" },
-    addresses: [
+    shippingAddresses: [
       {
+        name: { type: String },
+        surname: { type: String },
         street: {
           type: String,
-          
         },
         zip: {
           type: String,
-          
         },
         city: {
           type: String,
-          
         },
         country: {
           type: String,
-          
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    billingAddresses: [
+      {
+        name: { type: String },
+        surname: { type: String },
+        street: {
+          type: String,
+        },
+        zip: {
+          type: String,
+        },
+        city: {
+          type: String,
+        },
+        country: {
+          type: String,
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
         },
       },
     ],

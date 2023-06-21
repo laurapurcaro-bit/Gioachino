@@ -17,34 +17,35 @@ export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [message, setMessage] = useState(null);
   const [instance, setInstance] = useState("");
+  const [checked, setChecked] = useState(false);
   // loading state to disable the pay button
   const [loading, setLoading] = useState(false);
   const country = "Italy";
   const [formData, setFormData] = useState({
-    name: "",
-    surname: "",
     shipping: {
+      name: "",
+      surname: "",
       street: "",
       city: "",
-      state: "",
       zip: "",
       phone: "",
       province: "",
       country: country,
-      method: "",
+      method: "standard",
+      timestamp: Date.now(),
     },
     billing: {
+      name: "",
+      surname: "",
       street: "",
       city: "",
-      state: "",
       zip: "",
-      phone: "",
       province: "",
       country: country,
-      method: "",
+      timestamp: Date.now(),
     },
     email: "",
-    paymentMethod: "",
+    paymentMethod: "card",
     billingAddressSameAsShippingAddress: true,
   });
 
@@ -138,6 +139,20 @@ export default function CheckoutPage() {
     }
   };
 
+  const handleNextStep = () => {
+    setCurrentStep(currentStep + 1);
+  };
+
+  const handlePreviousStep = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleSaveInfo = (e) => {
+    const { name, checked } = e.target;
+    console.log("checked", checked);
+    setChecked(checked);
+  };
+
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -148,6 +163,10 @@ export default function CheckoutPage() {
               setFormData={setFormData}
               handleChange={handleChange}
               handleNextStep={handleNextStep}
+              handleSaveInfo={handleSaveInfo}
+              checked={checked}
+              message={message}
+              setMessage={setMessage}
             />
           </>
         );
@@ -156,24 +175,19 @@ export default function CheckoutPage() {
           <>
             <DisplayPaymentStep
               formData={formData}
+              setFormData={setFormData}
               handlePreviousStep={handlePreviousStep}
               instance={instance}
               setInstance={setInstance}
               message={message}
+              loading={loading}
+              handleBuy={handleBuy}
             />
           </>
         );
       default:
         return null;
     }
-  };
-
-  const handleNextStep = () => {
-    setCurrentStep(currentStep + 1);
-  };
-
-  const handlePreviousStep = () => {
-    setCurrentStep(currentStep - 1);
   };
 
   return (
@@ -185,7 +199,6 @@ export default function CheckoutPage() {
       <div className="row">
         <div className={`col-md-7`}>
           {/* Button */}
-
           {/* Steps */}
           <div>{renderStep()}</div>
         </div>
@@ -197,56 +210,7 @@ export default function CheckoutPage() {
         </div>
         <div className="row">
           <div className="col-md-7">
-            {currentStep === 1 ? (
-              <div className={styling.marginTop}>
-                <p>
-                  To proceed with your purchase, accept the Terms & Conditions
-                  and Privacy Policy
-                </p>
-                <hr />
-                <div className={styling.colElements}>
-                  <span>Back to cart</span>
-                  <button
-                    onClick={handleNextStep}
-                    className={styling.nextButton}
-                  >
-                    Next
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className={styling.marginTop}>
-                <p>
-                  To proceed with your purchase, accept the Terms & Conditions
-                  and Privacy Policy
-                </p>
-                <hr />
-                <div className={styling.colElements}>
-                  <button
-                    onClick={handlePreviousStep}
-                    className={styling.nextButton}
-                  >
-                    Previous
-                  </button>
-                  <button
-                    className={styling.payButton}
-                    onClick={handleBuy}
-                    // hidden
-                    disabled={!instance || loading}
-                  >
-                    {loading ? (
-                      <p>
-                        <Trans>Loading</Trans>...
-                      </p>
-                    ) : (
-                      <p>
-                        <Trans>Pay</Trans>
-                      </p>
-                    )}
-                  </button>
-                </div>
-              </div>
-            )}
+            
           </div>
         </div>
       </div>

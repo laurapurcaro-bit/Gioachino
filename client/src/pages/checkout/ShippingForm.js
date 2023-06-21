@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styling from "./BillingForm.module.css";
 import Select from "react-select";
 
-const ShippingForm = ({ formData, handleChange, setFormData }) => {
+const ShippingForm = ({ formData, handleChange}) => {
   const [filteredProvinces, setFilteredProvinces] = useState([]);
 
   const handleChangeProvince = (selectedOption) => {
@@ -36,9 +36,9 @@ const ShippingForm = ({ formData, handleChange, setFormData }) => {
           <label>Name:</label>
           <input
             type="text"
-            name="name"
+            name="shipping.name"
             placeholder="Name"
-            value={formData.name}
+            value={formData.shipping.name}
             onChange={handleChange}
           />
         </div>
@@ -46,9 +46,9 @@ const ShippingForm = ({ formData, handleChange, setFormData }) => {
           <label>Surname:</label>
           <input
             type="text"
-            name="surname"
+            name="shipping.surname"
             placeholder="Surname"
-            value={formData.surname}
+            value={formData.shipping.surname}
             onChange={handleChange}
           />
         </div>

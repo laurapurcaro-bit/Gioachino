@@ -11,6 +11,7 @@ const orderSchema = new mongoose.Schema(
     orderId: { type: String },
     amount: { type: Number },
     buyer: { type: ObjectId, refPath: "docModel" },
+    phone: { type: String },
     docModel: {
       type: String,
       enum: ["Useremail", "Usergoogle", "Userfacebook"],
