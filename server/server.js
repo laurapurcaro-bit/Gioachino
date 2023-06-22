@@ -23,7 +23,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const path = require("path");
-const port = 8000;
+const PORT = parseInt(process.env.PORT) || 8000;
 
 app.use(
   bodyParser.urlencoded({
@@ -103,6 +103,6 @@ app.use("/api", paymentRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", mapsRoutes);
 
-app.listen(port, () => {
-  console.log(`server2 is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`server2 is running on port ${PORT}`);
 });

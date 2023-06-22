@@ -12,7 +12,13 @@ const AuthProvider = ({ children }) => {
   });
 
   // axios config for all requests
-  axios.defaults.baseURL = process.env.REACT_APP_API;
+  if (window.location.hostname === 'localhost') {
+    // Local environment
+    axios.defaults.baseURL = process.env.REACT_APP_API;
+  } else {
+    // App Engine environment or other deployment
+    axios.defaults.baseURL = process.env.REACT_APP_URL;
+  }
   axios.defaults.headers.common["Authorization"] = auth?.token;
 
   useEffect(() => {

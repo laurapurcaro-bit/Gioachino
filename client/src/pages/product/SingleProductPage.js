@@ -158,7 +158,6 @@ export default function SingleProductPage() {
                   }-${index + 1}.png`}
                   alt={product?.name}
                   onClick={() => setSelectedImageIndex(index + 1)}
-                  // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
                 />
               ))}
             </div>
@@ -184,7 +183,6 @@ export default function SingleProductPage() {
                     }-${index}.png`}
                     alt={product?.name}
                     onClick={() => setSelectedImageIndex(index + 1)}
-                    // onclick={changeImage(`${process.env.REACT_APP_API}/product/photo/${product._id}`)}
                   />
                 ))}
               </Carousel>
