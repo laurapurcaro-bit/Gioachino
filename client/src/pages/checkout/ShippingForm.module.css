@@ -46,3 +46,54 @@ input {
   font-size: 1.7rem;
   margin: 0;
 }
+
+.cardAddresses {
+  width: 30rem;
+  height: 20rem;
+  border: 0.1rem solid #d7d6d1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 1rem;
+}
+
+.radioInput {
+  margin-right: 1rem;
+  width: 20px;
+  height: 20px;
+}
+
+.radioDiv {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-start;
+  border: 1px solid #d7d6d1;
+  padding: 2rem;
+  margin-left: 1rem;
+  margin-bottom: 2rem;
+}
+
+.addAddress {
+  display: flex;
+  align-items: center;
+  /* margin-left: 5rem; */
+}
+
+.addAddressElements {
+  display: flex;
+  align-items: center;
+}
+
+.radioLabel {
+  position: relative;
+}
+.closeIcon {
+  position: absolute;
+  left: 180px;
+  top: -40px;
+  background-color: white;
+  cursor: pointer;
+}

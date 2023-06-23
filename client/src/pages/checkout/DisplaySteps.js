@@ -5,7 +5,11 @@ import ContactInformation from "./ContactInformation";
 import BillingForm from "./BillingForm";
 import PaymentCustom from "../../components/payment/PaymentCustom";
 import { Trans, useTranslation } from "react-i18next";
-import { EditOutlined, CheckCircleFilled } from "@ant-design/icons";
+import {
+  EditOutlined,
+  CheckCircleFilled,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { useAuth } from "../../context/auth";
 import axios from "axios";
 import { OrderSumm } from "./OrderSumm";
@@ -167,11 +171,7 @@ function DisplayFirstStep({
             <strong>Shipping address</strong>
           </h3>
         </div>
-        <ShippingForm
-          formData={formData}
-          // setFormData={setFormData}
-          handleChange={handleChange}
-        />
+        <ShippingForm formData={formData} handleChange={handleChange} />
       </div>
       {formData.billingAddressSameAsShippingAddress ? null : (
         <div className={`${styling.formDiv} ${styling.leftBorder}`}>
@@ -549,6 +549,7 @@ function AlreadyPaidStep() {
   // function
   const handleUpdateContactInformation = () => {
     // handlePreviousStep();
+    navigate("/checkout");
   };
 
   return (

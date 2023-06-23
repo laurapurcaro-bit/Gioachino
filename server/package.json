@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "prepare": "npm run server.js",
-    "pretest": "npm run server.js",
-    "start": "node ./server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gcloud builds submit --tag gcr.io/ecommerce/server"
   },
   "keywords": [],
   "author": "",

@@ -11,6 +11,7 @@ import { useAuth } from "../../context/auth";
 import toast from "react-hot-toast";
 import { DisplayFirstStep, DisplayPaymentStep } from "./DisplaySteps";
 
+
 const steps = ["Shipping Method", "Payment Method"];
 
 export default function CheckoutPage() {
@@ -209,9 +210,7 @@ export default function CheckoutPage() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-7">
-            
-          </div>
+          <div className="col-md-7"></div>
         </div>
       </div>
     </div>
