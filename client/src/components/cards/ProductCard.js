@@ -20,7 +20,7 @@ export default function ProductCard({ product }) {
   // hook
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
-  console.log("PRODUCT", product);
+  // console.log("PRODUCT", product);
 
   useEffect(() => {
     // Check if the product is saved
@@ -52,11 +52,11 @@ export default function ProductCard({ product }) {
     });
 
     if (existingProduct) {
-      console.log("PROD EX");
-      console.log("EXISTING PRODUCT", cartLs);
+      // console.log("PROD EX");
+      // console.log("EXISTING PRODUCT", cartLs);
       // If the product exists, update the quantity
       const updatedCart = cartLs.map((item) => {
-        console.log("ITEM", item);
+        // console.log("ITEM", item);
         if (item._id === product._id) {
           return {
             ...item,
@@ -65,12 +65,12 @@ export default function ProductCard({ product }) {
         }
         return item;
       });
-      console.log("UPDATED CART", updatedCart);
+      // console.log("UPDATED CART", updatedCart);
       // localStorage.setItem("cart", JSON.stringify(updatedCart));
       encryptData(updatedCart, "cart");
       setCart(updatedCart);
     } else {
-      console.log("PROD NEW");
+      // console.log("PROD NEW");
       // If the product does not exist, quantity is 0, so we add 1
       const newProduct = { ...product, quantity: 1 };
       const updatedCart = [...cart, newProduct];
@@ -90,10 +90,26 @@ export default function ProductCard({ product }) {
         provider: auth.user.provider || "email",
       });
       if (data.error) {
-        toast.error(data.error);
+        console.log(data.error);
         return;
       }
-      toast.success(`Wishlist "${wishlistName}" added`);
+      // toast.success(`Wishlist "${wishlistName}" added`);
+    } else {
+      toast.error("An error occurred. Please try later.");
+    }
+  };
+
+  const handleUpdateWishilist = async (wishlistName, savedItems) => {
+    if (wishlistName.trim() !== "") {
+      // Add your logic here to save the wishlist name
+      const { data } = await axios.put("/whishlists/add", {
+        newWhishlists: { name: wishlistName, savedItems: savedItems },
+        provider: auth.user.provider || "email",
+      });
+      if (data.error) {
+        console.log(data.error);
+        return;
+      }
     } else {
       toast.error("An error occurred. Please try later.");
     }
@@ -112,7 +128,7 @@ export default function ProductCard({ product }) {
         // If there are saved items, make a copy of the array
         updatedItems = [...savedItems];
       }
-      console.log("SAVED ITEMS", product);
+      // console.log("SAVED ITEMS", product);
       // Add the new product to the updated list
       updatedItems.push({
         whishlistName: whishlistName,
@@ -120,7 +136,7 @@ export default function ProductCard({ product }) {
         category: product?.categorySlug.toLowerCase(),
         isSaved: !isSaved,
       });
-      console.log("UPDATED SAVED ITEMS", updatedItems);
+      // console.log("UPDATED SAVED ITEMS", updatedItems);
       // Save the updated list back to local storage
       // encrypt
       encryptData(updatedItems, "itemSaved");
@@ -138,11 +154,11 @@ export default function ProductCard({ product }) {
           (item) => item.productId !== product._id
         );
       }
-      console.log("UPDATED ITEMS", updatedItems);
+      // console.log("UPDATED ITEMS", updatedItems);
       // Save the updated list back to local storage and encrypt
       encryptData(updatedItems, "itemSaved");
       // Update the wishlist
-      handleCreateWishilist(whishlistName, updatedItems);
+      handleUpdateWishilist(whishlistName, updatedItems);
     }
     // e.g., dispatch an action or update the state
   };

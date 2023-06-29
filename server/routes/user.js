@@ -10,6 +10,7 @@ const {
   updateAddress,
   updateWhishlists,
   readWhishlists,
+  readWhishlistId,
   deleteWhishlist,
   getLatestShippingAddress,
   getLatestBillingAddress,
@@ -26,5 +27,6 @@ router.post("/profile/addresses/checkout", requireSignIn, saveUserInfoCheckout);
 router.put("/whishlists/add", requireSignIn, updateWhishlists);
 router.get("/whishlists/read", requireSignIn, readWhishlists);
 router.delete("/whishlists/delete/:wishlistId", requireSignIn, deleteWhishlist);
+router.post("/whishlist/:whishlistId", readWhishlistId);
 
 module.exports = router;

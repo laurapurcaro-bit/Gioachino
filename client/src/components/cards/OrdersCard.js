@@ -4,7 +4,7 @@ import styling from "./OrdersCard.module.css"
 export default function OrdersCard({ p }) {
   const currency = "EUR";
   const localString = "en-US";
-  console.log("ORDERS CARD", p);
+  // console.log("ORDERS CARD", p);
   return (
     <div className="mb-3">
       <div className="row g-0">

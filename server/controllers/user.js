@@ -1,8 +1,8 @@
 const User = require("../models/user");
 const { UserModelGoogle } = require("../models/userGoogle");
-const { hashPassword, comparePassword } = require("../helpers/auth");
-const jwt = require("jsonwebtoken");
+const { hashPassword } = require("../helpers/auth");
 const dotenv = require("dotenv").config();
+const { v4: uuidv4 } = require("uuid");
 
 // no change password if user login with google
 const updateProfile = async (req, res) => {
@@ -184,6 +184,8 @@ const updateWhishlists = async (req, res) => {
         user.whishlists.push({
           name: newWhishlists.name,
           savedItems: newWhishlists.savedItems,
+          // generate unique id
+          uniqueId: uuidv4(),
         });
       }
       // Save the updated user document
@@ -204,6 +206,8 @@ const updateWhishlists = async (req, res) => {
         user.whishlists.push({
           name: newWhishlists.name,
           savedItems: newWhishlists.savedItems,
+          // generate unique id
+          uniqueId: uuidv4(),
         });
       }
       // Save the updated user document
@@ -223,6 +227,34 @@ const readWhishlists = async (req, res) => {
     const user = await User.findById(req.user?._id);
     // Send the whishlists as the response
     res.json(user.whishlists);
+  } catch (err) {
+    console.log("READ WHISHLISTS ERROR", err);
+    res.status(400).send("Error reading whishlists");
+  }
+};
+
+const readWhishlistId = async (req, res) => {
+  // retrieve the user's whishlists based on uniqueId
+  const { whishlistId } = req.params;
+  const { userId } = req.body;
+
+  try {
+    // Retrieve the user's whishlists
+    const user = await User.findById(userId);
+    // Find the wishlist with the matching uniqueId
+    const wishlist = user?.whishlists?.find(
+      (wishlist) => {
+        console.log("WISHLIST!!!!", wishlist.uniqueId);
+        return wishlist.uniqueId === whishlistId
+      }
+    );
+    console.log("WISHLIST", wishlist);
+
+    if (!wishlist) {
+      return res.status(404).json({ error: "Wishlist not found" });
+    }
+    // Send the wishlist as the response
+    res.json(wishlist);
   } catch (err) {
     console.log("READ WHISHLISTS ERROR", err);
     res.status(400).send("Error reading whishlists");
@@ -276,11 +308,7 @@ const getLatestBillingAddress = async (req, res) => {
   try {
     const user = await User.findById(req.user?._id);
 
-    if (
-      !user ||
-      !user.billingAddresses ||
-      user.billingAddresses.length === 0
-    ) {
+    if (!user || !user.billingAddresses || user.billingAddresses.length === 0) {
       res.json({ message: "User or addresses not found" });
       return;
     }
@@ -388,6 +416,7 @@ module.exports = {
   updateWhishlists,
   readWhishlists,
   deleteWhishlist,
+  readWhishlistId,
   getLatestShippingAddress,
   getLatestBillingAddress,
   saveUserInfoCheckout,

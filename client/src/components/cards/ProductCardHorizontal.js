@@ -12,7 +12,7 @@ export default function ProductCartHorizontal({
   const currency = "EUR";
   const localString = "en-US";
   // hook
-  console.log("CART PRODUCT", cart);
+  // console.log("CART PRODUCT", cart);
 
   const cartSubTotal = (p) => {
     let subtotal = 0;
@@ -28,8 +28,8 @@ export default function ProductCartHorizontal({
     const existingProductIndex = cart.findIndex((item) => item._id === p._id);
     // If no element is found, it returns -1
     if (existingProductIndex !== -1) {
-      console.log("PROD EX");
-      console.log("EXISTING PRODUCT", cart);
+      // console.log("PROD EX");
+      // console.log("EXISTING PRODUCT", cart);
       // If the product exists, update the quantity
       const updatedCart = [...cart];
       if (increase) {
@@ -38,7 +38,7 @@ export default function ProductCartHorizontal({
         updatedCart[existingProductIndex].quantity -= 1;
       }
 
-      console.log("UPDATED CART", updatedCart);
+      // console.log("UPDATED CART", updatedCart);
       encryptData(updatedCart, "cart");
       setCart(updatedCart);
     }
@@ -46,13 +46,13 @@ export default function ProductCartHorizontal({
 
   const handleIncreaseQuantity = () => {
     updateCart(true, false);
-    console.log("PRODUCT +", p);
+    // console.log("PRODUCT +", p);
   };
 
   const handleDecreaseQuantity = () => {
     if (p.quantity > 1) {
       updateCart(false, true);
-      console.log("PRODUCT -", p);
+      // console.log("PRODUCT -", p);
     }
   };
 

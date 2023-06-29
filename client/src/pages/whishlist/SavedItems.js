@@ -1,7 +1,7 @@
 import { Trans, useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import styling from "./SavedItems.module.css";
-import Whishlist from "../../components/cards/WhishlistCard";
+import WhishlistsCards from "./WhishlistCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/auth";
@@ -112,7 +112,7 @@ export default function SavedItems() {
       <div className={styling.savedLists}>
         {whishlists?.length > 0 ? (
           whishlists.map((whishlist) => (
-            <Whishlist
+            <WhishlistsCards
               key={whishlist._id}
               whishlist={whishlist}
               handleRemoveWhishlist={handleRemoveWhishlist}

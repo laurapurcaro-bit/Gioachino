@@ -1,8 +1,14 @@
-import styling from "./Whishlist.module.css";
+import styling from "./WhishlistCard.module.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Trans } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
-export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
+export default function WhishlistsCards({ whishlist, handleRemoveWhishlist }) {
+  const navigate = useNavigate();
+
+  const handleShowWhishlist = () => {
+    navigate(`/logged/whishlist/${whishlist.uniqueId}`);
+  };
 
   return (
     <div className={`${styling.cardSavedItems}`}>
@@ -37,7 +43,7 @@ export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
         )}
       </div>
       <div className={`container-fluid ${styling.containerButton}`}>
-        <button className={`${styling.button}`}>
+        <button className={`${styling.button}`} onClick={handleShowWhishlist}>
           <ArrowRightOutlined />
         </button>
       </div>

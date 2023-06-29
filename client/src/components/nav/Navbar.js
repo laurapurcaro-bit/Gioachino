@@ -16,7 +16,7 @@ export default function Navbar({ setShowLoginPopup }) {
   // const navigate = useNavigate();
   // custom hook
   const categories = useCategory();
-  console.log(categories);
+  // console.log(categories);
 
   const logout = async () => {
     console.log("removing local storage");
@@ -121,7 +121,7 @@ export default function Navbar({ setShowLoginPopup }) {
         )}
         {/* Wishlist */}
 
-        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} to="/logged/saved-items">
+        <NavLink className={`${styling.navElements} ${styling.navbarFontLinks}`} to="/logged/whishlist">
           <HeartOutlined className={`${styling.navIcon}`} />
         </NavLink>
         {/* Cart */}

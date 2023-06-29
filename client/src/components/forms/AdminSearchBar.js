@@ -13,7 +13,7 @@ export default function Searchbar() {
       const { data } = await axios.get(
         `/admin/orders/search/${values?.search}`
       );
-      console.log("SEARCH RESULTS", data);
+      // console.log("SEARCH RESULTS", data);
       setValues({ ...values, results: [data] });
       navigate("/dashboard/admin/search");
     } catch (error) {

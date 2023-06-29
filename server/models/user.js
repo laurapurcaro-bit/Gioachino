@@ -10,6 +10,10 @@ const WishlistSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  uniqueId: {
+    type: String,
+    required: true,
+  },
 });
 
 const userSchema = new Schema(

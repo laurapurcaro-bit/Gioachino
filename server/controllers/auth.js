@@ -110,6 +110,7 @@ const login = async (req, res) => {
         billingAddresses: user.billingAddresses,
         role: user.role,
         provider: user.provider,
+        _id: user._id,
       },
       token,
     });

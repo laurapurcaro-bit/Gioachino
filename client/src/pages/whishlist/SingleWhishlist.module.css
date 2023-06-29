@@ -1,0 +1,15 @@
+.whishlistName {
+    text-align: center;
+}
+
+.img {
+    width: 30rem;
+    height: 40rem;
+    margin: 2rem;
+}
+
+.containerPreview {
+    display: flex;
+    justify-content: left;
+    margin: 4rem;
+}

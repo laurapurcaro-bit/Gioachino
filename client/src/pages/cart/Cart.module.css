@@ -26,7 +26,7 @@
   background-color: white;
   margin: 3rem 5rem;
   padding: 3rem 5rem;
-  width : 100%;
+  width: 100%;
 }
 
 .cartElements {
@@ -56,7 +56,7 @@
 }
 
 .lastContainer {
-    margin-bottom: 3rem;
+  margin-bottom: 3rem;
 }
 
 .shadow {
@@ -77,4 +77,33 @@
   text-align: right;
   font-weight: 400;
   font-size: 2rem;
+}
+
+.emptyCart {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6rem;
+  text-align: center;
+  align-items: center;
+}
+
+.emptyCartButton {
+  width: 30%;
+  height: 5rem;
+  margin-top: 3rem;
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.emptyCartImage {
+  margin-top: 3rem;
+  width: 100px;
+  height: 100px;
+}
+
+.relatedProducts {
+  margin-top: 20rem;
+  margin-left: 5rem;
+  margin-bottom: 3rem;
 }
