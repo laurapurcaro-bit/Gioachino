@@ -14,6 +14,7 @@ export default function UserAddresses() {
     zip: "",
     city: "",
     country: "",
+    timestamp: Date.now(),
   });
 
   const [validationError, setValidationError] = useState(false);
@@ -36,15 +37,15 @@ export default function UserAddresses() {
     console.log("validateAddress", validationError);
     // Save the new address to the user's addresses array
     const updatedUser = { ...auth.user };
-    if (!updatedUser.addresses) {
-      updatedUser.addresses = [];
+    if (!updatedUser.shippingAddresses) {
+      updatedUser.shippingAddresses = [];
     }
-    updatedUser.addresses.push(newAddress);
+    updatedUser.shippingAddresses.push(newAddress);
     console.log("UPDATED USER", updatedUser);
     // TODO: Send updatedUser to backend API to save the changes
     try {
       const { data } = await axios.put("/profile/addresses/add", {
-        addresses: updatedUser.addresses,
+        addresses: updatedUser.shippingAddresses,
         provider: auth.user.provider || "email",
       });
       // Handle error
@@ -120,7 +121,7 @@ export default function UserAddresses() {
   const handleRemoveAddress = async (index, addressId) => {
     // Remove the address from the user's addresses array
     const updatedUser = { ...auth.user };
-    updatedUser.addresses.splice(index, 1);
+    updatedUser.shippingAddresses.splice(index, 1);
     console.log("addressId", addressId);
     // TODO: Send updatedUser to backend API to save the changes
     try {
@@ -153,10 +154,10 @@ export default function UserAddresses() {
           <div className="p-3 mt-2 mb-2 h4 bg-light">
             <Trans>Addresses</Trans>
           </div>
-          {auth?.user?.addresses && auth?.user?.addresses?.length > 0 && (
+          {auth?.user?.shippingAddresses && auth?.user?.shippingAddresses?.length > 0 && (
             // Render the existing addresses
             <div className="row">
-              {auth?.user?.addresses?.map((address, index) => (
+              {auth?.user?.shippingAddresses?.map((address, index) => (
                 <div key={index} className="col-md-4">
                   <div className={`${styling.cardAddresses}`}>
                     <div>

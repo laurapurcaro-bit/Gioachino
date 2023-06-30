@@ -5,6 +5,8 @@ import { Trans } from "react-i18next";
 import { encryptData } from "../../constants";
 import styling from "./Cart.module.css";
 import BusinessDaysConverter from "./BusinessDaysConverter";
+import { useAuth } from "../../context/auth";
+import emptyCart from "../../images/empty-cart.svg";
 
 export default function Cart() {
   // const
@@ -12,6 +14,7 @@ export default function Cart() {
   const localString = "en-US";
   // context
   const [cart, setCart] = useCart();
+  const [auth] = useAuth();
   // hook
   const navigate = useNavigate();
   console.log("CART", cart);
@@ -58,8 +61,7 @@ export default function Cart() {
   };
 
   const cartTotalWithIVA = () => {
-    const iva = 0.21;
-    const total = cartSubTotal() + shippingCost() + iva;
+    const total = cartSubTotal() + shippingCost();
     encryptData(total, "cartTotalWithIVA");
     return total;
   };
@@ -71,24 +73,42 @@ export default function Cart() {
     });
   };
 
+  const handleCheckout = () => {
+    if (auth?.user?.shippingAddresses?.length === 0) {
+      navigate("/checkout");
+    } else {
+      navigate("/logged/fast-checkout");
+    }
+  };
+
   return (
     <>
       <div className={`container-fluid`}>
         <div className="row">
           <div className="col-md-12">
-            <div className="p-3 mt-2 mb-2 h4">
-            </div>
+            <div className="p-3 mt-2 mb-2 h4"></div>
+            {/* Empty cart */}
             {cart?.length === 0 && (
-              <div className="text-center">
-                <h2>
-                  <Trans>Your cart is empty.</Trans>
-                </h2>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => navigate("/")}
-                >
-                  <Trans>Continue Shopping</Trans>
-                </button>
+              <div>
+                <div className={styling.emptyCart}>
+                  <h2>
+                    <Trans>Oops, your cart is empty.</Trans>
+                  </h2>
+                  <img
+                    src={emptyCart}
+                    alt="Empty cart"
+                    className={styling.emptyCartImage}
+                  />
+                  <button
+                    className={styling.emptyCartButton}
+                    onClick={() => navigate("/catalogue")}
+                  >
+                    <Trans>Continue Shopping</Trans>
+                  </button>
+                </div>
+                <div className={styling.relatedProducts}>
+                  <h5><Trans>You could also like..</Trans></h5>
+                </div>
               </div>
             )}
           </div>
@@ -177,7 +197,7 @@ export default function Cart() {
                 <div className={`${styling.checkoutSection}`}>
                   <button
                     className={`${styling.checkoutButton}`}
-                    onClick={() => navigate("/checkout")}
+                    onClick={() => handleCheckout()}
                   >
                     <Trans>Checkout</Trans>
                   </button>

@@ -1,14 +1,17 @@
-import styling from "./Whishlist.module.css";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import styling from "./WhishlistCard.module.css";
+import { ArrowRightOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Trans } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
-export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
+export default function WhishlistsCards({ whishlist, handleRemoveWhishlist }) {
+  const navigate = useNavigate();
+
+  const handleShowWhishlist = () => {
+    navigate(`/logged/whishlist/${whishlist.uniqueId}`);
+  };
 
   return (
     <div className={`${styling.cardSavedItems}`}>
-      <div onClick={() => handleRemoveWhishlist(whishlist)}>
-        <span className={styling.close}>&times;</span>
-      </div>
       <div className={`container-fluid ${styling.containerImage}`}>
         {Array.from(Array(5).keys()).map((index) => {
           const savedItem = whishlist.savedItems[index];
@@ -31,13 +34,21 @@ export default function Whishlist({ whishlist, handleRemoveWhishlist }) {
       <div className={`container-fluid ${styling.textWhishlist}`}>
         <h3>{whishlist.name}</h3>
         {whishlist.savedItems.length > 1 ? (
-          <p>{whishlist.savedItems.length} <Trans>products</Trans></p>
+          <p>
+            {whishlist.savedItems.length} <Trans>products</Trans>
+          </p>
         ) : (
-          <p>{whishlist.savedItems.length} <Trans>product</Trans></p>
+          <p>
+            {whishlist.savedItems.length} <Trans>product</Trans>
+          </p>
         )}
       </div>
       <div className={`container-fluid ${styling.containerButton}`}>
-        <button className={`${styling.button}`}>
+        <button onClick={() => handleRemoveWhishlist(whishlist)}>
+          <DeleteOutlined className={styling.delete}/>
+        </button>
+
+        <button onClick={handleShowWhishlist}>
           <ArrowRightOutlined />
         </button>
       </div>

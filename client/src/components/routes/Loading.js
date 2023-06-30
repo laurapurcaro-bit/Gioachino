@@ -2,7 +2,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LoadingGIF from "../../images/loading.gif";
 
-export default function Loading({ path = "login" }) {
+export default function Loading({ path = "" }) {
+  // Update to show login popup
   // state
   const [count, setCount] = useState(3);
   // hook

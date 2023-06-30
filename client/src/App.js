@@ -35,10 +35,12 @@ import Popup from "./components/popup/Popup";
 import Footer from "./components/footer/Footer";
 import SingleProductPage from "./pages/product/SingleProductPage";
 import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
-import SavedItems from "./pages/user/SavedItems";
+import SavedItems from "./pages/whishlist/SavedItems";
 import RegisterPopup from "./pages/auth/Register";
 import UserAddresses from "./pages/user/UserAddresses";
 import CheckoutPageOld from "./pages/checkout/CheckoutPageOld";
+import { AlreadyPaidStep } from "./pages/checkout/DisplaySteps";
+import SingleWhishlist from "./pages/whishlist/SingleWhishlist";
 
 const PageNotFound = () => {
   return (
@@ -54,7 +56,7 @@ export default function App() {
   const [showLoginPopup, setShowLoginPopup] = useState(false);
   const [showRegisterPopup, setShowRegisterPopup] = useState(false);
   // Translate
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [currentLanguage, setCurrentLanguage] = useState("en");
 
   const changeLanguage = () => {
@@ -66,7 +68,7 @@ export default function App() {
   useEffect(() => {
     // store in local storage the language
     changeLanguage();
-    console.log("LANNG", localStorage.getItem("i18nextLng"));
+    // console.log("LANNG", localStorage.getItem("i18nextLng"));
   }, [currentLanguage]);
 
   // Get user only once
@@ -82,7 +84,6 @@ export default function App() {
     // Put context
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log("AUTH", auth);
 
   useEffect(() => {
     const hasShownPopup = localStorage.getItem("hasShownPopup");
@@ -142,7 +143,9 @@ export default function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/search" element={<ResultsSearchBar />} />
         <Route path="/logged" element={<PrivateRoute />}>
-          <Route path="saved-items" element={<SavedItems />} />
+          <Route path="whishlist" element={<SavedItems />} />
+          <Route path="whishlist/:whishlistId" element={<SingleWhishlist />} />
+          <Route path="fast-checkout" element={<AlreadyPaidStep />} />
         </Route>
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<SingleProductPage />} />

@@ -5,14 +5,13 @@ import DropIn from "braintree-web-drop-in-react";
 import { Trans, useTranslation } from "react-i18next";
 import styling from "./Payment.module.css";
 
-export default function PaymentCustom({ instance, setInstance, message }) {
+export default function PaymentCustom({ setInstance, message }) {
   // context
   const [auth] = useAuth();
   const { t } = useTranslation();
   const paymentLanguagePlaceholder = t("paymentLanguagePlaceholder");
   // state
   const [clientToken, setClientToken] = useState("");
-
   // constant
   //   const amount = cartTotal();
   // hooks
@@ -100,7 +99,7 @@ export default function PaymentCustom({ instance, setInstance, message }) {
                 },
               }}
               // we need to send instance to process the payment
-              onInstance={(instance) => setInstance(instance)}
+              onInstance={(newInstance) => setInstance(newInstance)}
             />
             {message && <div className="text-danger" style={{fontSize: "1.5rem"}}>{message}</div>}
           </div>

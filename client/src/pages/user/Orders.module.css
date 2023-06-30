@@ -1,0 +1,73 @@
+.ordersContainer {
+  border: 1px solid black;
+  margin: 1rem 2rem;
+  padding-left: 0;
+  padding-right: 0;
+  width: 96%;
+}
+
+.ordersInfo {
+  padding: 2rem;
+}
+
+.topBar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.colElements {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.colElements p {
+  padding-right: 1rem;
+}
+
+.trackButton {
+  width: 80%;
+  height: 5rem;
+  margin-top: 3rem;
+  background-color: black;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.dropdownContainer {
+  position: relative;
+}
+
+.manageOrder {
+  cursor: pointer;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 1;
+  border: 0.5px solid black;
+}
+
+.dropdownMenu ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdownMenu li {
+  padding: 3px 16px;
+}
+
+.dropdownMenu p {
+  font-size: 1.5rem;
+  cursor: pointer;
+}

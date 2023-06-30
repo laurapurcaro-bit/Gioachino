@@ -1,6 +1,15 @@
 export default function GetUser({ auth, setAuth }) {
+  let baseURL;
+  if (window.location.hostname === "localhost") {
+    // Local environment
+    baseURL = process.env.REACT_APP_API;
+  } else {
+    // App Engine environment or other deployment
+    baseURL = process.env.REACT_APP_URL;
+  }
+
   const getUser = () => {
-    fetch("http://localhost:8000/api/auth/login/success", {
+    fetch(`${baseURL}/auth/login/success`, {
       method: "GET",
       // mode: 'no-cors',
       // withCredentials: true,

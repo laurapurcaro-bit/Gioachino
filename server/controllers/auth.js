@@ -106,9 +106,11 @@ const login = async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        addresses: user.addresses,
+        shippingAddresses: user.shippingAddresses,
+        billingAddresses: user.billingAddresses,
         role: user.role,
         provider: user.provider,
+        _id: user._id,
       },
       token,
     });

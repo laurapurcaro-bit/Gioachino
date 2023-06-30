@@ -85,6 +85,7 @@ const processPayment = async (req, res) => {
               success: result.success,
             },
             buyer: req.user._id,
+            phone: selectedAddress.phone || "",
             docModel: model(),
             orderDate: result.transaction.createdAt,
           }).save((err, order) => {

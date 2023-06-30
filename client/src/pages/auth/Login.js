@@ -19,6 +19,15 @@ const LoginPopup = ({
   const [email, setEmail] = useState("lau@gmail.com");
   const [password, setPassword] = useState("1234567890");
 
+  let baseURL;
+  if (window.location.hostname === "localhost") {
+    // Local environment
+    baseURL = process.env.REACT_APP_API;
+  } else {
+    // App Engine environment or other deployment
+    baseURL = process.env.REACT_APP_URL;
+  }
+
   const navigate = useNavigate();
   const location = useLocation();
   console.log("Location", location);
@@ -67,15 +76,15 @@ const LoginPopup = ({
   };
   // OAuth
   const google = () => {
-    window.open("http://localhost:8000/api/auth/google", "_self");
+    window.open(`${baseURL}/auth/google`, "_self");
   };
 
   const facebook = () => {
-    window.open("http://localhost:8000/api/auth/facebook", "_self");
+    window.open(`${baseURL}/auth/facebook`, "_self");
   };
 
   const linkedin = () => {
-    window.open("http://localhost:8000/api/auth/linkedin", "_self");
+    window.open(`${baseURL}/auth/linkedin`, "_self");
   };
 
   return (

@@ -35,7 +35,6 @@ const AWSuploadProductsToS3 = async (filePath, productId, i, categoryName) => {
     .catch((err) => {
       console.log(err);
     });
-
 };
 
 const create = async (req, res) => {
@@ -51,6 +50,7 @@ const create = async (req, res) => {
       color,
       size,
       categoryName,
+      shortDesc,
     } = req.body;
     const { photo, additionalPhotos } = req.files;
 
@@ -74,6 +74,12 @@ const create = async (req, res) => {
       case !shipping:
         res.json({ error: "Shipping is required" });
         break;
+      case !color:
+        res.json({ error: "Color is required" });
+        break;
+      case !size:
+        res.json({ error: "Size is required" });
+        break;
       // No bigger than 1MB
       case photo && photo[0].size > 1000000:
         res.json({ error: "Photo needs to be less then 1Mb" });
@@ -89,7 +95,7 @@ const create = async (req, res) => {
     if (additionalPhotos) {
       // Add photos to S3
       additionalPhotos.map((file, i) => {
-        AWSuploadProductsToS3(file.path, product._id, i+1, categoryName);
+        AWSuploadProductsToS3(file.path, product._id, i + 1, categoryName);
       });
       product.additionalPhotos.name = additionalPhotos.map(
         (file) => file.originalname
@@ -172,7 +178,7 @@ const update = async (req, res) => {
     if (additionalPhotos) {
       // Add photos to S3
       additionalPhotos.map((file, i) => {
-        AWSuploadProductsToS3(file.path, product._id, i+1, categoryName);
+        AWSuploadProductsToS3(file.path, product._id, i + 1, categoryName);
       });
       product.additionalPhotos.name = additionalPhotos.map(
         (file) => file.originalname
@@ -330,6 +336,21 @@ const relatedProducts = async (req, res) => {
   }
 };
 
+const readProducts = async (req, res) => {
+  try {
+    // Retrieve the product IDs from the request body
+    const productIds = req.body.ids;
+
+    // Find products with matching IDs in the database
+    const products = await Product.find({ _id: { $in: productIds } });
+
+    res.json(products);
+  } catch (error) {
+    console.error("Error retrieving products:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // GET /additionalPhotos
 const additionalPhotos = async (req, res) => {
   try {
@@ -392,4 +413,5 @@ module.exports = {
   productSearch,
   relatedProducts,
   additionalPhotos,
+  readProducts,
 };
