@@ -23,6 +23,7 @@ export default function AdminCreateProduct() {
   const [price, setPrice] = useState(null);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
   // Product
   const [category, setCategory] = useState("");
   const [shipping, setShipping] = useState(false);
@@ -52,6 +53,7 @@ export default function AdminCreateProduct() {
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
+      formData.append("shortDesc", shortDesc);
       formData.append("price", price);
       for (const element of categories) {
         if (element._id === category) {
@@ -75,7 +77,7 @@ export default function AdminCreateProduct() {
 
       console.log([...formData]);
 
-      const { data } = await axios.post("/product", formData, config);
+      const { data } = await axios.post("/product/create", formData, config);
 
       if (data?.error) {
         toast.error(data.error);
@@ -185,6 +187,14 @@ export default function AdminCreateProduct() {
                 placeholder="Write a description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+              />
+              {/* Short desc */}
+              <textarea
+                type="text"
+                className="form-control mb-3 p-2"
+                placeholder="Write a short description"
+                value={shortDesc}
+                onChange={(e) => setShortDesc(e.target.value)}
               />
               {/* PRICE */}
               <input

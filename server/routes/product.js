@@ -20,6 +20,7 @@ const {
   productSearch,
   relatedProducts,
   additionalPhotos,
+  readProducts,
 } = require("../controllers/product");
 
 const multer = require("multer");
@@ -43,7 +44,7 @@ const upload = multer({ storage: storage });
 // Route where you can create category
 // Use formidable middleware to handle form data only in this route
 router.post(
-  "/product",
+  "/product/create",
   requireSignIn,
   isAdmin,
   upload.fields([
@@ -72,5 +73,6 @@ router.get("/list-products/:pageNumber", listProducts);
 router.get("/products/search/:search", productSearch);
 router.get("/products/related/:productId/:categoryId", relatedProducts);
 router.get("/product/additionalPhotos/:slug", additionalPhotos);
+router.post("/product/read", readProducts);
 
 module.exports = router;

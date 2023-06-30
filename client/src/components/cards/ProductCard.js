@@ -3,7 +3,7 @@ import { useCart } from "../../context/cart";
 import toast from "react-hot-toast";
 import styling from "./ProductCard.module.css";
 import { Trans } from "react-i18next";
-import { HeartOutlined } from "@ant-design/icons";
+import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { encryptData, decryptData } from "../../constants";
 import axios from "axios";
@@ -145,7 +145,7 @@ export default function ProductCard({ product }) {
     } else {
       // Remove selected saved item in local storage
       const savedItems = decryptData("itemSaved");
- 
+
       let updatedItems = [];
 
       if (savedItems) {
@@ -166,12 +166,17 @@ export default function ProductCard({ product }) {
   return (
     <div className={`card ${styling.card}`}>
       <div className={`${styling.cardImageContainer}`}>
-        <HeartOutlined
-          className={`${styling.heartIcon} ${
-            isSaved ? styling.savedHeartIcon : ""
-          }`}
-          onClick={(e) => handleHeartClick(product, "Wishlist")}
-        />
+        {isSaved ? (
+          <HeartFilled
+            className={`${styling.heartIcon} ${styling.savedHeartIcon}`}
+            onClick={(e) => handleHeartClick(product, "Wishlist")}
+          />
+        ) : (
+          <HeartOutlined
+            className={`${styling.heartIcon}`}
+            onClick={(e) => handleHeartClick(product, "Wishlist")}
+          />
+        )}
         <img
           className="card-img-top"
           src={`${

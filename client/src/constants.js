@@ -1,5 +1,18 @@
 import CryptoJS from "crypto-js";
 
+const currencies = [
+  {
+    _id: 1,
+    name: "EUR",
+    value: "€"
+  },
+  {
+    _id: 2,
+    name: "USD",
+    value: "$"
+  },
+];
+
 const provincesInItaly = [
   'Agrigento',
   'Alessandria',
@@ -220,4 +233,4 @@ const decryptData = (localStorageKey) => {
   return null;
 };
 
-export { prices, colors, sizes, encryptData, decryptData, provincesInItaly };
+export { prices, colors, sizes, encryptData, decryptData, provincesInItaly, currencies };

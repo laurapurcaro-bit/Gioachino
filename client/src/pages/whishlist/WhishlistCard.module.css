@@ -1,29 +1,29 @@
 .cardSavedItems {
-  width: 30rem;
-  height: 20rem;
+  width: 40rem;
+  height: 22rem;
   border: 0.1rem solid #d7d6d1;
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin: 1rem;
+  padding: 2rem;
 }
 
 .containerImage {
-  margin-top: 3rem;
-  width: 90%;
+  width: 95%;
   height: 30%;
   display: flex;
   align-items: center;
+  gap: 1rem;
+  margin: 1rem auto;
 }
 
 .containerPreview {
   width: 9rem;
-  height: 5rem;
+  height: 6rem;
   border: 0.1rem solid #f0efeb;
   display: flex;
   flex-direction: column;
   text-align: center;
-  margin-right: 1rem;
   background-color: #f0efeb;
 }
 
@@ -32,18 +32,19 @@
   display: flex;
   flex-direction: column;
   text-align: left;
+  gap: 0.4rem;
+  margin-top: 1rem;
 }
 
 .containerButton {
   width: 90%;
   height: 30%;
   display: flex;
-  flex-direction: column;
-  align-content: right;
+  align-content: center;
+  justify-content: space-between;
 }
 
-.close {
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
+.delete {
+  color: #c4c4c4;
+  font-size: 2rem;
 }

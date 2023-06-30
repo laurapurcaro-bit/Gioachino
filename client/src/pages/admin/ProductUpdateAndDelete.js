@@ -21,6 +21,7 @@ export default function AdminUpdateProduct() {
   const [additionalPhotosUpdate, setAdditionalPhotosUpdate] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
   const [price, setPrice] = useState(0);
   // Product
   const [category, setCategory] = useState("");
@@ -53,6 +54,7 @@ export default function AdminUpdateProduct() {
       const { data } = await axios.get(`/product/${slug}`);
       setName(data.name);
       setDescription(data.description);
+      setShortDesc(data.shortDesc);
       setPrice(data.price);
       setId(data._id);
       setCategory(data.category._id);
@@ -81,6 +83,7 @@ export default function AdminUpdateProduct() {
       // Check if photo in the state
       formData.append("name", name);
       formData.append("description", description);
+      formData.append("shortDesc", shortDesc);
       formData.append("price", price);
       formData.append("category", category);
       formData.append("shipping", shipping);
@@ -246,6 +249,14 @@ export default function AdminUpdateProduct() {
                 placeholder="Write a description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
+              />
+              {/* Short description */}
+              <textarea
+                type="text"
+                className="form-control mb-3 p-2"
+                placeholder="Write a short description"
+                value={shortDesc}
+                onChange={(e) => setShortDesc(e.target.value)}
               />
               {/* PRICE */}
               <input

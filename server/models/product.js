@@ -18,10 +18,17 @@ const productSchema = new mongoose.Schema(
       required: true,
       maxlength: 2000,
     },
+    shortDesc: {
+      type: String,
+    },
     price: {
       type: Number,
       trim: true,
       required: true,
+    },
+    currency: {
+      type: String,
+      default: "EUR",
     },
     category: {
       type: ObjectId,
