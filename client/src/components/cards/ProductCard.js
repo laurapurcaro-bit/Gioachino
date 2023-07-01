@@ -5,14 +5,14 @@ import styling from "./ProductCard.module.css";
 import { Trans } from "react-i18next";
 import { HeartOutlined, HeartFilled } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { encryptData, decryptData } from "../../constants";
+import { encryptData, decryptData, currencies } from "../../constants";
 import axios from "axios";
 import { useAuth } from "../../context/auth";
 
 export default function ProductCard({ product }) {
   // const
   const inStock = product?.quantity; // - product?.sold;
-  const currency = "EUR";
+  // const currency = "EUR";
   const localString = "en-US";
   // context
   const [cart, setCart] = useCart();
@@ -163,6 +163,10 @@ export default function ProductCard({ product }) {
     // e.g., dispatch an action or update the state
   };
 
+  const currency = currencies?.find(
+    (c) => c.name === product?.currency
+  );
+
   return (
     <div className={`card ${styling.card}`}>
       <div className={`${styling.cardImageContainer}`}>
@@ -191,17 +195,15 @@ export default function ProductCard({ product }) {
           style={{ objectFit: "cover" }}
         />
       </div>
-      <div className="card-body">
+      <div className={styling.colElements}>
+        <div className={styling.cardElements}>
+          <h3>{product?.name}</h3>
+          <p>{product?.shortDesc}</p>
+        </div>
         <h3>
-          <Trans>{product?.name}</Trans>
+          {product?.price}
+          {currency?.value}
         </h3>
-        <h2 className="fw-bold">
-          {product?.price?.toLocaleString(localString, {
-            style: "currency",
-            currency: currency,
-          })}
-        </h2>
-        {/* <p className="card-text">{productDesc(product?.description)}</p> */}
       </div>
       <div className="d-flex">
         <button

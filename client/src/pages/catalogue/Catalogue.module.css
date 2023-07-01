@@ -5,10 +5,6 @@
   padding-top: 5rem;
 }
 
-.filterContainer {
-  padding: 0 0 0 5rem;
-}
-
 .productContainer {
   padding: 5rem 0;
 }
@@ -18,8 +14,7 @@
 }
 
 .line {
-  width: 90%;
-  padding: 0 2rem;
+  width: 100%;
   border: 1px solid #d7d6d1;
 }
 
@@ -27,4 +22,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.shopContainer {
+  padding: 0 7rem;
+}
+
+.selectedFilterContainer {
+  margin: 0 1rem 4rem 1rem;
 }

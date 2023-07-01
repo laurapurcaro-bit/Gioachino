@@ -1,12 +1,10 @@
 .mainPartBody {
   display: flex;
   grid-template-columns: repeat(2, 1fr);
-  /* flex-direction: column; */
+  flex-direction: row;
   align-items: center;
-  width: 100%;
   height: 50rem;
-  margin-left: 3rem;
-  margin-right: 3rem;
+  margin: 5rem 0 5rem 0;
 }
 
 .mainPartLeft {
@@ -15,9 +13,17 @@
   padding-right: 5rem;
 }
 
+.mainPartRight {
+  display: flex;
+  justify-content: right;
+  /* padding-left: 5rem;
+  padding-right: 5rem; */
+}
+
 .mainPartRight img {
-  width: 100%;
-  padding-top: 5rem;
+  /* padding-top: 5rem; */
+  width: 80rem;
+  height: 45rem;
 }
 
 .mainPartLeft h2 {
@@ -38,9 +44,10 @@
   margin-left: 0; /* Remove the margin-left property */
 }
 
-/* image */
-.mainImage {
-  width: 60rem;
-  height: 55rem;
-  padding-right: 8rem;
+.shopNowBtn {
+  width: 20%;
+  height: 4rem;
+  margin-top: 3rem;
+  background-color: black;
+  color: white;
 }

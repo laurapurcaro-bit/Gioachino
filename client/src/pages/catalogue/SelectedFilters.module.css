@@ -1,0 +1,19 @@
+.selectedFilter {
+  display: flex;
+  flex-direction: row;
+}
+
+.selectedFilter div {
+  margin: 0 1rem;
+  border: 1px solid #ccc;
+  padding: 0 1rem;
+}
+
+.filter {
+  color: #ccc;
+}
+
+.close {
+  cursor: pointer;
+  color: #ccc;
+}
