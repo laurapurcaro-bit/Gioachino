@@ -50,3 +50,15 @@
 .view:hover {
   border-color: black;
 }
+
+.colElements {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 2.5rem;
+}
+
+.cardElements {
+  text-align: left;
+}

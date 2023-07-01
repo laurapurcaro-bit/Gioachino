@@ -1,0 +1,38 @@
+.filtersContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.filtersContainer div {
+  margin: 0 1rem;
+}
+
+.colElements {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+}
+
+.colElements h4 {
+  margin: 0 0.3rem;
+}
+
+.dropdown {
+  /* Your existing styles for the dropdown content */
+  position: absolute;
+  top: 30px;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  z-index: 1;
+}
+
+.active {
+  /* Styles for the active dropdown */
+  position: relative;
+  z-index: 2;
+}
