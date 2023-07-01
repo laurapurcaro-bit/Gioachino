@@ -5,11 +5,7 @@ import { useAuth } from "../../context/auth";
 import styling from "./SingleWhishlist.module.css";
 import { Trans } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {
-  HeartOutlined,
-  HeartFilled,
-  ArrowLeftOutlined,
-} from "@ant-design/icons";
+import { HeartOutlined, HeartFilled, ArrowLeftOutlined } from "@ant-design/icons";
 import { encryptData, decryptData, currencies } from "../../constants";
 import { toast } from "react-hot-toast";
 
@@ -21,7 +17,6 @@ export default function SingleWhishlist() {
   // hooks
   const [whishlist, setWhishlist] = useState({});
   const [products, setProducts] = useState([]);
-
 
   useEffect(() => {
     if (params?.whishlistId) {
@@ -73,12 +68,7 @@ export default function SingleWhishlist() {
       <div className={styling.whishlistName}>
         <h1>{whishlist.name}</h1>
         <hr />
-        <WhishlistProducts
-          auth={auth}
-          whishlist={whishlist}
-          setWhishlist={setWhishlist}
-          products={products}
-        />
+        <WhishlistProducts auth={auth} whishlist={whishlist} setWhishlist={setWhishlist} products={products} />
       </div>
     </div>
   );
@@ -100,9 +90,7 @@ function WhishlistProducts({ auth, whishlist, setWhishlist, products }) {
     console.log("product", product);
     if (savedItems) {
       // Filter out the selected product from the saved items
-      updatedItems = savedItems.filter(
-        (item) => item.productId !== product.productId
-      );
+      updatedItems = savedItems.filter((item) => item.productId !== product.productId);
     }
     console.log("updatedItems", updatedItems);
     // Save the updated list back to local storage and encrypt
@@ -137,14 +125,12 @@ function WhishlistProducts({ auth, whishlist, setWhishlist, products }) {
   };
 
   return (
-    <div>
+    <div className={styling.wrap}>
       <div className={`${styling.containerPreview}`}>
         {whishlist?.savedItems?.map((item, index) => {
           const product = products.find((p) => p._id === item.productId);
           // Find the corresponding currency value
-          const currency = currencies?.find(
-            (c) => c.name === product?.currency
-          );
+          const currency = currencies?.find((c) => c.name === product?.currency);
           return (
             <div key={index} className={styling.cardContainer}>
               {item ? (
@@ -156,10 +142,7 @@ function WhishlistProducts({ auth, whishlist, setWhishlist, products }) {
                         onClick={(e) => handleHeartClick(item, whishlist.name)}
                       />
                     ) : (
-                      <HeartOutlined
-                        className={`${styling.heartIcon}`}
-                        onClick={(e) => handleHeartClick(item, whishlist.name)}
-                      />
+                      <HeartOutlined className={`${styling.heartIcon}`} onClick={(e) => handleHeartClick(item, whishlist.name)} />
                     )}
                     <img
                       className={`card-img-top ${styling.img}`}

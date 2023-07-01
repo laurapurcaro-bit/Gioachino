@@ -1,3 +1,7 @@
+.wrap {
+  padding-bottom: 30rem;
+}
+
 .header {
   position: relative;
   display: flex;

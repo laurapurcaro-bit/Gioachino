@@ -65,6 +65,11 @@
   gap: 5rem; /* Adds spacing between the elements */
 }
 
+.catalogue {
+  text-decoration: none;
+  color: #000;
+}
+
 /* dropdown */
 .dropdownElements {
   margin-top: 5px;

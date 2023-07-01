@@ -45,7 +45,7 @@ export default function WhishlistsCards({ whishlist, handleRemoveWhishlist }) {
       </div>
       <div className={`container-fluid ${styling.containerButton}`}>
         <button onClick={() => handleRemoveWhishlist(whishlist)}>
-          <DeleteOutlined className={styling.delete}/>
+          <DeleteOutlined className={styling.delete} />
         </button>
 
         <button onClick={handleShowWhishlist}>

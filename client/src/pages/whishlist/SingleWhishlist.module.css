@@ -1,3 +1,7 @@
+.wrap {
+  padding-bottom: 30rem;
+}
+
 .return {
   display: flex;
   cursor: pointer;

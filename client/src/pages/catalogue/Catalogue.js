@@ -45,7 +45,7 @@ export default function Catalogue() {
   };
 
   return (
-    <div>
+    <div className={styling.wrap}>
       <CategoriesBar />
       <div className={`container-fluid ${styling.productContainer}`}>
         <div className="row">
