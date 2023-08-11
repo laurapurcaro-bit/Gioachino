@@ -44,6 +44,12 @@ const userSchema = new Schema(
         country: {
           type: String,
         },
+        phone: {
+          type: String,
+        },
+        province: {
+          type: String,
+        },
         timestamp: {
           type: Date,
           default: Date.now,
@@ -64,6 +70,12 @@ const userSchema = new Schema(
           type: String,
         },
         country: {
+          type: String,
+        },
+        phone: {
+          type: String,
+        },
+        province: {
           type: String,
         },
         timestamp: {

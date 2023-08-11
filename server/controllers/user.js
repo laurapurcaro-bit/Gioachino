@@ -84,6 +84,7 @@ const addAddress = async (req, res) => {
       res.json(user);
     } else {
       const { addresses } = req.body;
+      console.log("Address", addresses);
       const user = await User.findByIdAndUpdate(
         req.user._id,
         { shippingAddresses: addresses || [] },
@@ -149,6 +150,100 @@ const updateAddress = async (req, res) => {
       const user = await User.findOneAndUpdate(
         { _id: req.user._id, "shippingAddresses._id": addressId },
         { $set: { "shippingAddresses.$": updatedAddress } },
+        { new: true }
+      );
+
+      // Remove password from response
+      user.password = undefined;
+
+      // Send response
+      res.json(user);
+    }
+  } catch (err) {
+    console.log("UPDATE ADDRESS ERROR", err);
+  }
+};
+
+const addBillingAddress = async (req, res) => {
+  try {
+    if (req.body.provider === "google") {
+      const { addresses } = req.body;
+      const user = await UserModelGoogle.findByIdAndUpdate(
+        req.user._id,
+        { billingAddresses: addresses || [] },
+        { new: true }
+      );
+
+      // Send response
+      res.json(user);
+    } else {
+      const { addresses } = req.body;
+      console.log("addresses", addresses);
+      const user = await User.findByIdAndUpdate(
+        req.user._id,
+        { billingAddresses: addresses || [] },
+        { new: true }
+      );
+
+      // Remove password from response
+      user.password = undefined;
+
+      // Send response
+      res.json(user);
+    }
+  } catch (err) {
+    console.log("PROFILE UPDATE ERROR", err);
+  }
+};
+
+const deleteBillingAddress = async (req, res) => {
+  try {
+    if (req.body.provider === "google") {
+      const { addressId } = req.body;
+      const user = await UserModelGoogle.findByIdAndUpdate(
+        req.user._id,
+        { $pull: { billingAddresses: { _id: addressId } } },
+        { new: true }
+      );
+
+      // Send response
+      res.json(user);
+    } else {
+      const { addressId } = req.body;
+      const user = await User.findByIdAndUpdate(
+        req.user._id,
+        { $pull: { billingAddresses: { _id: addressId } } },
+        { new: true }
+      );
+
+      // Remove password from response
+      user.password = undefined;
+
+      // Send response
+      res.json(user);
+    }
+  } catch (err) {
+    console.log("DELETE ADDRESS ERROR", err);
+  }
+};
+
+const updateBillingAddress = async (req, res) => {
+  try {
+    if (req.body.provider === "google") {
+      const { addressId, updatedAddress } = req.body;
+      const user = await UserModelGoogle.findOneAndUpdate(
+        { _id: req.user._id, "billingAddresses._id": addressId },
+        { $set: { "billingAddresses.$": updatedAddress } },
+        { new: true }
+      );
+
+      // Send response
+      res.json(user);
+    } else {
+      const { addressId, updatedAddress } = req.body;
+      const user = await User.findOneAndUpdate(
+        { _id: req.user._id, "billingAddresses._id": addressId },
+        { $set: { "billingAddresses.$": updatedAddress } },
         { new: true }
       );
 
@@ -242,12 +337,10 @@ const readWhishlistId = async (req, res) => {
     // Retrieve the user's whishlists
     const user = await User.findById(userId);
     // Find the wishlist with the matching uniqueId
-    const wishlist = user?.whishlists?.find(
-      (wishlist) => {
-        console.log("WISHLIST!!!!", wishlist.uniqueId);
-        return wishlist.uniqueId === whishlistId
-      }
-    );
+    const wishlist = user?.whishlists?.find((wishlist) => {
+      console.log("WISHLIST!!!!", wishlist.uniqueId);
+      return wishlist.uniqueId === whishlistId;
+    });
     console.log("WISHLIST", wishlist);
 
     if (!wishlist) {
@@ -420,4 +513,7 @@ module.exports = {
   getLatestShippingAddress,
   getLatestBillingAddress,
   saveUserInfoCheckout,
+  addBillingAddress,
+  deleteBillingAddress,
+  updateBillingAddress,
 };

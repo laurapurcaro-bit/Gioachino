@@ -38,8 +38,9 @@ import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
 import SavedItems from "./pages/whishlist/SavedItems";
 import RegisterPopup from "./pages/auth/Register";
 import UserAddresses from "./pages/user/UserAddresses";
-import CheckoutPageOld from "./pages/checkout/CheckoutPageOld";
-import { AlreadyPaidStep } from "./pages/checkout/DisplaySteps";
+import CheckoutPageOld from "./pages/checkout/checkoutold/CheckoutOld";
+import { EditAddress } from "./pages/checkout/UpdateShippingAddress";
+import FastCheckout from "./pages/checkout/FastCheckout";
 import SingleWhishlist from "./pages/whishlist/SingleWhishlist";
 
 const PageNotFound = () => {
@@ -71,19 +72,19 @@ export default function App() {
     // console.log("LANNG", localStorage.getItem("i18nextLng"));
   }, [currentLanguage]);
 
-  // Get user only once
-  useEffect(() => {
-    try {
-      if (auth.logged === false) {
-        GetUser({ auth, setAuth });
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    // Put context
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // // Get user only once
+  // useEffect(() => {
+  //   try {
+  //     if (auth.logged === false) {
+  //       GetUser({ auth, setAuth });
+  //       return;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   // Put context
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     const hasShownPopup = localStorage.getItem("hasShownPopup");
@@ -145,12 +146,13 @@ export default function App() {
         <Route path="/logged" element={<PrivateRoute />}>
           <Route path="whishlist" element={<SavedItems />} />
           <Route path="whishlist/:whishlistId" element={<SingleWhishlist />} />
-          <Route path="fast-checkout" element={<AlreadyPaidStep />} />
+          <Route path="fast-checkout" element={<FastCheckout />} />
+          <Route path="fast-checkout/edit-address" element={<EditAddress />} />
+          <Route path="checkout" element={<CheckoutPageOld />} />
         </Route>
         {/* Dynamic creation of route */}
         <Route path="/product/:slug" element={<SingleProductPage />} />
         {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
-        <Route path="/checkout" element={<CheckoutPageOld />} />
         <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
         {/* Insert routes you want to protect */}
         <Route path="/dashboard" element={<PrivateRoute />}>
