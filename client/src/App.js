@@ -38,8 +38,9 @@ import OrderConfirmationPage from "./pages/checkout/OrderConfirmation";
 import SavedItems from "./pages/whishlist/SavedItems";
 import RegisterPopup from "./pages/auth/Register";
 import UserAddresses from "./pages/user/UserAddresses";
-import CheckoutPageOld from "./pages/checkout/CheckoutPageOld";
-import { AlreadyPaidStep } from "./pages/checkout/DisplaySteps";
+import CheckoutPageOld from "./pages/checkout/checkoutold/CheckoutOld";
+import { EditAddress } from "./pages/checkout/UpdateShippingAddress";
+import FastCheckout from "./pages/checkout/FastCheckout";
 import SingleWhishlist from "./pages/whishlist/SingleWhishlist";
 
 const PageNotFound = () => {
@@ -67,19 +68,19 @@ export default function App() {
     // console.log("LANNG", localStorage.getItem("i18nextLng"));
   }, [currentLanguage]);
 
-  // Get user only once
-  useEffect(() => {
-    try {
-      if (auth.logged === false) {
-        GetUser({ auth, setAuth });
-        return;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    // Put context
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // // Get user only once
+  // useEffect(() => {
+  //   try {
+  //     if (auth.logged === false) {
+  //       GetUser({ auth, setAuth });
+  //       return;
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   // Put context
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   useEffect(() => {
     const hasShownPopup = localStorage.getItem("hasShownPopup");
@@ -100,70 +101,83 @@ export default function App() {
   };
 
   return (
-    <div className={styling.page}>
-      <Router>
-        {/* Navbar */}
-        <Navbar setShowLoginPopup={setShowLoginPopup} />
-        {/* Snack bar */}
-        <Toaster position="top-center" />
-        {/* Signin to newsletter popup */}
-        {showPopup && (
-          <>
-            <div className={styling.overlay} />
-            <Popup onClose={handleClosePopup} />
-          </>
-        )}
-        {/* Login popup */}
-        {showLoginPopup && (
-          <>
-            <LoginPopup showLoginPopup={showLoginPopup} setShowLoginPopup={setShowLoginPopup} setShowRegisterPopup={setShowRegisterPopup} />
-          </>
-        )}
-        {showRegisterPopup && (
-          <>
-            <RegisterPopup showRegisterPopup={showRegisterPopup} setShowRegisterPopup={setShowRegisterPopup} setShowLoginPopup={setShowLoginPopup} />
-          </>
-        )}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalogue" element={<Catalogue />} />
-          <Route path="/categories" element={<CategoriesList />} />
-          <Route path="/category/:slug" element={<CategoryView />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/search" element={<ResultsSearchBar />} />
-          <Route path="/logged" element={<PrivateRoute />}>
-            <Route path="whishlist" element={<SavedItems />} />
-            <Route path="whishlist/:whishlistId" element={<SingleWhishlist />} />
-            <Route path="fast-checkout" element={<AlreadyPaidStep />} />
-          </Route>
-          {/* Dynamic creation of route */}
-          <Route path="/product/:slug" element={<SingleProductPage />} />
-          {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
-          <Route path="/checkout" element={<CheckoutPageOld />} />
-          <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
-          {/* Insert routes you want to protect */}
-          <Route path="/dashboard" element={<PrivateRoute />}>
-            {/* No need of / before "secret" because of path="" before */}
-            <Route path="user" element={<Dashboard />} />
-            <Route path="user/profile" element={<UserProfile />} />
-            <Route path="user/orders" element={<UserOrders />} />
-            <Route path="user/addresses" element={<UserAddresses />} />
-          </Route>
-          <Route path="/dashboard" element={<AdminRoute />}>
-            <Route path="admin" element={<AdminDashboard />} />
-            <Route path="admin/category" element={<AdminCategory />} />
-            <Route path="admin/product" element={<AdminCreateProduct />} />
-            <Route path="admin/products" element={<AdminShowProducts />} />
-            <Route path="admin/orders" element={<ManageOrdersAdmin />} />
-            <Route path="admin/search" element={<AdminResultsSearchBar />} />
-            <Route path="admin/products/update/:slug" element={<AdminUpdateProduct />} />
-          </Route>
-          {/* <Route path="/register" element={<Register />} /> */}
-          <Route path="*" element={<PageNotFound />} replace />
-        </Routes>
-        {/* Footer */}
-        <Footer currentLanguage={currentLanguage} setCurrentLanguage={setCurrentLanguage} />
-      </Router>
-    </div>
+    <Router>
+      {/* Navbar */}
+      <Navbar setShowLoginPopup={setShowLoginPopup} />
+      {/* Snack bar */}
+      <Toaster position="top-center" />
+      {/* Signin to newsletter popup */}
+      {showPopup && (
+        <>
+          <div className={styling.overlay} />
+          <Popup onClose={handleClosePopup} />
+        </>
+      )}
+      {/* Login popup */}
+      {showLoginPopup && (
+        <>
+          <LoginPopup
+            showLoginPopup={showLoginPopup}
+            setShowLoginPopup={setShowLoginPopup}
+            setShowRegisterPopup={setShowRegisterPopup}
+          />
+        </>
+      )}
+      {showRegisterPopup && (
+        <>
+          <RegisterPopup
+            showRegisterPopup={showRegisterPopup}
+            setShowRegisterPopup={setShowRegisterPopup}
+            setShowLoginPopup={setShowLoginPopup}
+          />
+        </>
+      )}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/catalogue" element={<Catalogue />} />
+        <Route path="/categories" element={<CategoriesList />} />
+        <Route path="/category/:slug" element={<CategoryView />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/search" element={<ResultsSearchBar />} />
+        <Route path="/logged" element={<PrivateRoute />}>
+          <Route path="whishlist" element={<SavedItems />} />
+          <Route path="whishlist/:whishlistId" element={<SingleWhishlist />} />
+          <Route path="fast-checkout" element={<FastCheckout />} />
+          <Route path="fast-checkout/edit-address" element={<EditAddress />} />
+          <Route path="checkout" element={<CheckoutPageOld />} />
+        </Route>
+        {/* Dynamic creation of route */}
+        <Route path="/product/:slug" element={<SingleProductPage />} />
+        {/* <Route path="/checkout" element={<CheckoutPage />} /> */}
+        <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+        {/* Insert routes you want to protect */}
+        <Route path="/dashboard" element={<PrivateRoute />}>
+          {/* No need of / before "secret" because of path="" before */}
+          <Route path="user" element={<Dashboard />} />
+          <Route path="user/profile" element={<UserProfile />} />
+          <Route path="user/orders" element={<UserOrders />} />
+          <Route path="user/addresses" element={<UserAddresses />} />
+        </Route>
+        <Route path="/dashboard" element={<AdminRoute />}>
+          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="admin/category" element={<AdminCategory />} />
+          <Route path="admin/product" element={<AdminCreateProduct />} />
+          <Route path="admin/products" element={<AdminShowProducts />} />
+          <Route path="admin/orders" element={<ManageOrdersAdmin />} />
+          <Route path="admin/search" element={<AdminResultsSearchBar />} />
+          <Route
+            path="admin/products/update/:slug"
+            element={<AdminUpdateProduct />}
+          />
+        </Route>
+        {/* <Route path="/register" element={<Register />} /> */}
+        <Route path="*" element={<PageNotFound />} replace />
+      </Routes>
+      {/* Footer */}
+      <Footer
+        currentLanguage={currentLanguage}
+        setCurrentLanguage={setCurrentLanguage}
+      />
+    </Router>
   );
 }

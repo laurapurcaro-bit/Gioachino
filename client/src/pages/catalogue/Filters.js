@@ -1,8 +1,8 @@
 import { Trans } from "react-i18next";
 import { useState, useEffect } from "react";
 import { Checkbox, Radio } from "antd";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import styling from "./Filters.module.css";
+import { ChevronUp, ChevronDown } from "../../images/icons/TablerIcons";
 import axios from "axios";
 
 export default function Filters({
@@ -10,14 +10,28 @@ export default function Filters({
   prices,
   setSelectedFilter,
   setProducts,
+  loadProducts,
+  handleCategoryFilterSelection,
+  handlePriceFilterSelection,
+  handleCategoryFilter,
+  handlePriceFilter,
+  selectedCategoryFilters,
+  selectedPriceFilter,
+  checkedCategories,
+  radioPrice,
 }) {
   // state
   const [showCategories, setShowCategories] = useState(false);
   const [showPrices, setShowPrices] = useState(false);
-  const [checkedCategories, setCheckedCategories] = useState([]);
-  const [radioPrice, setRadioPrice] = useState("");
-  const [selectedCategoryFilters, setSelectedCategoryFilters] = useState([]);
-  const [selectedPriceFilter, setSelectedPriceFilter] = useState("");
+
+  useEffect(() => {
+    if (checkedCategories.length || radioPrice) {
+      fetchProductsByFilter();
+    } else {
+      loadProducts();
+    }
+    // eslint-disable-next-line
+  }, [checkedCategories, radioPrice]);
 
   const handleShowCategories = () => {
     setShowCategories(!showCategories);
@@ -29,48 +43,12 @@ export default function Filters({
     setShowCategories(false);
   };
 
-  const handleCategoryFilterSelection = (categoryId) => {
-    setSelectedCategoryFilters((prevFilters) => {
-      if (prevFilters.includes(categoryId)) {
-        return prevFilters.filter((filter) => filter !== categoryId);
-      } else {
-        return [...prevFilters, categoryId];
-      }
-    });
-  };
-
-  const handlePriceFilterSelection = (priceId) => {
-    setSelectedPriceFilter(priceId);
-  };
-
-  const handleCategoryFilter = (value, id) => {
-    let all = [...checkedCategories];
-    if (value) {
-      all.push(id);
-    } else {
-      all = all.filter((c) => c !== id);
-    }
-    setCheckedCategories(all);
-  };
-
-  const handlePriceFilter = (e) => {
-    setRadioPrice(e.target.value);
-  };
-
-  useEffect(() => {
-    if (checkedCategories.length || radioPrice) {
-      fetchProductsByFilter();
-    }
-    // eslint-disable-next-line
-  }, [checkedCategories, radioPrice]);
-
   const fetchProductsByFilter = async () => {
     try {
       const { data } = await axios.post("/filtered-products", {
         checkedCategories,
         radioPrice,
       });
-      console.log(data);
       setProducts(data);
     } catch (error) {
       console.log(error);
@@ -108,13 +86,13 @@ export default function Filters({
         <h4>
           <Trans>Categories</Trans>
         </h4>
-        <h4>{showCategories ? <UpOutlined /> : <DownOutlined />}</h4>
+        <h4>{showCategories ? <ChevronUp /> : <ChevronDown />}</h4>
         {showCategories && (
           <div className={styling.dropdown}>
             {categories?.map((category) => (
               <Checkbox
                 key={category._id}
-                value={category._id}
+                value={selectedCategoryFilters.includes(category.name)}
                 checked={selectedCategoryFilters.includes(category.name)}
                 onChange={(e) => {
                   handleCategoryFilterSelection(category.name);
@@ -135,7 +113,7 @@ export default function Filters({
         <h4>
           <Trans>Prices</Trans>
         </h4>
-        <h4>{showPrices ? <UpOutlined /> : <DownOutlined />}</h4>
+        <h4>{showPrices ? <ChevronUp /> : <ChevronDown />}</h4>
         {showPrices && (
           <div className={styling.dropdown}>
             <Radio.Group

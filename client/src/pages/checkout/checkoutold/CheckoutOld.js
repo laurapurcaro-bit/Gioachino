@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styling from "./CheckoutPageOld.module.css";
 import { Trans, useTranslation } from "react-i18next";
-import { OrderSumm } from "./OrderSumm";
-import PaypalButton from "./PaypalButton";
-import { decryptData, encryptData } from "../../constants";
+import { OrderSumm } from "../OrderSumm";
+import PaypalButton from "../PaypalButton";
+import { decryptData, encryptData } from "../../../constants";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCart } from "../../context/cart";
-import { useAuth } from "../../context/auth";
+import { useCart } from "../../../context/cart";
+import { useAuth } from "../../../context/auth";
 import toast from "react-hot-toast";
-import { DisplayFirstStep, DisplayPaymentStep } from "./UpdateShippingAddress";
-
-
-const steps = ["Shipping Method", "Payment Method"];
+import {
+  DisplayStepOne,
+  DisplayStepTwo,
+  DisplayPaymentStep,
+} from "./DisplaySteps";
+import StepBar from "../progress-bar/ProgressBar";
 
 export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -23,6 +25,11 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const country = "Italy";
   const [formData, setFormData] = useState({
+    email: "",
+    paymentMethod: "card",
+    billingAddressSameAsShippingAddress: true,
+    name: "",
+    surname: "",
     shipping: {
       name: "",
       surname: "",
@@ -41,23 +48,12 @@ export default function CheckoutPage() {
       street: "",
       city: "",
       zip: "",
+      phone: "",
       province: "",
       country: country,
       timestamp: Date.now(),
     },
-    email: "",
-    paymentMethod: "card",
-    billingAddressSameAsShippingAddress: true,
   });
-
-  useEffect(() => {
-    loadUserAddress();
-  }, []);
-
-  const loadUserAddress = async () => {
-    const d = decryptData("checkoutFormData");
-    console.log("d", d);
-  };
 
   // const
   const currency = "EUR";
@@ -65,7 +61,7 @@ export default function CheckoutPage() {
   // hook
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
-  const [auth] = useAuth();
+  const [auth, setAuth] = useAuth();
 
   const cartLs = decryptData("cart");
   // function
@@ -78,7 +74,9 @@ export default function CheckoutPage() {
   const amount = cartTotal();
 
   const handleChange = (e) => {
+    console.log("e", e);
     const { name, value, type, checked } = e.target;
+    console.log("name", name, "value", value, "type", type, "checked", checked);
     const fieldValue = type === "checkbox" ? checked : value;
     setMessage(null);
     console.log("name", name);
@@ -86,10 +84,7 @@ export default function CheckoutPage() {
       const shippingField = name.split(".")[1];
       setFormData((prevData) => ({
         ...prevData,
-        shipping: {
-          ...prevData.shipping,
-          [shippingField]: fieldValue,
-        },
+        shipping: value,
       }));
     } else if (name.startsWith("billing.")) {
       const billingField = name.split(".")[1];
@@ -129,6 +124,7 @@ export default function CheckoutPage() {
   const handleBuy = async () => {
     try {
       setLoading(true);
+      saveUserInfo();
       // access the nonce
       const { nonce } = await instance.requestPaymentMethod();
       const { data } = await axios.post("/braintree/payment", {
@@ -149,6 +145,48 @@ export default function CheckoutPage() {
     }
   };
 
+  const saveUserInfo = async () => {
+    // Save the new address to the user's addresses array
+    const updatedUser = { ...auth.user };
+    if (!updatedUser.shippingAddresses) {
+      updatedUser.shippingAddresses = [];
+    }
+    const shippingAddresses = formData?.shipping;
+    // Save the new billing address to the user's billingAddresses array
+    let billingAddresses;
+    if (!formData.billingAddressSameAsShippingAddress) {
+      billingAddresses = formData?.billing;
+    } else {
+      billingAddresses = formData?.shipping;
+    }
+    // TODO: Send updatedUser to backend API to save the changes
+    try {
+      const { data } = await axios.post("/profile/addresses/checkout", {
+        form: formData,
+        newShippingAddress: shippingAddresses,
+        newBillingAddress: billingAddresses,
+        provider: auth?.user?.provider || "email",
+      });
+      // Handle error
+      if (data?.error) {
+        toast.error(data.error);
+        return;
+      } else {
+        console.log("USER", data);
+        // Update context
+        setAuth({ ...auth, user: data });
+        // local storage
+        let localData = JSON.parse(localStorage.getItem("auth"));
+        // Update only user in local storage
+        localData.user = data;
+        // Save to local storage
+        localStorage.setItem("auth", JSON.stringify(localData));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
   };
@@ -157,7 +195,7 @@ export default function CheckoutPage() {
     setCurrentStep(currentStep - 1);
   };
 
-  const handleSaveInfo = (e) => {
+  const handleCheckedAddress = (e) => {
     const { name, checked } = e.target;
     console.log("checked", checked);
     setChecked(checked);
@@ -168,19 +206,31 @@ export default function CheckoutPage() {
       case 1:
         return (
           <>
-            <DisplayFirstStep
+            <DisplayStepOne
               formData={formData}
               setFormData={setFormData}
               handleChange={handleChange}
               handleNextStep={handleNextStep}
-              handleSaveInfo={handleSaveInfo}
+            />
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <DisplayStepTwo
+              formData={formData}
+              setFormData={setFormData}
+              handleChange={handleChange}
+              handleNextStep={handleNextStep}
+              handlePreviousStep={handlePreviousStep}
+              handleCheckedAddress={handleCheckedAddress}
               checked={checked}
               message={message}
               setMessage={setMessage}
             />
           </>
         );
-      case 2:
+      case 3:
         return (
           <>
             <DisplayPaymentStep
@@ -199,6 +249,12 @@ export default function CheckoutPage() {
         return null;
     }
   };
+  // step bar
+  const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
+
+  const handleNextSteps = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
 
   return (
     <div className={styling.container}>
@@ -206,6 +262,9 @@ export default function CheckoutPage() {
         <h1 style={{ fontSize: "5rem" }}>Checkout</h1>
       </div>
       <hr />
+      <div className={styling.stepBar}>
+        <StepBar steps={steps} currentStep={currentStep} />
+      </div>
       <div className="row">
         <div className={`col-md-7`}>
           {/* Button */}

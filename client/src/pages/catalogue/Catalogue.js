@@ -12,13 +12,10 @@ export default function Catalogue() {
   const [categories, setCateories] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState([]); // selected filter
-
-  useEffect(() => {
-    // if (!checkedCategories.length || !radioPrice.length) {
-    loadProducts();
-    // }
-    // eslint-disable-next-line
-  }, []);
+  const [selectedCategoryFilters, setSelectedCategoryFilters] = useState([]);
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState("");
+  const [checkedCategories, setCheckedCategories] = useState([]);
+  const [radioPrice, setRadioPrice] = useState("");
 
   const loadProducts = async () => {
     try {
@@ -44,6 +41,34 @@ export default function Catalogue() {
     }
   };
 
+  const handleCategoryFilterSelection = (categoryId) => {
+    setSelectedCategoryFilters((prevFilters) => {
+      if (prevFilters.includes(categoryId)) {
+        return prevFilters.filter((filter) => filter !== categoryId);
+      } else {
+        return [...prevFilters, categoryId];
+      }
+    });
+  };
+
+  const handlePriceFilterSelection = (priceId) => {
+    setSelectedPriceFilter(priceId);
+  };
+
+  const handleCategoryFilter = (value, id) => {
+    let all = [...checkedCategories];
+    if (value) {
+      all.push(id);
+    } else {
+      all = all.filter((c) => c !== id);
+    }
+    setCheckedCategories(all);
+  };
+
+  const handlePriceFilter = (e) => {
+    setRadioPrice(e.target.value);
+  };
+
   return (
     <div className={styling.wrap}>
       <CategoriesBar />
@@ -55,6 +80,15 @@ export default function Catalogue() {
               prices={prices}
               setSelectedFilter={setSelectedFilter}
               setProducts={setProducts}
+              loadProducts={loadProducts}
+              handleCategoryFilterSelection={handleCategoryFilterSelection}
+              handlePriceFilterSelection={handlePriceFilterSelection}
+              handleCategoryFilter={handleCategoryFilter}
+              handlePriceFilter={handlePriceFilter}
+              selectedPriceFilter={selectedPriceFilter}
+              selectedCategoryFilters={selectedCategoryFilters}
+              checkedCategories={checkedCategories}
+              radioPrice={radioPrice}
             />
             <div className={`${styling.lineContainer}`}>
               <hr className={`${styling.line}`} />
@@ -63,8 +97,14 @@ export default function Catalogue() {
             <div className={`${styling.selectedFilterContainer}`}>
               {selectedFilter && (
                 <SelectedFilters
+                  categories={categories}
+                  prices={prices}
                   selectedFilter={selectedFilter}
                   setSelectedFilter={setSelectedFilter}
+                  handleCategoryFilterSelection={handleCategoryFilterSelection}
+                  handlePriceFilterSelection={handlePriceFilterSelection}
+                  handleCategoryFilter={handleCategoryFilter}
+                  handlePriceFilter={handlePriceFilter}
                 />
               )}
             </div>

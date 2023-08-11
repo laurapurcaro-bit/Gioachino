@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styling from "./OrderSumm.module.css";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import { ChevronDown, ChevronUp } from "../../images/icons/TablerIcons";
 import { useCart } from "../../context/cart";
 import { Badge, Space } from "antd";
 
@@ -23,7 +23,7 @@ function OrderSumm() {
       </div>
       <div className={styling.colElements} onClick={handleShowProducts}>
         <span>Products</span>
-        <span>{showProducts ? <UpOutlined /> : <DownOutlined />}</span>
+        <span>{showProducts ? <ChevronUp /> : <ChevronDown />}</span>
       </div>
       {showProducts && (
         <>
