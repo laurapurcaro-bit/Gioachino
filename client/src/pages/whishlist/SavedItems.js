@@ -73,54 +73,43 @@ export default function SavedItems() {
   };
 
   return (
-    <div className="mt-5">
-      <div className="text-center">
-        <h1>
-          <Trans>My Wishlist</Trans>
-        </h1>
-        <p>
-          <Trans>
-            Here you can find all the products you have saved for later.
-          </Trans>
-        </p>
-        <button className={styling.whishlistBtn} onClick={handleAddWishlist}>
-          <Trans>Add a new wishlist</Trans>
-        </button>
-        {showAddWishlist && (
-          <div className={`${styling.greyOverlay}`}>
-            <div className={`${styling.addWishlistPopup}`}>
-              <div onClick={() => handleClose()}>
-                <span className={styling.close}>&times;</span>
+    <div className={styling.wrap}>
+      <div className="mt-5">
+        <div className="text-center">
+          <h1>
+            <Trans>My Wishlist</Trans>
+          </h1>
+          <p>
+            <Trans>Here you can find all the products you have saved for later.</Trans>
+          </p>
+          <button className={styling.whishlistBtn} onClick={handleAddWishlist}>
+            <Trans>Add a new wishlist</Trans>
+          </button>
+          {showAddWishlist && (
+            <div className={`${styling.greyOverlay}`}>
+              <div className={`${styling.addWishlistPopup}`}>
+                <div onClick={() => handleClose()}>
+                  <span className={styling.close}>&times;</span>
+                </div>
+                <input type="text" value={wishlistName} onChange={handleWishlistNameChange} placeholder={t("enterWishlistName")} />
+                <button onClick={handleAddWishlistConfirm}>
+                  <Trans>Add</Trans>
+                </button>
               </div>
-              <input
-                type="text"
-                value={wishlistName}
-                onChange={handleWishlistNameChange}
-                placeholder={t("enterWishlistName")}
-              />
-              <button onClick={handleAddWishlistConfirm}>
-                <Trans>Add</Trans>
-              </button>
             </div>
+          )}
+          <div className={`${styling.lineContainer}`}>
+            <hr className={`${styling.line}`} />
           </div>
-        )}
-        <div className={`${styling.lineContainer}`}>
-          <hr className={`${styling.line}`} />
         </div>
-      </div>
-      {/* Saved lists */}
-      <div className={styling.savedLists}>
-        {whishlists?.length > 0 ? (
-          whishlists.map((whishlist) => (
-            <WhishlistsCards
-              key={whishlist._id}
-              whishlist={whishlist}
-              handleRemoveWhishlist={handleRemoveWhishlist}
-            />
-          ))
-        ) : (
-          <div></div>
-        )}
+        {/* Saved lists */}
+        <div className={styling.savedLists}>
+          {whishlists?.length > 0 ? (
+            whishlists.map((whishlist) => <WhishlistsCards key={whishlist._id} whishlist={whishlist} handleRemoveWhishlist={handleRemoveWhishlist} />)
+          ) : (
+            <div></div>
+          )}
+        </div>
       </div>
     </div>
   );

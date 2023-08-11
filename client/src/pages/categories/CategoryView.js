@@ -28,7 +28,7 @@ export default function CategoryView() {
   };
 
   return (
-    <>
+    <div className={styling.wrap}>
       <div className={styling.header}>
         <h2>{params.slug}</h2>
       </div>
@@ -46,6 +46,6 @@ export default function CategoryView() {
           })}
         </div>
       </div>
-    </>
+    </div>
   );
 }

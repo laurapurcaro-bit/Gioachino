@@ -57,8 +57,8 @@ export default function Navbar({ setShowLoginPopup }) {
         </NavLink>
         {/* Catalogue */}
         <div className="dropdown">
-          <li>
-            <a className={` ${styling.navElements} ${styling.navbarFontLinks}  ${styling.catalogue}`} data-bs-toggle="dropdown" href="/">
+          <li className={` ${styling.navElements} ${styling.navbarFontLinks}`}>
+            <a className={` ${styling.catalogue}`} data-bs-toggle="dropdown" href="/">
               <Trans>Catalogue</Trans>
             </a>
             <ul className={`dropdown-menu ${styling.dropdown}`}>

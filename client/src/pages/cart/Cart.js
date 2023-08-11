@@ -82,7 +82,7 @@ export default function Cart() {
   };
 
   return (
-    <>
+    <div className={styling.wrap}>
       <div className={`container-fluid`}>
         <div className="row">
           <div className="col-md-12">
@@ -94,20 +94,15 @@ export default function Cart() {
                   <h2>
                     <Trans>Oops, your cart is empty.</Trans>
                   </h2>
-                  <img
-                    src={emptyCart}
-                    alt="Empty cart"
-                    className={styling.emptyCartImage}
-                  />
-                  <button
-                    className={styling.emptyCartButton}
-                    onClick={() => navigate("/catalogue")}
-                  >
+                  <img src={emptyCart} alt="Empty cart" className={styling.emptyCartImage} />
+                  <button className={styling.emptyCartButton} onClick={() => navigate("/catalogue")}>
                     <Trans>Continue Shopping</Trans>
                   </button>
                 </div>
                 <div className={styling.relatedProducts}>
-                  <h5><Trans>You could also like..</Trans></h5>
+                  <h5>
+                    <Trans>You could also like..</Trans>
+                  </h5>
                 </div>
               </div>
             )}
@@ -118,27 +113,14 @@ export default function Cart() {
       {cart?.length > 0 && (
         <div className={`container bg-light ${styling.cartContainer}`}>
           <div className={`row ${styling.cartElements}`}>
-            <div
-              className={`col-md-6 ${styling.cartProductItems} ${styling.shadow}`}
-            >
+            <div className={`col-md-6 ${styling.cartProductItems} ${styling.shadow}`}>
               <h2 className={`${styling.cartTitle}`}>
-                <Trans>Cart</Trans> ({cart?.length}{" "}
-                {cart?.length > 1 ? (
-                  <Trans>products</Trans>
-                ) : (
-                  <Trans>product</Trans>
-                )}
-                )
+                <Trans>Cart</Trans> ({cart?.length} {cart?.length > 1 ? <Trans>products</Trans> : <Trans>product</Trans>})
               </h2>
               <div className={`row`}>
                 {cart?.map((p) => (
                   <div key={p._id} className={``}>
-                    <ProductCardHorizontal
-                      p={p}
-                      cart={cart}
-                      setCart={setCart}
-                      removeFromCart={removeFromCart}
-                    />
+                    <ProductCardHorizontal p={p} cart={cart} setCart={setCart} removeFromCart={removeFromCart} />
                   </div>
                 ))}
               </div>
@@ -160,9 +142,7 @@ export default function Cart() {
                           </p>
                         </th>
                         <th>
-                          <p className={`${styling.subtotalContent}`}>
-                            {cartSubTotalCurrency(cartSubTotal())}
-                          </p>
+                          <p className={`${styling.subtotalContent}`}>{cartSubTotalCurrency(cartSubTotal())}</p>
                         </th>
                       </tr>
                     </thead>
@@ -174,9 +154,7 @@ export default function Cart() {
                           </p>
                         </td>
                         <td>
-                          <p className={`${styling.subtotalContent}`}>
-                            {shippingCostCurrency(shippingCost())}
-                          </p>
+                          <p className={`${styling.subtotalContent}`}>{shippingCostCurrency(shippingCost())}</p>
                         </td>
                       </tr>
                       <tr>
@@ -186,19 +164,14 @@ export default function Cart() {
                           </p>
                         </td>
                         <td>
-                          <p className={`${styling.subtotalContent}`}>
-                            {cartTotalWithIVACurrency(cartTotalWithIVA())}
-                          </p>
+                          <p className={`${styling.subtotalContent}`}>{cartTotalWithIVACurrency(cartTotalWithIVA())}</p>
                         </td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div className={`${styling.checkoutSection}`}>
-                  <button
-                    className={`${styling.checkoutButton}`}
-                    onClick={() => handleCheckout()}
-                  >
+                  <button className={`${styling.checkoutButton}`} onClick={() => handleCheckout()}>
                     <Trans>Checkout</Trans>
                   </button>
                 </div>
@@ -207,9 +180,7 @@ export default function Cart() {
           </div>
           {/* Shipping */}
           <div className={`row`}>
-            <div
-              className={`col-md-6 ${styling.cartProduct} ${styling.shadow}`}
-            >
+            <div className={`col-md-6 ${styling.cartProduct} ${styling.shadow}`}>
               <h2>
                 <Trans>Shipping</Trans>
                 <BusinessDaysConverter />
@@ -218,9 +189,7 @@ export default function Cart() {
           </div>
           {/* Payment methods */}
           <div className={`row`}>
-            <div
-              className={`col-md-6 ${styling.cartProduct} ${styling.shadow} ${styling.lastContainer}`}
-            >
+            <div className={`col-md-6 ${styling.cartProduct} ${styling.shadow} ${styling.lastContainer}`}>
               <h2>
                 <Trans>Payment methods</Trans>
               </h2>
@@ -228,6 +197,6 @@ export default function Cart() {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }
