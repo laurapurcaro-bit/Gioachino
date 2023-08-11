@@ -44,11 +44,7 @@ import FastCheckout from "./pages/checkout/FastCheckout";
 import SingleWhishlist from "./pages/whishlist/SingleWhishlist";
 
 const PageNotFound = () => {
-  return (
-    <div className="d-flex justify-content-center align-items-center vh-100">
-      404 - Page not found
-    </div>
-  );
+  return <div className="d-flex justify-content-center align-items-center vh-100">404 - Page not found</div>;
 };
 
 export default function App() {

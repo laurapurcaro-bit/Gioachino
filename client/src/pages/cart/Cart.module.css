@@ -1,3 +1,7 @@
+.wrap {
+  padding-bottom: 30rem;
+}
+
 .cartContainer {
   width: 100%;
 }
@@ -106,17 +110,4 @@
   margin-top: 20rem;
   margin-left: 5rem;
   margin-bottom: 3rem;
-}
-
-.colElements {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: 2.5rem;
-}
-
-.subtitle {
-  margin-left: 2.2rem;
-  width: 93%;
 }

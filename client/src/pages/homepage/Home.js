@@ -5,6 +5,8 @@ import MainPartHome from "./MainPartHome";
 import SecondPartHome from "./SecondPartHome";
 import ThirdPartHome from "./ThirdPartHome";
 
+import styling from "./Home.module.css";
+
 export default function Home() {
   // const [auth] = useAuth();
   // hook
@@ -68,7 +70,7 @@ export default function Home() {
   const sortedBySold = arr?.sort((a, b) => (a.sold < b.sold ? 1 : -1));
 
   return (
-    <div>
+    <div className={styling.wrap}>
       {/* First part homepage */}
       <MainPartHome />
       {/* Second part homepage */}

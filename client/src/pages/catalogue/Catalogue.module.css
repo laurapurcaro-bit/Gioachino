@@ -1,3 +1,7 @@
+.wrap {
+  padding-bottom: 30rem;
+}
+
 .gridContainer {
   display: flex;
   align-items: center;
